@@ -21,6 +21,8 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
+    HMDBoardPickerViewController *boardPicker = [[HMDBoardPickerViewController alloc] init];
+    self.window.rootViewController = boardPicker;
     [self.window makeKeyAndVisible];
     
     return YES;

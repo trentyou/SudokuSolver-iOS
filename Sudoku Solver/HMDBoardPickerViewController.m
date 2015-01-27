@@ -7,31 +7,100 @@
 //
 
 #import "HMDBoardPickerViewController.h"
+#import "HMDSolutionViewController.h"
 
 @interface HMDBoardPickerViewController ()
+
+@property (nonatomic, strong) NSMutableArray *internalSudokuBoard;
+@property (nonatomic, copy) NSString *startingNumbers;
 
 @end
 
 @implementation HMDBoardPickerViewController
 
-- (void)viewDidLoad {
+static NSNumberFormatter *numberFormatter;
+
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    if (!numberFormatter) numberFormatter = [[NSNumberFormatter alloc] init];
+    
+    self.startingNumbers = @"000260701680070090190004500820100040004602900050003028009300074040050036703018000";
+    
+    [self setupInternalSudokuBoard:self.startingNumbers];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+
+- (void)setupInternalSudokuBoard:(NSString *)startingNumbers
+{
+    self.internalSudokuBoard = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < 9; i++) {
+        NSMutableArray *column = [[NSMutableArray alloc] init];
+        [self.internalSudokuBoard insertObject:column atIndex:i];
+    }
+    
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            [self.internalSudokuBoard[i] insertObject:[numberFormatter numberFromString:[startingNumbers substringToIndex:1]] atIndex:j];
+            startingNumbers = [startingNumbers substringFromIndex:1];
+        }
+    }
+    
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+
+- (void)printBoard:(NSString *)solutionString
+{
+    HMDSolutionViewController *solutionViewController = [[HMDSolutionViewController alloc] initWithSolution:solutionString];
+    [self presentViewController:solutionViewController animated:YES completion:nil];
 }
-*/
+
+
+- (IBAction)solveButton:(id)sender
+{
+    [self printBoard:self.startingNumbers];
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @end
