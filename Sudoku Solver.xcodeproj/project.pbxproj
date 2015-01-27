@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		85B5DAAB1A778D69002A1979 /* HMDSudokuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B5DAAA1A778D69002A1979 /* HMDSudokuCell.m */; };
 		85D44FB11A77497300363F0E /* HMDSolutionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D44FAF1A77497300363F0E /* HMDSolutionViewController.m */; };
 		85D44FB21A77497300363F0E /* HMDSolutionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85D44FB01A77497300363F0E /* HMDSolutionViewController.xib */; };
 		85DE02F01A7640D500B9A8BF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DE02EF1A7640D500B9A8BF /* main.m */; };
@@ -29,6 +30,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		85B5DAA91A778D69002A1979 /* HMDSudokuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSudokuCell.h; sourceTree = "<group>"; };
+		85B5DAAA1A778D69002A1979 /* HMDSudokuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDSudokuCell.m; sourceTree = "<group>"; };
 		85D44FAE1A77497300363F0E /* HMDSolutionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSolutionViewController.h; sourceTree = "<group>"; };
 		85D44FAF1A77497300363F0E /* HMDSolutionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDSolutionViewController.m; sourceTree = "<group>"; };
 		85D44FB01A77497300363F0E /* HMDSolutionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HMDSolutionViewController.xib; sourceTree = "<group>"; };
@@ -94,6 +97,8 @@
 				85D44FAE1A77497300363F0E /* HMDSolutionViewController.h */,
 				85D44FAF1A77497300363F0E /* HMDSolutionViewController.m */,
 				85D44FB01A77497300363F0E /* HMDSolutionViewController.xib */,
+				85B5DAA91A778D69002A1979 /* HMDSudokuCell.h */,
+				85B5DAAA1A778D69002A1979 /* HMDSudokuCell.m */,
 				85DE02FA1A7640D500B9A8BF /* Images.xcassets */,
 				85DE02FC1A7640D500B9A8BF /* LaunchScreen.xib */,
 				85DE02ED1A7640D500B9A8BF /* Supporting Files */,
@@ -229,6 +234,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85DE02F31A7640D500B9A8BF /* AppDelegate.m in Sources */,
+				85B5DAAB1A778D69002A1979 /* HMDSudokuCell.m in Sources */,
 				85DE02F01A7640D500B9A8BF /* main.m in Sources */,
 				85DE03161A7645B600B9A8BF /* HMDBoardPickerViewController.m in Sources */,
 				85D44FB11A77497300363F0E /* HMDSolutionViewController.m in Sources */,

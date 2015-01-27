@@ -7,23 +7,25 @@
 //
 
 #import "HMDSolutionViewController.h"
+#import "HMDSudokuCell.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 @interface HMDSolutionViewController ()
 
-@property (nonatomic, copy) NSString *solutionString;
+@property (nonatomic, copy) NSArray *solution;
 
 @end
 
 @implementation HMDSolutionViewController
 
-- (instancetype)initWithSolution:(NSString *)solutionString
+- (instancetype)initWithSolution:(NSArray *)solution
 {
     self = [super initWithNibName:nil bundle:nil];
     
     if (self) {
         
-        _solutionString = solutionString;
+        _solution = solution;
     }
     
     return self;
@@ -41,8 +43,8 @@
 
 - (void)setupSolutionBoard
 {
-    if (self.solutionString.length != 81) {
-        NSLog(@"Solution string incorrect length");
+    if ([self.solution count] != 81) {
+        NSLog(@"Solution incorrect length");
         return;
     }
     
@@ -83,15 +85,13 @@
         }
         
         
-        NSString *value = [self.solutionString substringToIndex:1];
+        NSNumber *answer = self.solution[i - 1];
         
-        if ([value isEqualToString:@"0"]) {
+        if ([answer integerValue] == 0) {
             cell.text = @"";
         } else {
-            cell.text = value;
+            cell.text = [answer stringValue];
         }
-        
-        self.solutionString = [self.solutionString substringFromIndex:1];
         
         [self.view addSubview:cell];
         
