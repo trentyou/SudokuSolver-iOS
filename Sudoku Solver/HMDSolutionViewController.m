@@ -62,6 +62,27 @@
         cell.layer.borderColor = [UIColor lightGrayColor].CGColor;
         cell.layer.borderWidth = 0.5f;
         
+        if ((i > 18 && i < 28) || (i > 45 && i < 55)) {
+            CALayer *bottomBorder = [CALayer layer];
+            
+            bottomBorder.borderColor = [UIColor blackColor].CGColor;
+            bottomBorder.borderWidth = 2.0f;
+            bottomBorder.frame = CGRectMake(0.0f, labelSize, labelSize, 1.0f);
+            
+            [cell.layer addSublayer:bottomBorder];
+        }
+        
+        if ((i % 3 == 0 || i % 6 == 0) && i % 9 != 0) {
+            CALayer *rightBorder = [CALayer layer];
+            
+            rightBorder.borderColor = [UIColor blackColor].CGColor;
+            rightBorder.borderWidth = 2.0f;
+            rightBorder.frame = CGRectMake(labelSize, 0.0f, 2.0f, labelSize);
+            
+            [cell.layer addSublayer:rightBorder];
+        }
+        
+        
         NSString *value = [self.solutionString substringToIndex:1];
         
         if ([value isEqualToString:@"0"]) {
