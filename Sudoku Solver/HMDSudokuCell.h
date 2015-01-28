@@ -11,7 +11,7 @@
 @interface HMDSudokuCell : NSObject
 
 @property (nonatomic, strong) NSNumber *answer;
-@property (nonatomic, copy) NSMutableArray *possibleAnswers;
+@property (nonatomic, strong) NSMutableArray *possibleAnswers;
 
 - (instancetype)initWithAnswer:(NSNumber *)answer possibleAnswers:(NSArray *)possibleAnswers;
 

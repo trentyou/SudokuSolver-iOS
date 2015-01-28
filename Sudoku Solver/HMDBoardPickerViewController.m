@@ -38,13 +38,13 @@ static NSNumberFormatter *numberFormatter;
 {
     self.internalSudokuBoard = [[NSMutableArray alloc] init];
     
-    for (int row = 0; row < 9; row++) {
+    for (NSInteger row = 0; row < 9; row++) {
         NSMutableArray *column = [[NSMutableArray alloc] init];
         [self.internalSudokuBoard insertObject:column atIndex:row];
     }
     
-    for (int row = 0; row < 9; row++) {
-        for (int column = 0; column < 9; column++) {
+    for (NSInteger row = 0; row < 9; row++) {
+        for (NSInteger column = 0; column < 9; column++) {
             
             NSNumber *answer = [numberFormatter numberFromString:[startingNumbers substringToIndex:1]];
             HMDSudokuCell *cell = [[HMDSudokuCell alloc] initWithAnswer:answer possibleAnswers:nil];
@@ -76,7 +76,33 @@ static NSNumberFormatter *numberFormatter;
                     }
                 }
                 
+                
+                
                 cell.possibleAnswers = possibleAnswers;
+                
+            }
+        }
+    }
+}
+
+- (void)updatePossibleAnswers
+{
+    for (NSInteger row = 0; row < 9; row++) {
+        for (NSInteger column = 0; column < 9; column++) {
+            
+            HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
+            NSNumber *answer = cell.answer;
+            
+            if ([answer integerValue] == 0) {
+                
+                NSMutableArray *possibleAnswers = [NSMutableArray arrayWithArray:cell.possibleAnswers];
+                
+                for (NSNumber *possibleAnswer in possibleAnswers) {
+                    
+                    if (![self checkValidPlacementOfAnswer:[possibleAnswer integerValue] inRow:row andColumn:column]) {
+                        [cell.possibleAnswers removeObject:possibleAnswer];
+                    }
+                }
             }
         }
     }
@@ -111,6 +137,7 @@ static NSNumberFormatter *numberFormatter;
 {
     for (NSInteger column = 0; column < 9; column++) {
         if (column != inputColumn) {
+            
             HMDSudokuCell *cell = self.internalSudokuBoard[inputRow][column];
             NSNumber *cellAnswer = cell.answer;
             
@@ -248,11 +275,25 @@ static NSNumberFormatter *numberFormatter;
 
 - (void)solveBoard
 {
-    
-    
-    
-    
-    
+    for (NSInteger repeatCount = 0; repeatCount < 6; repeatCount++) {
+        
+        for (NSInteger row = 0; row < 9; row++) {
+            for (NSInteger column = 0; column < 9; column++) {
+                
+                HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
+                NSNumber *answer = cell.answer;
+                
+                if ([answer integerValue] == 0 && [cell.possibleAnswers count] == 1) {
+                    cell.answer = [cell.possibleAnswers firstObject];
+                    [cell.possibleAnswers removeAllObjects];
+                }
+            }
+        }
+        
+        [self updatePossibleAnswers];
+        
+    }
+
 }
 
 
@@ -267,6 +308,7 @@ static NSNumberFormatter *numberFormatter;
             HMDSudokuCell *cell = self.internalSudokuBoard[i][j];
             NSNumber *value = cell.answer;
             
+            NSLog(@"%@", cell.possibleAnswers);
             [solution addObject:value];
         }
     }
