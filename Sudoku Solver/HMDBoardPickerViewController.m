@@ -61,6 +61,8 @@ static NSNumberFormatter *numberFormatter;
 
 - (void)fillPossibleAnswers
 {
+    NSLog(@"Fill possible answers:");
+    
     for (NSInteger row = 0; row < 9; row++) {
         for (NSInteger column = 0; column < 9; column++) {
             
@@ -70,16 +72,20 @@ static NSNumberFormatter *numberFormatter;
             if ([answer integerValue] == 0) {
                 NSMutableArray *possibleAnswers = [[NSMutableArray alloc] init];
                 
+                if (row == 6 && column == 5) {
+                    NSLog(@"Problem area");
+                    NSLog(@"Quadrant: %d", [self getQuadrantFromRow:row andColumn:column]);
+                }
                 for (NSInteger i = 1; i <= 9; i++) {
                     if ([self checkValidPlacementOfAnswer:i inRow:row andColumn:column]) {
                         [possibleAnswers addObject:[NSNumber numberWithInteger:i]];
                     }
                 }
                 
-                
-                
                 cell.possibleAnswers = possibleAnswers;
-                
+                NSLog(@"Row: %d", row);
+                NSLog(@"Column: %d", column);
+                NSLog(@"%@", cell.possibleAnswers);
             }
         }
     }
@@ -95,7 +101,7 @@ static NSNumberFormatter *numberFormatter;
             
             if ([answer integerValue] == 0) {
                 
-                NSMutableArray *possibleAnswers = [NSMutableArray arrayWithArray:cell.possibleAnswers];
+                NSArray *possibleAnswers = [cell.possibleAnswers copy];
                 
                 for (NSNumber *possibleAnswer in possibleAnswers) {
                     
@@ -110,7 +116,7 @@ static NSNumberFormatter *numberFormatter;
 
 - (BOOL)checkValidPlacementOfAnswer:(NSInteger)answer inRow:(NSInteger)row andColumn:(NSInteger)column
 {
-    if (![self checkColumnForAnswer:answer inRow:row andColumn:column] && ![self checkRowForAnswer:answer inRow:row andColumn:column] &&![self checkQuadrantForAnswer:answer inRow:row andColumn:column]) {
+    if (![self checkColumnForAnswer:answer inRow:row andColumn:column] && ![self checkRowForAnswer:answer inRow:row andColumn:column] && ![self checkQuadrantForAnswer:answer inRow:row andColumn:column]) {
         return YES;
     } else {
         return NO;
@@ -154,7 +160,7 @@ static NSNumberFormatter *numberFormatter;
 {
     if (row <= 2) {
         return (column / 3) + 1;
-    } else if (row > 2 && row <= 6) {
+    } else if (row > 2 && row < 6) {
         return (column / 3) + 4;
     } else {
         return (column / 3) + 7;
@@ -273,9 +279,56 @@ static NSNumberFormatter *numberFormatter;
     
 }
 
+- (BOOL)subGroupExclusionCheck
+{
+    BOOL changed = NO;
+    
+    for (NSInteger row = 0; row < 7; row += 3) {
+        for (NSInteger column = 0; column < 7; column += 3) {
+            
+            for (NSInteger possibleAnswer = 1; possibleAnswer <= 9; possibleAnswer++) {
+                
+                NSInteger occurenceCount = 0;
+                NSInteger rowCoordinateOfOccurence = 0;
+                NSInteger columnCoordinateOfOccurence = 0;
+                
+                for (NSInteger quadrantRow = 0; quadrantRow <= 2; quadrantRow++) {
+                    for (NSInteger quadrantColumn = 0; quadrantColumn <= 2; quadrantColumn++) {
+                        
+                        HMDSudokuCell *cell = self.internalSudokuBoard[row + quadrantRow][column + quadrantColumn];
+                        NSMutableArray *possibleAnswers = cell.possibleAnswers;
+                        
+                        if ([possibleAnswers containsObject:[NSNumber numberWithInteger:possibleAnswer]]) {
+                            occurenceCount++;
+                            rowCoordinateOfOccurence = row + quadrantRow;
+                            columnCoordinateOfOccurence = column + quadrantColumn;
+                        }
+                    }
+                }
+                
+                if (occurenceCount == 1) {
+                    HMDSudokuCell *cell = self.internalSudokuBoard[rowCoordinateOfOccurence][columnCoordinateOfOccurence];
+                    cell.answer = [NSNumber numberWithInteger:possibleAnswer];
+                    [cell.possibleAnswers removeAllObjects];
+                    changed = YES;
+
+                    [self updatePossibleAnswers];
+                }
+                
+                
+            }
+        }
+    }
+    
+    return changed;
+}
+
 - (void)solveBoard
 {
-    for (NSInteger repeatCount = 0; repeatCount < 6; repeatCount++) {
+    BOOL changed;
+    
+    do {
+        changed = NO;
         
         for (NSInteger row = 0; row < 9; row++) {
             for (NSInteger column = 0; column < 9; column++) {
@@ -283,16 +336,28 @@ static NSNumberFormatter *numberFormatter;
                 HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
                 NSNumber *answer = cell.answer;
                 
+                NSLog(@"Row: %ld", (long)row);
+                NSLog(@"Column %ld", (long)column);
+                NSLog(@"cell.possibleAnswers before: %@", cell.possibleAnswers);
+
                 if ([answer integerValue] == 0 && [cell.possibleAnswers count] == 1) {
+                    
                     cell.answer = [cell.possibleAnswers firstObject];
                     [cell.possibleAnswers removeAllObjects];
+                    NSLog(@"cell.possibleAnswers after: %@", cell.possibleAnswers);
+
+                    
+                    [self updatePossibleAnswers];
+                    
+                    changed = YES;
                 }
             }
         }
         
-        [self updatePossibleAnswers];
-        
-    }
+        //changed = [self subGroupExclusionCheck];
+        NSLog(changed ? @"Yes" : @"No");
+        NSLog(@"Loop");
+    } while (changed);
 
 }
 
@@ -308,7 +373,6 @@ static NSNumberFormatter *numberFormatter;
             HMDSudokuCell *cell = self.internalSudokuBoard[i][j];
             NSNumber *value = cell.answer;
             
-            NSLog(@"%@", cell.possibleAnswers);
             [solution addObject:value];
         }
     }
