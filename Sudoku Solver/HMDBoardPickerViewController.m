@@ -30,7 +30,6 @@ static NSNumberFormatter *numberFormatter;
     
     self.startingNumbers = @"000260701680070090190004500820100040004602900050003028009300074040050036703018000";
     
-    [self setupInternalSudokuBoard:self.startingNumbers];
 }
 
 
@@ -358,7 +357,8 @@ static NSNumberFormatter *numberFormatter;
         NSLog(changed ? @"Yes" : @"No");
         NSLog(@"Loop");
     } while (changed);
-
+    
+    [self printBoard];
 }
 
 
@@ -384,7 +384,7 @@ static NSNumberFormatter *numberFormatter;
 
 - (IBAction)solveButton:(id)sender
 {
-    [self printBoard];
+    [self setupInternalSudokuBoard:self.startingNumbers];
 }
 
 
