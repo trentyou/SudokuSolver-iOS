@@ -10,6 +10,17 @@
 
 @implementation HMDSudokuCell
 
+
+- (void)encodeWithCoder:(NSCoder *)coder
+{
+    [coder encodeObject:self.answer forKey:@"self.answer"];
+    [coder encodeObject:self.possibleAnswers forKey:@"self.possibleAnswers"];
+    
+}
+
+
+
+
 - (instancetype)initWithAnswer:(NSNumber *)answer possibleAnswers:(NSArray *)possibleAnswers
 {
     self = [super init];
@@ -27,6 +38,14 @@
     return [self initWithAnswer:0 possibleAnswers:@[]];
 }
 
+- (instancetype)copyWithZone:(NSZone *)zone
+{
+    HMDSudokuCell *copy = [[HMDSudokuCell allocWithZone:zone] init];
+    copy.answer = [self.answer copy];
+    copy.possibleAnswers = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:self.possibleAnswers]];
+    
+    return copy;
+}
 
 
 

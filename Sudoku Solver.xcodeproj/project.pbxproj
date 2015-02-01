@@ -1,1044 +1,512 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>archiveVersion</key>
-	<string>1</string>
-	<key>classes</key>
-	<dict/>
-	<key>objectVersion</key>
-	<string>46</string>
-	<key>objects</key>
-	<dict>
-		<key>36AF5BBEC7200E23654BF740</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>name</key>
-			<string>Pods-Sudoku Solver.release.xcconfig</string>
-			<key>path</key>
-			<string>Pods/Target Support Files/Pods-Sudoku Solver/Pods-Sudoku Solver.release.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>3D1276F1F26C937DAE7934A6</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>6C06B72111C64DCA69E3FBBD</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Frameworks</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>6C06B72111C64DCA69E3FBBD</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>archive.ar</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>libPods-Sudoku Solver.a</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>824F90CD0777CDC251CB8EB3</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Check Pods Manifest.lock</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>diff "${PODS_ROOT}/../Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
-if [[ $? != 0 ]] ; then
-    cat &lt;&lt; EOM
-error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
-EOM
-    exit 1
-fi
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-		<key>85B5DAA91A778D69002A1979</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>HMDSudokuCell.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85B5DAAA1A778D69002A1979</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>HMDSudokuCell.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85B5DAAB1A778D69002A1979</key>
-		<dict>
-			<key>fileRef</key>
-			<string>85B5DAAA1A778D69002A1979</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>85D44FAE1A77497300363F0E</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>HMDSolutionViewController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85D44FAF1A77497300363F0E</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>HMDSolutionViewController.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85D44FB01A77497300363F0E</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>file.xib</string>
-			<key>path</key>
-			<string>HMDSolutionViewController.xib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85D44FB11A77497300363F0E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>85D44FAF1A77497300363F0E</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>85D44FB21A77497300363F0E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>85D44FB01A77497300363F0E</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>85DE02E11A7640D500B9A8BF</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>85DE02EC1A7640D500B9A8BF</string>
-				<string>85DE03061A7640D500B9A8BF</string>
-				<string>85DE02EB1A7640D500B9A8BF</string>
-				<string>C6DD90CFF83A7AD902C7AAE7</string>
-				<string>3D1276F1F26C937DAE7934A6</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85DE02E21A7640D500B9A8BF</key>
-		<dict>
-			<key>attributes</key>
-			<dict>
-				<key>LastUpgradeCheck</key>
-				<string>0610</string>
-				<key>ORGANIZATIONNAME</key>
-				<string>Trent You</string>
-				<key>TargetAttributes</key>
-				<dict>
-					<key>85DE02E91A7640D500B9A8BF</key>
-					<dict>
-						<key>CreatedOnToolsVersion</key>
-						<string>6.1.1</string>
-					</dict>
-					<key>85DE03021A7640D500B9A8BF</key>
-					<dict>
-						<key>CreatedOnToolsVersion</key>
-						<string>6.1.1</string>
-						<key>TestTargetID</key>
-						<string>85DE02E91A7640D500B9A8BF</string>
-					</dict>
-				</dict>
-			</dict>
-			<key>buildConfigurationList</key>
-			<string>85DE02E51A7640D500B9A8BF</string>
-			<key>compatibilityVersion</key>
-			<string>Xcode 3.2</string>
-			<key>developmentRegion</key>
-			<string>English</string>
-			<key>hasScannedForEncodings</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXProject</string>
-			<key>knownRegions</key>
-			<array>
-				<string>en</string>
-				<string>Base</string>
-			</array>
-			<key>mainGroup</key>
-			<string>85DE02E11A7640D500B9A8BF</string>
-			<key>productRefGroup</key>
-			<string>85DE02EB1A7640D500B9A8BF</string>
-			<key>projectDirPath</key>
-			<string></string>
-			<key>projectReferences</key>
-			<array/>
-			<key>projectRoot</key>
-			<string></string>
-			<key>targets</key>
-			<array>
-				<string>85DE02E91A7640D500B9A8BF</string>
-				<string>85DE03021A7640D500B9A8BF</string>
-			</array>
-		</dict>
-		<key>85DE02E51A7640D500B9A8BF</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>85DE030B1A7640D500B9A8BF</string>
-				<string>85DE030C1A7640D500B9A8BF</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>85DE02E61A7640D500B9A8BF</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>85DE02F31A7640D500B9A8BF</string>
-				<string>85B5DAAB1A778D69002A1979</string>
-				<string>85DE02F01A7640D500B9A8BF</string>
-				<string>85DE03161A7645B600B9A8BF</string>
-				<string>85D44FB11A77497300363F0E</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>85DE02E71A7640D500B9A8BF</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>F38B46CF454174795C765EDF</string>
-			</array>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>85DE02E81A7640D500B9A8BF</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>85DE02FE1A7640D500B9A8BF</string>
-				<string>85DE02FB1A7640D500B9A8BF</string>
-				<string>85DE03171A7645B600B9A8BF</string>
-				<string>85D44FB21A77497300363F0E</string>
-			</array>
-			<key>isa</key>
-			<string>PBXResourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>85DE02E91A7640D500B9A8BF</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>85DE030D1A7640D500B9A8BF</string>
-			<key>buildPhases</key>
-			<array>
-				<string>824F90CD0777CDC251CB8EB3</string>
-				<string>85DE02E61A7640D500B9A8BF</string>
-				<string>85DE02E71A7640D500B9A8BF</string>
-				<string>85DE02E81A7640D500B9A8BF</string>
-				<string>9A51C210B943A914CEE4C35B</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>Sudoku Solver</string>
-			<key>productName</key>
-			<string>Sudoku Solver</string>
-			<key>productReference</key>
-			<string>85DE02EA1A7640D500B9A8BF</string>
-			<key>productType</key>
-			<string>com.apple.product-type.application</string>
-		</dict>
-		<key>85DE02EA1A7640D500B9A8BF</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.application</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Sudoku Solver.app</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>85DE02EB1A7640D500B9A8BF</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>85DE02EA1A7640D500B9A8BF</string>
-				<string>85DE03031A7640D500B9A8BF</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Products</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85DE02EC1A7640D500B9A8BF</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>85DE02F11A7640D500B9A8BF</string>
-				<string>85DE02F21A7640D500B9A8BF</string>
-				<string>85DE03131A7645B600B9A8BF</string>
-				<string>85DE03141A7645B600B9A8BF</string>
-				<string>85DE03151A7645B600B9A8BF</string>
-				<string>85D44FAE1A77497300363F0E</string>
-				<string>85D44FAF1A77497300363F0E</string>
-				<string>85D44FB01A77497300363F0E</string>
-				<string>85B5DAA91A778D69002A1979</string>
-				<string>85B5DAAA1A778D69002A1979</string>
-				<string>85DE02FA1A7640D500B9A8BF</string>
-				<string>85DE02FC1A7640D500B9A8BF</string>
-				<string>85DE02ED1A7640D500B9A8BF</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Sudoku Solver</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85DE02ED1A7640D500B9A8BF</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>85DE02EE1A7640D500B9A8BF</string>
-				<string>85DE02EF1A7640D500B9A8BF</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Supporting Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85DE02EE1A7640D500B9A8BF</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-			<key>path</key>
-			<string>Info.plist</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85DE02EF1A7640D500B9A8BF</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>main.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85DE02F01A7640D500B9A8BF</key>
-		<dict>
-			<key>fileRef</key>
-			<string>85DE02EF1A7640D500B9A8BF</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>85DE02F11A7640D500B9A8BF</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>AppDelegate.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85DE02F21A7640D500B9A8BF</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>AppDelegate.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85DE02F31A7640D500B9A8BF</key>
-		<dict>
-			<key>fileRef</key>
-			<string>85DE02F21A7640D500B9A8BF</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>85DE02FA1A7640D500B9A8BF</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>folder.assetcatalog</string>
-			<key>path</key>
-			<string>Images.xcassets</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85DE02FB1A7640D500B9A8BF</key>
-		<dict>
-			<key>fileRef</key>
-			<string>85DE02FA1A7640D500B9A8BF</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>85DE02FC1A7640D500B9A8BF</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>85DE02FD1A7640D500B9A8BF</string>
-			</array>
-			<key>isa</key>
-			<string>PBXVariantGroup</string>
-			<key>name</key>
-			<string>LaunchScreen.xib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85DE02FD1A7640D500B9A8BF</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>file.xib</string>
-			<key>name</key>
-			<string>Base</string>
-			<key>path</key>
-			<string>Base.lproj/LaunchScreen.xib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85DE02FE1A7640D500B9A8BF</key>
-		<dict>
-			<key>fileRef</key>
-			<string>85DE02FC1A7640D500B9A8BF</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>85DE02FF1A7640D500B9A8BF</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>85DE030A1A7640D500B9A8BF</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>85DE03001A7640D500B9A8BF</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>85DE03011A7640D500B9A8BF</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXResourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>85DE03021A7640D500B9A8BF</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>85DE03101A7640D500B9A8BF</string>
-			<key>buildPhases</key>
-			<array>
-				<string>85DE02FF1A7640D500B9A8BF</string>
-				<string>85DE03001A7640D500B9A8BF</string>
-				<string>85DE03011A7640D500B9A8BF</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array>
-				<string>85DE03051A7640D500B9A8BF</string>
-			</array>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>Sudoku SolverTests</string>
-			<key>productName</key>
-			<string>Sudoku SolverTests</string>
-			<key>productReference</key>
-			<string>85DE03031A7640D500B9A8BF</string>
-			<key>productType</key>
-			<string>com.apple.product-type.bundle.unit-test</string>
-		</dict>
-		<key>85DE03031A7640D500B9A8BF</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.cfbundle</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Sudoku SolverTests.xctest</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>85DE03041A7640D500B9A8BF</key>
-		<dict>
-			<key>containerPortal</key>
-			<string>85DE02E21A7640D500B9A8BF</string>
-			<key>isa</key>
-			<string>PBXContainerItemProxy</string>
-			<key>proxyType</key>
-			<string>1</string>
-			<key>remoteGlobalIDString</key>
-			<string>85DE02E91A7640D500B9A8BF</string>
-			<key>remoteInfo</key>
-			<string>Sudoku Solver</string>
-		</dict>
-		<key>85DE03051A7640D500B9A8BF</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXTargetDependency</string>
-			<key>target</key>
-			<string>85DE02E91A7640D500B9A8BF</string>
-			<key>targetProxy</key>
-			<string>85DE03041A7640D500B9A8BF</string>
-		</dict>
-		<key>85DE03061A7640D500B9A8BF</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>85DE03091A7640D500B9A8BF</string>
-				<string>85DE03071A7640D500B9A8BF</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Sudoku SolverTests</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85DE03071A7640D500B9A8BF</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>85DE03081A7640D500B9A8BF</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Supporting Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85DE03081A7640D500B9A8BF</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-			<key>path</key>
-			<string>Info.plist</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85DE03091A7640D500B9A8BF</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>Sudoku_SolverTests.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85DE030A1A7640D500B9A8BF</key>
-		<dict>
-			<key>fileRef</key>
-			<string>85DE03091A7640D500B9A8BF</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>85DE030B1A7640D500B9A8BF</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
-				<string>gnu++0x</string>
-				<key>CLANG_CXX_LIBRARY</key>
-				<string>libc++</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>CLANG_ENABLE_OBJC_ARC</key>
-				<string>YES</string>
-				<key>CLANG_WARN_BOOL_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_EMPTY_BODY</key>
-				<string>YES</string>
-				<key>CLANG_WARN_ENUM_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_INT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_UNREACHABLE_CODE</key>
-				<string>YES</string>
-				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
-				<string>YES</string>
-				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
-				<string>iPhone Developer</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>NO</string>
-				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
-				<string>YES</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_DYNAMIC_NO_PIC</key>
-				<string>NO</string>
-				<key>GCC_OPTIMIZATION_LEVEL</key>
-				<string>0</string>
-				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
-				<array>
-					<string>DEBUG=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
-				<string>NO</string>
-				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
-				<string>YES_ERROR</string>
-				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
-				<string>YES_AGGRESSIVE</string>
-				<key>GCC_WARN_UNUSED_FUNCTION</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_VARIABLE</key>
-				<string>YES</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>8.1</string>
-				<key>MTL_ENABLE_DEBUG_INFO</key>
-				<string>YES</string>
-				<key>ONLY_ACTIVE_ARCH</key>
-				<string>YES</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-				<key>TARGETED_DEVICE_FAMILY</key>
-				<string>1,2</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>85DE030C1A7640D500B9A8BF</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
-				<string>gnu++0x</string>
-				<key>CLANG_CXX_LIBRARY</key>
-				<string>libc++</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>CLANG_ENABLE_OBJC_ARC</key>
-				<string>YES</string>
-				<key>CLANG_WARN_BOOL_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_EMPTY_BODY</key>
-				<string>YES</string>
-				<key>CLANG_WARN_ENUM_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_INT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_UNREACHABLE_CODE</key>
-				<string>YES</string>
-				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
-				<string>YES</string>
-				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
-				<string>iPhone Developer</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>YES</string>
-				<key>ENABLE_NS_ASSERTIONS</key>
-				<string>NO</string>
-				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
-				<string>YES</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
-				<string>YES_ERROR</string>
-				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
-				<string>YES_AGGRESSIVE</string>
-				<key>GCC_WARN_UNUSED_FUNCTION</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_VARIABLE</key>
-				<string>YES</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>8.1</string>
-				<key>MTL_ENABLE_DEBUG_INFO</key>
-				<string>NO</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-				<key>TARGETED_DEVICE_FAMILY</key>
-				<string>1,2</string>
-				<key>VALIDATE_PRODUCT</key>
-				<string>YES</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>85DE030D1A7640D500B9A8BF</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>85DE030E1A7640D500B9A8BF</string>
-				<string>85DE030F1A7640D500B9A8BF</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>85DE030E1A7640D500B9A8BF</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>90467000BA838523C569709A</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
-				<string>AppIcon</string>
-				<key>INFOPLIST_FILE</key>
-				<string>Sudoku Solver/Info.plist</string>
-				<key>LD_RUNPATH_SEARCH_PATHS</key>
-				<string>$(inherited) @executable_path/Frameworks</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>85DE030F1A7640D500B9A8BF</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>36AF5BBEC7200E23654BF740</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
-				<string>AppIcon</string>
-				<key>INFOPLIST_FILE</key>
-				<string>Sudoku Solver/Info.plist</string>
-				<key>LD_RUNPATH_SEARCH_PATHS</key>
-				<string>$(inherited) @executable_path/Frameworks</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>85DE03101A7640D500B9A8BF</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>85DE03111A7640D500B9A8BF</string>
-				<string>85DE03121A7640D500B9A8BF</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>85DE03111A7640D500B9A8BF</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>BUNDLE_LOADER</key>
-				<string>$(TEST_HOST)</string>
-				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(SDKROOT)/Developer/Library/Frameworks</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
-				<array>
-					<string>DEBUG=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>INFOPLIST_FILE</key>
-				<string>Sudoku SolverTests/Info.plist</string>
-				<key>LD_RUNPATH_SEARCH_PATHS</key>
-				<string>$(inherited) @executable_path/Frameworks @loader_path/Frameworks</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>TEST_HOST</key>
-				<string>$(BUILT_PRODUCTS_DIR)/Sudoku Solver.app/Sudoku Solver</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>85DE03121A7640D500B9A8BF</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>BUNDLE_LOADER</key>
-				<string>$(TEST_HOST)</string>
-				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(SDKROOT)/Developer/Library/Frameworks</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>INFOPLIST_FILE</key>
-				<string>Sudoku SolverTests/Info.plist</string>
-				<key>LD_RUNPATH_SEARCH_PATHS</key>
-				<string>$(inherited) @executable_path/Frameworks @loader_path/Frameworks</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>TEST_HOST</key>
-				<string>$(BUILT_PRODUCTS_DIR)/Sudoku Solver.app/Sudoku Solver</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>85DE03131A7645B600B9A8BF</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>HMDBoardPickerViewController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85DE03141A7645B600B9A8BF</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>HMDBoardPickerViewController.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85DE03151A7645B600B9A8BF</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>file.xib</string>
-			<key>path</key>
-			<string>HMDBoardPickerViewController.xib</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85DE03161A7645B600B9A8BF</key>
-		<dict>
-			<key>fileRef</key>
-			<string>85DE03141A7645B600B9A8BF</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>85DE03171A7645B600B9A8BF</key>
-		<dict>
-			<key>fileRef</key>
-			<string>85DE03151A7645B600B9A8BF</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>90467000BA838523C569709A</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>name</key>
-			<string>Pods-Sudoku Solver.debug.xcconfig</string>
-			<key>path</key>
-			<string>Pods/Target Support Files/Pods-Sudoku Solver/Pods-Sudoku Solver.debug.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>9A51C210B943A914CEE4C35B</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Copy Pods Resources</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>"${SRCROOT}/Pods/Target Support Files/Pods-Sudoku Solver/Pods-Sudoku Solver-resources.sh"
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-		<key>C6DD90CFF83A7AD902C7AAE7</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>90467000BA838523C569709A</string>
-				<string>36AF5BBEC7200E23654BF740</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Pods</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>F38B46CF454174795C765EDF</key>
-		<dict>
-			<key>fileRef</key>
-			<string>6C06B72111C64DCA69E3FBBD</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-	</dict>
-	<key>rootObject</key>
-	<string>85DE02E21A7640D500B9A8BF</string>
-</dict>
-</plist>
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		859D885F1A7DECD7007007B0 /* HMDSudokuTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 859D885E1A7DECD7007007B0 /* HMDSudokuTreeNode.m */; };
+		859D88621A7DED6B007007B0 /* HMDSudokuTreeRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 859D88611A7DED6B007007B0 /* HMDSudokuTreeRoot.m */; };
+		85B5DAAB1A778D69002A1979 /* HMDSudokuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B5DAAA1A778D69002A1979 /* HMDSudokuCell.m */; };
+		85D44FB11A77497300363F0E /* HMDSolutionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D44FAF1A77497300363F0E /* HMDSolutionViewController.m */; };
+		85D44FB21A77497300363F0E /* HMDSolutionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85D44FB01A77497300363F0E /* HMDSolutionViewController.xib */; };
+		85DE02F01A7640D500B9A8BF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DE02EF1A7640D500B9A8BF /* main.m */; };
+		85DE02F31A7640D500B9A8BF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DE02F21A7640D500B9A8BF /* AppDelegate.m */; };
+		85DE02FB1A7640D500B9A8BF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85DE02FA1A7640D500B9A8BF /* Images.xcassets */; };
+		85DE02FE1A7640D500B9A8BF /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85DE02FC1A7640D500B9A8BF /* LaunchScreen.xib */; };
+		85DE030A1A7640D500B9A8BF /* Sudoku_SolverTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DE03091A7640D500B9A8BF /* Sudoku_SolverTests.m */; };
+		85DE03161A7645B600B9A8BF /* HMDBoardPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DE03141A7645B600B9A8BF /* HMDBoardPickerViewController.m */; };
+		85DE03171A7645B600B9A8BF /* HMDBoardPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85DE03151A7645B600B9A8BF /* HMDBoardPickerViewController.xib */; };
+		F38B46CF454174795C765EDF /* libPods-Sudoku Solver.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C06B72111C64DCA69E3FBBD /* libPods-Sudoku Solver.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		85DE03041A7640D500B9A8BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 85DE02E21A7640D500B9A8BF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 85DE02E91A7640D500B9A8BF;
+			remoteInfo = "Sudoku Solver";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		36AF5BBEC7200E23654BF740 /* Pods-Sudoku Solver.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sudoku Solver.release.xcconfig"; path = "Pods/Target Support Files/Pods-Sudoku Solver/Pods-Sudoku Solver.release.xcconfig"; sourceTree = "<group>"; };
+		6C06B72111C64DCA69E3FBBD /* libPods-Sudoku Solver.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sudoku Solver.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		859D885D1A7DECD7007007B0 /* HMDSudokuTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSudokuTreeNode.h; sourceTree = "<group>"; };
+		859D885E1A7DECD7007007B0 /* HMDSudokuTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDSudokuTreeNode.m; sourceTree = "<group>"; };
+		859D88601A7DED6B007007B0 /* HMDSudokuTreeRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSudokuTreeRoot.h; sourceTree = "<group>"; };
+		859D88611A7DED6B007007B0 /* HMDSudokuTreeRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDSudokuTreeRoot.m; sourceTree = "<group>"; };
+		85B5DAA91A778D69002A1979 /* HMDSudokuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSudokuCell.h; sourceTree = "<group>"; };
+		85B5DAAA1A778D69002A1979 /* HMDSudokuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDSudokuCell.m; sourceTree = "<group>"; };
+		85D44FAE1A77497300363F0E /* HMDSolutionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSolutionViewController.h; sourceTree = "<group>"; };
+		85D44FAF1A77497300363F0E /* HMDSolutionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDSolutionViewController.m; sourceTree = "<group>"; };
+		85D44FB01A77497300363F0E /* HMDSolutionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HMDSolutionViewController.xib; sourceTree = "<group>"; };
+		85DE02EA1A7640D500B9A8BF /* Sudoku Solver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sudoku Solver.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		85DE02EE1A7640D500B9A8BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		85DE02EF1A7640D500B9A8BF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		85DE02F11A7640D500B9A8BF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		85DE02F21A7640D500B9A8BF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		85DE02FA1A7640D500B9A8BF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		85DE02FD1A7640D500B9A8BF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		85DE03031A7640D500B9A8BF /* Sudoku SolverTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Sudoku SolverTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		85DE03081A7640D500B9A8BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		85DE03091A7640D500B9A8BF /* Sudoku_SolverTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Sudoku_SolverTests.m; sourceTree = "<group>"; };
+		85DE03131A7645B600B9A8BF /* HMDBoardPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDBoardPickerViewController.h; sourceTree = "<group>"; };
+		85DE03141A7645B600B9A8BF /* HMDBoardPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDBoardPickerViewController.m; sourceTree = "<group>"; };
+		85DE03151A7645B600B9A8BF /* HMDBoardPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HMDBoardPickerViewController.xib; sourceTree = "<group>"; };
+		90467000BA838523C569709A /* Pods-Sudoku Solver.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sudoku Solver.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Sudoku Solver/Pods-Sudoku Solver.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		85DE02E71A7640D500B9A8BF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F38B46CF454174795C765EDF /* libPods-Sudoku Solver.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		85DE03001A7640D500B9A8BF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3D1276F1F26C937DAE7934A6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6C06B72111C64DCA69E3FBBD /* libPods-Sudoku Solver.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		85DE02E11A7640D500B9A8BF = {
+			isa = PBXGroup;
+			children = (
+				85DE02EC1A7640D500B9A8BF /* Sudoku Solver */,
+				85DE03061A7640D500B9A8BF /* Sudoku SolverTests */,
+				85DE02EB1A7640D500B9A8BF /* Products */,
+				C6DD90CFF83A7AD902C7AAE7 /* Pods */,
+				3D1276F1F26C937DAE7934A6 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		85DE02EB1A7640D500B9A8BF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				85DE02EA1A7640D500B9A8BF /* Sudoku Solver.app */,
+				85DE03031A7640D500B9A8BF /* Sudoku SolverTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		85DE02EC1A7640D500B9A8BF /* Sudoku Solver */ = {
+			isa = PBXGroup;
+			children = (
+				85DE02F11A7640D500B9A8BF /* AppDelegate.h */,
+				85DE02F21A7640D500B9A8BF /* AppDelegate.m */,
+				85DE03131A7645B600B9A8BF /* HMDBoardPickerViewController.h */,
+				85DE03141A7645B600B9A8BF /* HMDBoardPickerViewController.m */,
+				85DE03151A7645B600B9A8BF /* HMDBoardPickerViewController.xib */,
+				85D44FAE1A77497300363F0E /* HMDSolutionViewController.h */,
+				85D44FAF1A77497300363F0E /* HMDSolutionViewController.m */,
+				85D44FB01A77497300363F0E /* HMDSolutionViewController.xib */,
+				85B5DAA91A778D69002A1979 /* HMDSudokuCell.h */,
+				85B5DAAA1A778D69002A1979 /* HMDSudokuCell.m */,
+				859D885D1A7DECD7007007B0 /* HMDSudokuTreeNode.h */,
+				859D885E1A7DECD7007007B0 /* HMDSudokuTreeNode.m */,
+				859D88601A7DED6B007007B0 /* HMDSudokuTreeRoot.h */,
+				859D88611A7DED6B007007B0 /* HMDSudokuTreeRoot.m */,
+				85DE02FA1A7640D500B9A8BF /* Images.xcassets */,
+				85DE02FC1A7640D500B9A8BF /* LaunchScreen.xib */,
+				85DE02ED1A7640D500B9A8BF /* Supporting Files */,
+			);
+			path = "Sudoku Solver";
+			sourceTree = "<group>";
+		};
+		85DE02ED1A7640D500B9A8BF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				85DE02EE1A7640D500B9A8BF /* Info.plist */,
+				85DE02EF1A7640D500B9A8BF /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		85DE03061A7640D500B9A8BF /* Sudoku SolverTests */ = {
+			isa = PBXGroup;
+			children = (
+				85DE03091A7640D500B9A8BF /* Sudoku_SolverTests.m */,
+				85DE03071A7640D500B9A8BF /* Supporting Files */,
+			);
+			path = "Sudoku SolverTests";
+			sourceTree = "<group>";
+		};
+		85DE03071A7640D500B9A8BF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				85DE03081A7640D500B9A8BF /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C6DD90CFF83A7AD902C7AAE7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				90467000BA838523C569709A /* Pods-Sudoku Solver.debug.xcconfig */,
+				36AF5BBEC7200E23654BF740 /* Pods-Sudoku Solver.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		85DE02E91A7640D500B9A8BF /* Sudoku Solver */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 85DE030D1A7640D500B9A8BF /* Build configuration list for PBXNativeTarget "Sudoku Solver" */;
+			buildPhases = (
+				824F90CD0777CDC251CB8EB3 /* Check Pods Manifest.lock */,
+				85DE02E61A7640D500B9A8BF /* Sources */,
+				85DE02E71A7640D500B9A8BF /* Frameworks */,
+				85DE02E81A7640D500B9A8BF /* Resources */,
+				9A51C210B943A914CEE4C35B /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Sudoku Solver";
+			productName = "Sudoku Solver";
+			productReference = 85DE02EA1A7640D500B9A8BF /* Sudoku Solver.app */;
+			productType = "com.apple.product-type.application";
+		};
+		85DE03021A7640D500B9A8BF /* Sudoku SolverTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 85DE03101A7640D500B9A8BF /* Build configuration list for PBXNativeTarget "Sudoku SolverTests" */;
+			buildPhases = (
+				85DE02FF1A7640D500B9A8BF /* Sources */,
+				85DE03001A7640D500B9A8BF /* Frameworks */,
+				85DE03011A7640D500B9A8BF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				85DE03051A7640D500B9A8BF /* PBXTargetDependency */,
+			);
+			name = "Sudoku SolverTests";
+			productName = "Sudoku SolverTests";
+			productReference = 85DE03031A7640D500B9A8BF /* Sudoku SolverTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		85DE02E21A7640D500B9A8BF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "Trent You";
+				TargetAttributes = {
+					85DE02E91A7640D500B9A8BF = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+					85DE03021A7640D500B9A8BF = {
+						CreatedOnToolsVersion = 6.1.1;
+						TestTargetID = 85DE02E91A7640D500B9A8BF;
+					};
+				};
+			};
+			buildConfigurationList = 85DE02E51A7640D500B9A8BF /* Build configuration list for PBXProject "Sudoku Solver" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 85DE02E11A7640D500B9A8BF;
+			productRefGroup = 85DE02EB1A7640D500B9A8BF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				85DE02E91A7640D500B9A8BF /* Sudoku Solver */,
+				85DE03021A7640D500B9A8BF /* Sudoku SolverTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		85DE02E81A7640D500B9A8BF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85DE02FE1A7640D500B9A8BF /* LaunchScreen.xib in Resources */,
+				85DE02FB1A7640D500B9A8BF /* Images.xcassets in Resources */,
+				85DE03171A7645B600B9A8BF /* HMDBoardPickerViewController.xib in Resources */,
+				85D44FB21A77497300363F0E /* HMDSolutionViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		85DE03011A7640D500B9A8BF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		824F90CD0777CDC251CB8EB3 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		9A51C210B943A914CEE4C35B /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Sudoku Solver/Pods-Sudoku Solver-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		85DE02E61A7640D500B9A8BF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85DE02F31A7640D500B9A8BF /* AppDelegate.m in Sources */,
+				85B5DAAB1A778D69002A1979 /* HMDSudokuCell.m in Sources */,
+				859D885F1A7DECD7007007B0 /* HMDSudokuTreeNode.m in Sources */,
+				85DE02F01A7640D500B9A8BF /* main.m in Sources */,
+				859D88621A7DED6B007007B0 /* HMDSudokuTreeRoot.m in Sources */,
+				85DE03161A7645B600B9A8BF /* HMDBoardPickerViewController.m in Sources */,
+				85D44FB11A77497300363F0E /* HMDSolutionViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		85DE02FF1A7640D500B9A8BF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85DE030A1A7640D500B9A8BF /* Sudoku_SolverTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		85DE03051A7640D500B9A8BF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 85DE02E91A7640D500B9A8BF /* Sudoku Solver */;
+			targetProxy = 85DE03041A7640D500B9A8BF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		85DE02FC1A7640D500B9A8BF /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				85DE02FD1A7640D500B9A8BF /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		85DE030B1A7640D500B9A8BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		85DE030C1A7640D500B9A8BF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		85DE030E1A7640D500B9A8BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 90467000BA838523C569709A /* Pods-Sudoku Solver.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "Sudoku Solver/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		85DE030F1A7640D500B9A8BF /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 36AF5BBEC7200E23654BF740 /* Pods-Sudoku Solver.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "Sudoku Solver/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		85DE03111A7640D500B9A8BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Sudoku SolverTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sudoku Solver.app/Sudoku Solver";
+			};
+			name = Debug;
+		};
+		85DE03121A7640D500B9A8BF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Sudoku SolverTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sudoku Solver.app/Sudoku Solver";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		85DE02E51A7640D500B9A8BF /* Build configuration list for PBXProject "Sudoku Solver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				85DE030B1A7640D500B9A8BF /* Debug */,
+				85DE030C1A7640D500B9A8BF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		85DE030D1A7640D500B9A8BF /* Build configuration list for PBXNativeTarget "Sudoku Solver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				85DE030E1A7640D500B9A8BF /* Debug */,
+				85DE030F1A7640D500B9A8BF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		85DE03101A7640D500B9A8BF /* Build configuration list for PBXNativeTarget "Sudoku SolverTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				85DE03111A7640D500B9A8BF /* Debug */,
+				85DE03121A7640D500B9A8BF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 85DE02E21A7640D500B9A8BF /* Project object */;
+}

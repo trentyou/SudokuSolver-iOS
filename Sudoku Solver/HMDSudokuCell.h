@@ -8,11 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface HMDSudokuCell : NSObject
+@interface HMDSudokuCell : NSObject <NSCopying>
 
 @property (nonatomic, strong) NSNumber *answer;
 @property (nonatomic, strong) NSMutableArray *possibleAnswers;
 
 - (instancetype)initWithAnswer:(NSNumber *)answer possibleAnswers:(NSArray *)possibleAnswers;
+- (instancetype)copyWithZone:(NSZone *)zone;
 
 @end
