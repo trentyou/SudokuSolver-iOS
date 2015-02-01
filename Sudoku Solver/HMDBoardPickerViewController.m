@@ -9,7 +9,8 @@
 #import "HMDBoardPickerViewController.h"
 #import "HMDSolutionViewController.h"
 #import "HMDSudokuCell.h"
-#import "HMDSudokuTreeRoot.h"
+#import "HMDCellCoordinates.h"
+#import "HMDSudokuTree.h"
 #import "HMDSudokuTreeNode.h"
 #import "MBProgressHUD.h"
 
@@ -18,6 +19,11 @@
 
 @property (nonatomic, strong) NSMutableArray *internalSudokuBoard;
 @property (nonatomic, strong) NSMutableArray *internalSudokuBoardCopy;
+
+@property (nonatomic, strong) NSMutableArray *listOfCellsToGuess;
+
+
+@property (nonatomic, strong) HMDSudokuTree *sudokuTree;
 
 @property (nonatomic, copy) NSString *startingNumbers;
 
@@ -38,25 +44,21 @@ static NSNumberFormatter *numberFormatter;
     //self.startingNumbers = @"607039005400060009503000082069004103000010000304700560840000206900020001100980704";
     //self.startingNumbers = @"000502800400010090005000300370850000600000004000029053006000400040070002003406000";
     //self.startingNumbers = @"610700800000000000084095037750004300000060000001900076340150720000000000008002014";
-    self.startingNumbers = @"500600400800030002030009600003507000400000001000302700002800040300060007004001006";
+    //self.startingNumbers = @"500600400800030002030009600003507000400000001000302700002800040300060007004001006";
+    //self.startingNumbers = @"760100000108000002005060007804600000020901070000005201900080600200000704000006038";
+    //self.startingNumbers = @"900006000000091408380000200005009004007080300600100900009000027803650000000900005";
+    self.startingNumbers = @"000670050080000009070980100052403800000000000003507690005039010300000080010052000";
 }
 
 
 - (void)setupInternalSudokuBoard:(NSString *)startingNumbers
 {
     if (!self.internalSudokuBoard) self.internalSudokuBoard = [[NSMutableArray alloc] init];
-    if (!self.internalSudokuBoardCopy) self.internalSudokuBoardCopy = [[NSMutableArray alloc] init];
     
     // Setup the internalSudokuBoard
     for (NSInteger row = 0; row < 9; row++) {
         NSMutableArray *column = [[NSMutableArray alloc] init];
         [self.internalSudokuBoard insertObject:column atIndex:row];
-    }
-    
-    // Setup the internalSudokuBoardCopy
-    for (NSInteger row = 0; row < 9; row++) {
-        NSMutableArray *column = [[NSMutableArray alloc] init];
-        [self.internalSudokuBoardCopy insertObject:column atIndex:row];
     }
     
     // Filling the internalSudokuBoard from initial numbers
@@ -92,7 +94,7 @@ static NSNumberFormatter *numberFormatter;
                 
                 if (row == 6 && column == 5) {
                     NSLog(@"Problem area");
-                    NSLog(@"Quadrant: %d", [self getQuadrantFromRow:row andColumn:column]);
+                    NSLog(@"Quadrant: %ld", [self getQuadrantFromRow:row andColumn:column]);
                 }
                 for (NSInteger i = 1; i <= 9; i++) {
                     if ([self checkValidPlacementOfAnswer:i inRow:row andColumn:column]) {
@@ -101,8 +103,8 @@ static NSNumberFormatter *numberFormatter;
                 }
                 
                 cell.possibleAnswers = possibleAnswers;
-                NSLog(@"Row: %d", row);
-                NSLog(@"Column: %d", column);
+                NSLog(@"Row: %ld", row);
+                NSLog(@"Column: %ld", column);
                 NSLog(@"%@", cell.possibleAnswers);
             }
         }
@@ -408,15 +410,55 @@ static NSNumberFormatter *numberFormatter;
         NSLog(@"Loop");
     } while (changed);
     
-    for (NSInteger row = 0; row < 9; row++) {
-        for (NSInteger column = 0; column < 9; column++) {
-            
-            HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
-            HMDSudokuCell *cellCopy = [cell copyWithZone:nil];
-            
-            self.internalSudokuBoardCopy[row][column] = cellCopy;
+    if ([self isSolved]) {
+        [self printBoard];
+        return;
+    }
+    
+    if (!self.internalSudokuBoardCopy) {
+        
+        // Setup the internalSudokuBoardCopy
+        
+        self.internalSudokuBoardCopy = [[NSMutableArray alloc] init];
+        
+        for (NSInteger row = 0; row < 9; row++) {
+            NSMutableArray *column = [[NSMutableArray alloc] init];
+            [self.internalSudokuBoardCopy insertObject:column atIndex:row];
+        }
+        
+        for (NSInteger row = 0; row < 9; row++) {
+            for (NSInteger column = 0; column < 9; column++) {
+                
+                HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
+                HMDSudokuCell *cellCopy = [cell copyWithZone:nil];
+                
+                self.internalSudokuBoardCopy[row][column] = cellCopy;
+            }
         }
     }
+    
+    if (!self.listOfCellsToGuess) {
+        
+        self.listOfCellsToGuess = [[NSMutableArray alloc] init];
+        
+        for (NSInteger row = 0; row < 9; row++) {
+            for (NSInteger column = 0; column < 9; column++) {
+                
+                HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
+                
+                if ([cell.answer integerValue] == 0) {
+                    HMDCellCoordinates *coordinates = [[HMDCellCoordinates alloc] initWithRowCoordinates:row column:column];
+                    [self.listOfCellsToGuess addObject:coordinates];
+
+                }
+            }
+        }
+    }
+    
+    [self guess];
+    
+    
+    
     
     /*
     NSLog(@"After solving: ");
@@ -456,11 +498,62 @@ static NSNumberFormatter *numberFormatter;
     
     
     
-    [self printBoard];
 }
 
 - (void)guess
 {
+    if (!self.sudokuTree) {
+        self.sudokuTree = [[HMDSudokuTree alloc] init];
+        HMDSudokuTreeNode *root = [[HMDSudokuTreeNode alloc] init];
+        
+        self.sudokuTree.root = root;
+    }
+    
+    for (NSInteger i = 0; i < [self.listOfCellsToGuess count]; i++) {
+        
+        HMDSudokuTreeNode *firstLeafNode;
+        HMDSudokuTreeNode *firstChild;
+        HMDSudokuTreeNode *nextSibling;
+        
+        HMDCellCoordinates *coordinates = self.listOfCellsToGuess[i];
+        HMDSudokuCell *cell = self.internalSudokuBoard[coordinates.row][coordinates.column];
+        NSArray *possibleAnswers = [cell.possibleAnswers copy];
+        
+        if (i == 0) firstLeafNode = self.sudokuTree.root;
+        
+        for (NSInteger j = [possibleAnswers count] - 1; j >= 0; j--) {
+            
+            NSNumber *possibleAnswer = possibleAnswers[j];
+            
+            HMDSudokuTreeNode *sibling = [[HMDSudokuTreeNode alloc] init];
+            sibling.answer = possibleAnswer;
+            
+            if (j == 0) {
+                firstChild = sibling;
+                sibling.nextSibling = nextSibling;
+            } else {
+                
+                if (nextSibling) {
+                    sibling.nextSibling = nextSibling;
+                } else {
+                    sibling.nextSibling = nil;
+                }
+                
+                nextSibling = sibling;
+            }
+            
+            firstLeafNode.firstChild = firstChild;
+            [self updatePossibleAnswers];
+            
+            
+            
+        }
+        
+        
+        
+    }
+    
+    
     
 }
 
@@ -494,6 +587,7 @@ static NSNumberFormatter *numberFormatter;
         [self setupInternalSudokuBoard:self.startingNumbers];
 
     });
+    
     [MBProgressHUD hideHUDForView:self.view animated:YES];
 
 }

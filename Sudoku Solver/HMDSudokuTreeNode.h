@@ -7,13 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "HMDCellCoordinates.h"
 
 @interface HMDSudokuTreeNode : NSObject
 
-@property NSMutableArray *item;
-@property HMDSudokuTreeNode *parent;
-@property HMDSudokuTreeNode *firstChild;
-@property HMDSudokuTreeNode *nextSibling;
+@property (nonatomic, strong) NSNumber *answer;
 
+@property (nonatomic, strong) HMDSudokuTreeNode *parent;
+@property (nonatomic, strong) HMDSudokuTreeNode *firstChild;
+@property (nonatomic, strong) HMDSudokuTreeNode *nextSibling;
+
+@property (nonatomic, strong) HMDCellCoordinates *coordinates;
 
 @end

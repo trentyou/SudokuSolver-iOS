@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		859D885F1A7DECD7007007B0 /* HMDSudokuTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 859D885E1A7DECD7007007B0 /* HMDSudokuTreeNode.m */; };
-		859D88621A7DED6B007007B0 /* HMDSudokuTreeRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 859D88611A7DED6B007007B0 /* HMDSudokuTreeRoot.m */; };
+		859D88651A7E0E99007007B0 /* HMDCellCoordinates.m in Sources */ = {isa = PBXBuildFile; fileRef = 859D88641A7E0E99007007B0 /* HMDCellCoordinates.m */; };
+		859D88681A7E11B1007007B0 /* HMDSudokuTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 859D88671A7E11B1007007B0 /* HMDSudokuTree.m */; };
 		85B5DAAB1A778D69002A1979 /* HMDSudokuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B5DAAA1A778D69002A1979 /* HMDSudokuCell.m */; };
 		85D44FB11A77497300363F0E /* HMDSolutionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D44FAF1A77497300363F0E /* HMDSolutionViewController.m */; };
 		85D44FB21A77497300363F0E /* HMDSolutionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85D44FB01A77497300363F0E /* HMDSolutionViewController.xib */; };
@@ -37,8 +38,10 @@
 		6C06B72111C64DCA69E3FBBD /* libPods-Sudoku Solver.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sudoku Solver.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		859D885D1A7DECD7007007B0 /* HMDSudokuTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSudokuTreeNode.h; sourceTree = "<group>"; };
 		859D885E1A7DECD7007007B0 /* HMDSudokuTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDSudokuTreeNode.m; sourceTree = "<group>"; };
-		859D88601A7DED6B007007B0 /* HMDSudokuTreeRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSudokuTreeRoot.h; sourceTree = "<group>"; };
-		859D88611A7DED6B007007B0 /* HMDSudokuTreeRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDSudokuTreeRoot.m; sourceTree = "<group>"; };
+		859D88631A7E0E99007007B0 /* HMDCellCoordinates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDCellCoordinates.h; sourceTree = "<group>"; };
+		859D88641A7E0E99007007B0 /* HMDCellCoordinates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDCellCoordinates.m; sourceTree = "<group>"; };
+		859D88661A7E11B1007007B0 /* HMDSudokuTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSudokuTree.h; sourceTree = "<group>"; };
+		859D88671A7E11B1007007B0 /* HMDSudokuTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDSudokuTree.m; sourceTree = "<group>"; };
 		85B5DAA91A778D69002A1979 /* HMDSudokuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSudokuCell.h; sourceTree = "<group>"; };
 		85B5DAAA1A778D69002A1979 /* HMDSudokuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDSudokuCell.m; sourceTree = "<group>"; };
 		85D44FAE1A77497300363F0E /* HMDSolutionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSolutionViewController.h; sourceTree = "<group>"; };
@@ -120,10 +123,12 @@
 				85D44FB01A77497300363F0E /* HMDSolutionViewController.xib */,
 				85B5DAA91A778D69002A1979 /* HMDSudokuCell.h */,
 				85B5DAAA1A778D69002A1979 /* HMDSudokuCell.m */,
+				859D88631A7E0E99007007B0 /* HMDCellCoordinates.h */,
+				859D88641A7E0E99007007B0 /* HMDCellCoordinates.m */,
 				859D885D1A7DECD7007007B0 /* HMDSudokuTreeNode.h */,
 				859D885E1A7DECD7007007B0 /* HMDSudokuTreeNode.m */,
-				859D88601A7DED6B007007B0 /* HMDSudokuTreeRoot.h */,
-				859D88611A7DED6B007007B0 /* HMDSudokuTreeRoot.m */,
+				859D88661A7E11B1007007B0 /* HMDSudokuTree.h */,
+				859D88671A7E11B1007007B0 /* HMDSudokuTree.m */,
 				85DE02FA1A7640D500B9A8BF /* Images.xcassets */,
 				85DE02FC1A7640D500B9A8BF /* LaunchScreen.xib */,
 				85DE02ED1A7640D500B9A8BF /* Supporting Files */,
@@ -302,11 +307,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				859D88681A7E11B1007007B0 /* HMDSudokuTree.m in Sources */,
 				85DE02F31A7640D500B9A8BF /* AppDelegate.m in Sources */,
 				85B5DAAB1A778D69002A1979 /* HMDSudokuCell.m in Sources */,
 				859D885F1A7DECD7007007B0 /* HMDSudokuTreeNode.m in Sources */,
+				859D88651A7E0E99007007B0 /* HMDCellCoordinates.m in Sources */,
 				85DE02F01A7640D500B9A8BF /* main.m in Sources */,
-				859D88621A7DED6B007007B0 /* HMDSudokuTreeRoot.m in Sources */,
 				85DE03161A7645B600B9A8BF /* HMDBoardPickerViewController.m in Sources */,
 				85D44FB11A77497300363F0E /* HMDSolutionViewController.m in Sources */,
 			);
