@@ -33,6 +33,8 @@
 
 static NSNumberFormatter *numberFormatter;
 
+#pragma mark - View life cycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -50,6 +52,7 @@ static NSNumberFormatter *numberFormatter;
     self.startingNumbers = @"000670050080000009070980100052403800000000000003507690005039010300000080010052000";
 }
 
+#pragma mark - Initial board setup
 
 - (void)setupInternalSudokuBoard:(NSString *)startingNumbers
 {
@@ -92,10 +95,6 @@ static NSNumberFormatter *numberFormatter;
             if ([answer integerValue] == 0) {
                 NSMutableArray *possibleAnswers = [[NSMutableArray alloc] init];
                 
-                if (row == 6 && column == 5) {
-                    NSLog(@"Problem area");
-                    NSLog(@"Quadrant: %ld", [self getQuadrantFromRow:row andColumn:column]);
-                }
                 for (NSInteger i = 1; i <= 9; i++) {
                     if ([self checkValidPlacementOfAnswer:i inRow:row andColumn:column]) {
                         [possibleAnswers addObject:[NSNumber numberWithInteger:i]];
@@ -103,13 +102,15 @@ static NSNumberFormatter *numberFormatter;
                 }
                 
                 cell.possibleAnswers = possibleAnswers;
-                NSLog(@"Row: %ld", row);
-                NSLog(@"Column: %ld", column);
+                NSLog(@"Row: %ld", (long) row);
+                NSLog(@"Column: %ld", (long) column);
                 NSLog(@"%@", cell.possibleAnswers);
             }
         }
     }
 }
+
+#pragma mark - Utility methods for checking number placement
 
 - (void)updatePossibleAnswers
 {
@@ -334,14 +335,14 @@ static NSNumberFormatter *numberFormatter;
 
                     [self updatePossibleAnswers];
                 }
-                
-                
             }
         }
     }
     
     return changed;
 }
+
+#pragma mark - Solving board
 
 - (BOOL)isSolved
 {
@@ -373,9 +374,31 @@ static NSNumberFormatter *numberFormatter;
     }
 }
 
+- (void)setupBoardCopy
+{
+    self.internalSudokuBoardCopy = [[NSMutableArray alloc] init];
+        
+    for (NSInteger row = 0; row < 9; row++) {
+        NSMutableArray *column = [[NSMutableArray alloc] init];
+        [self.internalSudokuBoardCopy insertObject:column atIndex:row];
+    }
+    
+    for (NSInteger row = 0; row < 9; row++) {
+        for (NSInteger column = 0; column < 9; column++) {
+            
+            HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
+            HMDSudokuCell *cellCopy = [cell copyWithZone:nil];
+            
+            self.internalSudokuBoardCopy[row][column] = cellCopy;
+        }
+    }
+
+}
+
 - (void)solveBoard
 {
     BOOL changed;
+    static NSInteger loopCount = 0;
     
     do {
         changed = NO;
@@ -408,7 +431,11 @@ static NSNumberFormatter *numberFormatter;
         
         NSLog(changed ? @"Yes" : @"No");
         NSLog(@"Loop");
+        loopCount++;
     } while (changed);
+
+    
+    NSLog(@"loopCount: %ld", (long)loopCount);
     
     if ([self isSolved]) {
         [self printBoard];
@@ -416,49 +443,15 @@ static NSNumberFormatter *numberFormatter;
     }
     
     if (!self.internalSudokuBoardCopy) {
-        
-        // Setup the internalSudokuBoardCopy
-        
-        self.internalSudokuBoardCopy = [[NSMutableArray alloc] init];
-        
-        for (NSInteger row = 0; row < 9; row++) {
-            NSMutableArray *column = [[NSMutableArray alloc] init];
-            [self.internalSudokuBoardCopy insertObject:column atIndex:row];
-        }
-        
-        for (NSInteger row = 0; row < 9; row++) {
-            for (NSInteger column = 0; column < 9; column++) {
-                
-                HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
-                HMDSudokuCell *cellCopy = [cell copyWithZone:nil];
-                
-                self.internalSudokuBoardCopy[row][column] = cellCopy;
-            }
-        }
+        [self setupBoardCopy];
     }
     
-    if (!self.listOfCellsToGuess) {
-        
-        self.listOfCellsToGuess = [[NSMutableArray alloc] init];
-        
-        for (NSInteger row = 0; row < 9; row++) {
-            for (NSInteger column = 0; column < 9; column++) {
-                
-                HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
-                
-                if ([cell.answer integerValue] == 0) {
-                    HMDCellCoordinates *coordinates = [[HMDCellCoordinates alloc] initWithRowCoordinates:row column:column];
-                    [self.listOfCellsToGuess addObject:coordinates];
+    [self setupTree];
+    
+    [self treeTraverseGuess:self.sudokuTree.root];
+    [self printBoard];
 
-                }
-            }
-        }
-    }
-    
-    [self guess];
-    
-    
-    
+    // Check board copy if it is really a deep copy
     
     /*
     NSLog(@"After solving: ");
@@ -495,66 +488,91 @@ static NSNumberFormatter *numberFormatter;
     }
      */
     
-    
-    
-    
 }
 
-- (void)guess
+- (void)setupTree
 {
-    if (!self.sudokuTree) {
-        self.sudokuTree = [[HMDSudokuTree alloc] init];
-        HMDSudokuTreeNode *root = [[HMDSudokuTreeNode alloc] init];
+    if (!self.listOfCellsToGuess) {
         
-        self.sudokuTree.root = root;
+        self.listOfCellsToGuess = [[NSMutableArray alloc] init];
+        
+        for (NSInteger row = 0; row < 9; row++) {
+            for (NSInteger column = 0; column < 9; column++) {
+                
+                HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
+                
+                if ([cell.answer integerValue] == 0) {
+                    HMDCellCoordinates *coordinates = [[HMDCellCoordinates alloc] initWithRowCoordinates:row column:column];
+                    [self.listOfCellsToGuess addObject:coordinates];
+                    
+                }
+            }
+        }
     }
     
-    for (NSInteger i = 0; i < [self.listOfCellsToGuess count]; i++) {
+    self.sudokuTree = [[HMDSudokuTree alloc] init];
+    HMDSudokuTreeNode *root = [[HMDSudokuTreeNode alloc] init];
+    root.parent = nil;
+    
+    self.sudokuTree.root = root;
+
+}
+
+- (void)treeTraverseGuess:(HMDSudokuTreeNode *)root
+{
+    for (NSInteger treeLevel = 0; treeLevel < [self.listOfCellsToGuess count]; treeLevel++) {
         
-        HMDSudokuTreeNode *firstLeafNode;
-        HMDSudokuTreeNode *firstChild;
+        HMDSudokuTreeNode *parent;
         HMDSudokuTreeNode *nextSibling;
         
-        HMDCellCoordinates *coordinates = self.listOfCellsToGuess[i];
+        if (treeLevel == 0) {
+            parent = root;
+        }
+        
+        HMDCellCoordinates *coordinates = self.listOfCellsToGuess[treeLevel];
         HMDSudokuCell *cell = self.internalSudokuBoard[coordinates.row][coordinates.column];
         NSArray *possibleAnswers = [cell.possibleAnswers copy];
         
-        if (i == 0) firstLeafNode = self.sudokuTree.root;
-        
-        for (NSInteger j = [possibleAnswers count] - 1; j >= 0; j--) {
+        for (NSInteger i = [possibleAnswers count] - 1; i >= 0; i--) {
+            NSNumber *possibleAnswer = possibleAnswers[i];
+            HMDSudokuTreeNode *child = [[HMDSudokuTreeNode alloc] init];
             
-            NSNumber *possibleAnswer = possibleAnswers[j];
+            child.answer = possibleAnswer;
+            child.parent = parent;
             
-            HMDSudokuTreeNode *sibling = [[HMDSudokuTreeNode alloc] init];
-            sibling.answer = possibleAnswer;
-            
-            if (j == 0) {
-                firstChild = sibling;
-                sibling.nextSibling = nextSibling;
+            if (i == 0) {
+                parent.firstChild = child;
+                child.nextSibling = nextSibling;
+                
+                cell.answer = possibleAnswer;
+                [cell.possibleAnswers removeAllObjects];
+                
+                parent = child;
             } else {
                 
                 if (nextSibling) {
-                    sibling.nextSibling = nextSibling;
+                    child.nextSibling = nextSibling;
                 } else {
-                    sibling.nextSibling = nil;
+                    child.nextSibling = nil;
                 }
                 
-                nextSibling = sibling;
+                nextSibling = child;
             }
             
-            firstLeafNode.firstChild = firstChild;
-            [self updatePossibleAnswers];
-            
-            
-            
+            NSLog(@"Node: %@", [child.answer stringValue]);
+
         }
+        
+        NSLog(@"\n");
+        NSLog(@"Tree Level %ld", (long) (treeLevel + 1));
+        NSLog(@"\n");
+        
+        [self updatePossibleAnswers];
+        
         
         
         
     }
-    
-    
-    
 }
 
 

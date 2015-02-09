@@ -13,7 +13,7 @@
 
 @property (nonatomic, strong) NSNumber *answer;
 
-@property (nonatomic, strong) HMDSudokuTreeNode *parent;
+@property (nonatomic, weak) HMDSudokuTreeNode *parent;
 @property (nonatomic, strong) HMDSudokuTreeNode *firstChild;
 @property (nonatomic, strong) HMDSudokuTreeNode *nextSibling;
 
