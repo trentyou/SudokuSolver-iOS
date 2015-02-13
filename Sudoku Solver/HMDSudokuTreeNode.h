@@ -19,4 +19,6 @@
 
 @property (nonatomic, strong) HMDCellCoordinates *coordinates;
 
+@property (nonatomic) NSInteger treeLevel;
+
 @end
