@@ -20,6 +20,8 @@
 @property (nonatomic, strong) NSMutableArray *internalSudokuBoard;
 @property (nonatomic, strong) NSMutableArray *internalSudokuBoardCopy;
 
+@property (nonatomic, strong) NSMutableArray *originalBoard;
+
 @property (nonatomic, strong) NSMutableArray *listOfCellsToGuess;
 
 
@@ -31,7 +33,6 @@
 
 @implementation HMDBoardPickerViewController
 
-static NSInteger treeLevel;
 static NSNumberFormatter *numberFormatter;
 
 #pragma mark - View life cycle
@@ -57,7 +58,10 @@ static NSNumberFormatter *numberFormatter;
 
 - (void)setupInternalSudokuBoard:(NSString *)startingNumbers
 {
-    if (!self.internalSudokuBoard) self.internalSudokuBoard = [[NSMutableArray alloc] init];
+    if (!self.internalSudokuBoard) {
+        self.internalSudokuBoard = [[NSMutableArray alloc] init];
+        self.originalBoard = [[NSMutableArray alloc] init];
+    }
     
     // Setup the internalSudokuBoard
     for (NSInteger row = 0; row < 9; row++) {
@@ -71,6 +75,7 @@ static NSNumberFormatter *numberFormatter;
             
             NSNumber *answer = [numberFormatter numberFromString:[startingNumbers substringToIndex:1]];
             HMDSudokuCell *cell = [[HMDSudokuCell alloc] initWithAnswer:answer possibleAnswers:nil];
+            [self.originalBoard addObject:answer];
             
             [self.internalSudokuBoard[row] insertObject:cell atIndex:column];
             startingNumbers = [startingNumbers substringFromIndex:1];
@@ -707,8 +712,6 @@ static NSNumberFormatter *numberFormatter;
         NSLog(@"\n");
         NSLog(@"--");
 
-
-
     }
     
     if ([self isSolved]) {
@@ -734,7 +737,7 @@ static NSNumberFormatter *numberFormatter;
         }
     }
     
-    HMDSolutionViewController *solutionViewController = [[HMDSolutionViewController alloc] initWithSolution:[solution copy]];
+    HMDSolutionViewController *solutionViewController = [[HMDSolutionViewController alloc] initWithSolution:[solution copy] andOriginalBoard:[self.originalBoard copy]];
     [self presentViewController:solutionViewController animated:YES completion:nil];
 }
 
@@ -753,62 +756,6 @@ static NSNumberFormatter *numberFormatter;
     [MBProgressHUD hideHUDForView:self.view animated:YES];
 
 }
-
-
-
-
-
-
-
-
-
-
-
-//HMDSudokuTreeNode *parent;
-//HMDSudokuTreeNode *nextSibling;
-//
-//if (treeLevel == 0) {
-//    parent = root;
-//}
-//
-//HMDCellCoordinates *coordinates = self.listOfCellsToGuess[treeLevel];
-//HMDSudokuCell *cell = self.internalSudokuBoard[coordinates.row][coordinates.column];
-//NSArray *possibleAnswers = [cell.possibleAnswers copy];
-//
-//if ([possibleAnswers count] == 0) {
-//    NSLog(@"Encountered empty possible answers");
-//    treeLevel--;
-//    coordinates = self.listOfCellsToGuess[treeLevel];
-//    cell = self.internalSudokuBoard[coordinates.row][coordinates.column];
-//    cell.answer = @0;
-//    [self updatePossibleAnswers];
-//    parent.parent.firstChild = parent.nextSibling;
-//    
-//    break;
-//}
-//
-//
-//
-//NSLog(@"\n");
-//NSLog(@"Tree Level %ld", (long) (treeLevel + 1));
-//NSLog(@"\n");
-//
-//
-//[self updatePossibleAnswers];
-//treeLevel++;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 @end

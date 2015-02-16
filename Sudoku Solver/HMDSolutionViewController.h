@@ -10,7 +10,7 @@
 
 @interface HMDSolutionViewController : UIViewController
 
-- (instancetype)initWithSolution:(NSArray *)solution;
+- (instancetype)initWithSolution:(NSArray *)solution andOriginalBoard:(NSArray *)originalBoard;
 
 
 

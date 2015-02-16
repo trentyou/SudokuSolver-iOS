@@ -14,18 +14,20 @@
 @interface HMDSolutionViewController ()
 
 @property (nonatomic, copy) NSArray *solution;
+@property (nonatomic, copy) NSArray *originalBoard;
 
 @end
 
 @implementation HMDSolutionViewController
 
-- (instancetype)initWithSolution:(NSArray *)solution
+- (instancetype)initWithSolution:(NSArray *)solution andOriginalBoard:(NSArray *)originalBoard
 {
     self = [super initWithNibName:nil bundle:nil];
     
     if (self) {
         
         _solution = solution;
+        _originalBoard = originalBoard;
     }
     
     return self;
@@ -86,6 +88,11 @@
         
         
         NSNumber *answer = self.solution[i - 1];
+        NSNumber *originalBoardValue = self.originalBoard[i - 1];
+        
+        if ([originalBoardValue integerValue] != [answer integerValue]) {
+            cell.textColor = [UIColor colorWithRed:135/255.0 green:211/255.0 blue:124/255.0 alpha:1.0];
+        }
         
         if ([answer integerValue] == 0) {
             cell.text = @"";
