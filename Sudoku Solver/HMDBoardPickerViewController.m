@@ -487,9 +487,9 @@ static NSNumberFormatter *numberFormatter;
         [self setupBoardCopy];
     }
     
-    [self setupTree];
+    //[self setupTree];
     
-    [self treeTraverseGuess:self.sudokuTree.root];
+    //[self treeTraverseGuess:self.sudokuTree.root];
     [self printBoard];
 
     // Check board copy if it is really a deep copy
@@ -561,12 +561,25 @@ static NSNumberFormatter *numberFormatter;
 
 }
 
+- (HMDSudokuTreeNode *)getNextParentNodeWithSibling:(HMDSudokuTreeNode *)parent
+{
+    while (!parent.nextSibling) {
+        parent = parent.parent;
+    }
+    
+    return parent;
+}
+
 - (void)treeTraverseGuess:(HMDSudokuTreeNode *)root
 {
     HMDSudokuTreeNode *parent = root;
     HMDSudokuTreeNode *nextSibling;
     
     while (YES) {
+        
+        if ((signed long)parent.treeLevel >= (signed long)[self.listOfCellsToGuess count] - 1) {
+            break;
+        }
         
         HMDCellCoordinates *coordinates = self.listOfCellsToGuess[parent.treeLevel + 1];
         
@@ -596,7 +609,48 @@ static NSNumberFormatter *numberFormatter;
 
                 
             } else {
-                break;
+                NSInteger previousTreeLevel = parent.treeLevel;
+                
+                parent = [self getNextParentNodeWithSibling:parent];
+                NSLog(@"Next parent with sibling: %@", parent.answer);
+                NSLog(@"Coordinates of next parent with sibling, row: %ld, column: %ld", (long)parent.coordinates.row, (long)parent.coordinates.column);
+                NSInteger newTreeLevel = parent.treeLevel;
+                
+                parent.parent.firstChild = parent.nextSibling;
+                parent = parent.nextSibling;
+                
+                
+                for (NSInteger level = previousTreeLevel; level > newTreeLevel; level--) {
+                    HMDCellCoordinates *coordinatesForCellToReset = self.listOfCellsToGuess[level];
+                    HMDSudokuCell *cellToReset = self.internalSudokuBoard[coordinatesForCellToReset.row][coordinatesForCellToReset.column];
+                    
+                    cellToReset.answer = @0;
+                }
+                
+                parentCoordinates = self.listOfCellsToGuess[newTreeLevel];
+                parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column];
+                
+                parentCell.answer = [parent.answer copy];
+                
+                [self restorePossibleAnswersForCellsToGuess];
+                [self updatePossibleAnswersForCellsToGuess];
+                
+                NSLog(@"--------------------------");
+
+                for (NSInteger level = newTreeLevel; level <= previousTreeLevel; level++) {
+                    HMDCellCoordinates *coordinatesForCellToReset = self.listOfCellsToGuess[level];
+                    HMDSudokuCell *cellToReset = self.internalSudokuBoard[coordinatesForCellToReset.row][coordinatesForCellToReset.column];
+                    
+                    NSLog(@"Cell row: %ld, column: %ld", (long)coordinatesForCellToReset.row, (long)coordinatesForCellToReset.column);
+                    NSLog(@"possible answers: %@", cellToReset.possibleAnswers);
+                    
+                }
+                
+                NSLog(@"--------------------------");
+
+                continue;
+                
+                //break;
             }
             
         }
@@ -610,6 +664,9 @@ static NSNumberFormatter *numberFormatter;
             child.parent = parent;
 
             child.treeLevel = parent.treeLevel + 1;
+            
+            HMDCellCoordinates *childCoordinates = self.listOfCellsToGuess[child.treeLevel];
+            child.coordinates = childCoordinates;
         
         
             if (i == 0) {
@@ -633,21 +690,14 @@ static NSNumberFormatter *numberFormatter;
             }
             
             NSLog(@"Node: %@", [child.answer stringValue]);
-            
-            if (child.treeLevel == [self.listOfCellsToGuess count] - 1) {
-                break;
-            }
 
         }
         [self updatePossibleAnswers];
         
         NSLog(@"\n");
-        NSLog(@"Tree Level %ld", (long)parent.treeLevel);
+        NSLog(@"Tree Level %ld", (long)parent.treeLevel + 1);
         NSLog(@"\n");
-        
-//        if (parent.treeLevel + 1 == 35) {
-//            break;
-//        }
+
     }
 
     
