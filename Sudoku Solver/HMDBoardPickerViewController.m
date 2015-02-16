@@ -487,9 +487,9 @@ static NSNumberFormatter *numberFormatter;
         [self setupBoardCopy];
     }
     
-    //[self setupTree];
+    [self setupTree];
     
-    //[self treeTraverseGuess:self.sudokuTree.root];
+    [self treeTraverseGuess:self.sudokuTree.root];
     [self printBoard];
 
     // Check board copy if it is really a deep copy
@@ -575,11 +575,11 @@ static NSNumberFormatter *numberFormatter;
     HMDSudokuTreeNode *parent = root;
     HMDSudokuTreeNode *nextSibling;
     
-    while (YES) {
+    while ((signed long)parent.treeLevel < (signed long)[self.listOfCellsToGuess count] - 1) {
         
-        if ((signed long)parent.treeLevel >= (signed long)[self.listOfCellsToGuess count] - 1) {
-            break;
-        }
+//        if ((signed long)parent.treeLevel >= (signed long)[self.listOfCellsToGuess count] - 1) {
+//            break;
+//        }
         
         HMDCellCoordinates *coordinates = self.listOfCellsToGuess[parent.treeLevel + 1];
         
@@ -587,16 +587,17 @@ static NSNumberFormatter *numberFormatter;
         NSArray *possibleAnswers = [cell.possibleAnswers copy];
         
         if ([possibleAnswers count] == 0) {
-            NSLog(@"Encountered empty possible answers");
             HMDCellCoordinates *parentCoordinates = self.listOfCellsToGuess[parent.treeLevel];
             HMDSudokuCell *parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column];
             
             if (parent.nextSibling) {
-                
+                NSLog(@"Encountered empty possible answers in treeLevel %ld, moving to sibling", (long)(parent.treeLevel + 1));
+
                 parent.parent.firstChild = parent.nextSibling;
                 parent = parent.nextSibling;
                 parentCell.answer = [parent.answer copy];
                 
+                NSLog(@"New answer: %@ for treeLevel %ld", parentCell.answer, (long)parent.treeLevel);
                 [self restorePossibleAnswersForCellsToGuess];
                 [self updatePossibleAnswersForCellsToGuess];
                 
@@ -609,10 +610,11 @@ static NSNumberFormatter *numberFormatter;
 
                 
             } else {
+                NSLog(@"Encountered empty possible answers in treeLevel %ld, searching for next higher parent with sibling", (long)(parent.treeLevel + 1));
+
                 NSInteger previousTreeLevel = parent.treeLevel;
                 
                 parent = [self getNextParentNodeWithSibling:parent];
-                NSLog(@"Next parent with sibling: %@", parent.answer);
                 NSLog(@"Coordinates of next parent with sibling, row: %ld, column: %ld", (long)parent.coordinates.row, (long)parent.coordinates.column);
                 NSInteger newTreeLevel = parent.treeLevel;
                 
@@ -631,13 +633,14 @@ static NSNumberFormatter *numberFormatter;
                 parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column];
                 
                 parentCell.answer = [parent.answer copy];
-                
+                NSLog(@"New answer: %@ for treeLevel: %ld", parentCell.answer, (long)newTreeLevel);
+
                 [self restorePossibleAnswersForCellsToGuess];
                 [self updatePossibleAnswersForCellsToGuess];
                 
                 NSLog(@"--------------------------");
 
-                for (NSInteger level = newTreeLevel; level <= previousTreeLevel; level++) {
+                for (NSInteger level = newTreeLevel + 1; level <= previousTreeLevel; level++) {
                     HMDCellCoordinates *coordinatesForCellToReset = self.listOfCellsToGuess[level];
                     HMDSudokuCell *cellToReset = self.internalSudokuBoard[coordinatesForCellToReset.row][coordinatesForCellToReset.column];
                     
@@ -678,6 +681,7 @@ static NSNumberFormatter *numberFormatter;
                 [cell.possibleAnswers removeAllObjects];
                 
                 parent = child;
+                NSLog(@"Selected answer:");
                 
             } else {
                 if (nextSibling) {
@@ -690,14 +694,25 @@ static NSNumberFormatter *numberFormatter;
             }
             
             NSLog(@"Node: %@", [child.answer stringValue]);
+            
 
         }
         [self updatePossibleAnswers];
         
         NSLog(@"\n");
-        NSLog(@"Tree Level %ld", (long)parent.treeLevel + 1);
+        NSLog(@"Tree Level %ld", (long)parent.treeLevel);
+        NSLog(@"--");
         NSLog(@"\n");
+        NSLog(@"\n");
+        NSLog(@"\n");
+        NSLog(@"--");
 
+
+
+    }
+    
+    if ([self isSolved]) {
+        NSLog(@"SOLVED!!");
     }
 
     
