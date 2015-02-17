@@ -672,7 +672,6 @@ static NSNumberFormatter *numberFormatter;
     }
     
     [self treeTraverseGuess:self.sudokuTree.root];
-    [self printBoard];
 }
 
 - (void)sortListOfCellsToGuess
@@ -901,6 +900,7 @@ static NSNumberFormatter *numberFormatter;
     if ([self isSolved]) {
         NSLog(@"SOLVED!!");
         NSLog(@"Iteration count: %ld", (long)iterationCount);
+        self.sudokuTree.root.firstChild = nil;
     }
 
     
@@ -932,13 +932,16 @@ static NSNumberFormatter *numberFormatter;
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"Solving..";
     
-    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         [self setupInternalSudokuBoard:self.startingNumbers];
-
+        
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self printBoard];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
     });
     
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
 
 }
 
