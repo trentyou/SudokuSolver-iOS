@@ -52,12 +52,14 @@ static NSNumberFormatter *numberFormatter;
     //self.startingNumbers = @"610700800000000000084095037750004300000060000001900076340150720000000000008002014";
     //self.startingNumbers = @"500600400800030002030009600003507000400000001000302700002800040300060007004001006";
     //self.startingNumbers = @"760100000108000002005060007804600000020901070000005201900080600200000704000006038";
-    //self.startingNumbers = @"900006000000091408380000200005009004007080300600100900009000027803650000000900005";
-    self.startingNumbers = @"000670050080000009070980100052403800000000000003507690005039010300000080010052000"; //Tested one
+    //self.startingNumbers = @"900006000000091408380000200005009004007080300600100900009000027803650000000900005"; // 201 without, 782 with
+    //self.startingNumbers = @"000670050080000009070980100052403800000000000003507690005039010300000080010052000"; //Tested one
     
-    //self.startingNumbers = @"700060300000500000090300875100600000004050200000008007436007090000006000001080006"; //evil
-    //self.startingNumbers = @"592001000000500000470002050000250008200000005300076000060100072000008000000700134";
-    //self.startingNumbers = @"000500048020040007530000960000780000009000400000056000013000025600010070890005000";
+    //Evil level puzzles
+    //self.startingNumbers = @"700060300000500000090300875100600000004050200000008007436007090000006000001080006"; // 3,291 without, 4,200 with
+    //self.startingNumbers = @"592001000000500000470002050000250008200000005300076000060100072000008000000700134"; // 5,000 without, 15,000 with
+    //self.startingNumbers = @"000500048020040007530000960000780000009000400000056000013000025600010070890005000"; // 35,000 without, 6,587 with
+    self.startingNumbers = @"800730000000500186005090000057000000690000014000000690000020800963007000000054003"; // 6417 without,
 }
 
 #pragma mark - Initial board setup
@@ -608,7 +610,7 @@ static NSNumberFormatter *numberFormatter;
 - (void)solveBoard
 {
     BOOL changed;
-    static NSInteger loopCount = 0;
+    static NSInteger logicLoopCount = 0;
     
     do {
         changed = NO;
@@ -642,34 +644,33 @@ static NSNumberFormatter *numberFormatter;
         
         NSLog(changed ? @"Yes" : @"No");
         NSLog(@"Loop");
-        loopCount++;
+        logicLoopCount++;
     } while (changed);
 
     
-    NSLog(@"loopCount: %ld", (long)loopCount);
+    NSLog(@"Number of logic loops: %ld", (long)logicLoopCount);
     
     if ([self isSolved]) {
-        [self printBoard];
         return;
     }
     
     [self setupTree];
-    
-    for (NSInteger i = 0; i < [self.listOfCellsToGuess count]; i++) {
-        NSLog(@"----------");
-        HMDCellCoordinates *coordinates = self.listOfCellsToGuess[i];
-        HMDSudokuCell *cell = self.internalSudokuBoard[coordinates.row][coordinates.column];
-        
-        NSArray *possibleAnswers = [cell.possibleAnswers copy];
-        
-        for (HMDPossibleAnswer *possibleAnswer in possibleAnswers) {
-            NSLog(@"Number of instances of %ld: %ld", (long)possibleAnswer.answer, (long)[self instancesOfAnswerInRowColumnAndQuadrant:possibleAnswer.answer inRow:coordinates.row andColumn:coordinates.column]);
-        }
-        NSLog(@"treeLevel: %ld", (long)i);
 
-        NSLog(@"----------");
-
-    }
+//    for (NSInteger i = 0; i < [self.listOfCellsToGuess count]; i++) {
+//        NSLog(@"----------");
+//        HMDCellCoordinates *coordinates = self.listOfCellsToGuess[i];
+//        HMDSudokuCell *cell = self.internalSudokuBoard[coordinates.row][coordinates.column];
+//        
+//        NSArray *possibleAnswers = [cell.possibleAnswers copy];
+//        
+//        for (HMDPossibleAnswer *possibleAnswer in possibleAnswers) {
+//            NSLog(@"Number of instances of %ld: %ld", (long)possibleAnswer.answer, (long)[self instancesOfAnswerInRowColumnAndQuadrant:possibleAnswer.answer inRow:coordinates.row andColumn:coordinates.column]);
+//        }
+//        NSLog(@"treeLevel: %ld", (long)i);
+//
+//        NSLog(@"----------");
+//
+//    }
     
     [self treeTraverseGuess:self.sudokuTree.root];
 }
@@ -723,9 +724,7 @@ static NSNumberFormatter *numberFormatter;
     }
     
     //[self sortListOfCellsToGuess];
-    
 
-    
     self.sudokuTree = [[HMDSudokuTree alloc] init];
     HMDSudokuTreeNode *root = [[HMDSudokuTreeNode alloc] init];
     root.parent = nil;
@@ -736,13 +735,45 @@ static NSNumberFormatter *numberFormatter;
 
 }
 
-- (void)evaluateOptimalPossibleAnswerPathForCell:(HMDSudokuCell *)cell
+- (void)evaluateOptimalPossibleAnswerPathForCell:(HMDSudokuCell *)cell inCoordinates:(HMDCellCoordinates *)coordinates
 {
-    NSArray *possibleAnswers = [cell.possibleAnswers copy];
+    NSMutableArray *possibleAnswers = cell.possibleAnswers;
+    
+    if ([possibleAnswers count] == 0 || [possibleAnswers count] == 1) {
+        return;
+    }
     
     for (NSInteger i = 0; i < [possibleAnswers count]; i++) {
+        HMDPossibleAnswer *possibleAnswer = possibleAnswers[i];
+        possibleAnswer.weight = [self instancesOfAnswerInRowColumnAndQuadrant:possibleAnswer.answer inRow:coordinates.row andColumn:coordinates.column];
+    }
+    
+    for (NSInteger i = 0; i < [possibleAnswers count] - 1; i++) {
+        HMDPossibleAnswer *minPossibleAnswer = possibleAnswers[i];
+        NSInteger minIndex = i;
+        NSInteger min = minPossibleAnswer.weight;
+        
+        for (NSInteger j = i + 1; j < [possibleAnswers count]; j++) {
+            HMDPossibleAnswer *possibleAnswer = possibleAnswers[j];
+            if (possibleAnswer.weight < min) {
+                min = possibleAnswer.weight;
+                minIndex = j;
+            }
+        }
+        
+        HMDPossibleAnswer *temp = possibleAnswers[i];
+        possibleAnswers[i] = possibleAnswers[minIndex];
+        possibleAnswers[minIndex] = temp;
         
     }
+    
+    NSLog(@"Reordered possible answers for row: %ld column: %ld", (long)coordinates.row, (long)coordinates.column);
+    
+    for (NSInteger i = 0; i < [possibleAnswers count]; i++) {
+        HMDPossibleAnswer *possibleAnswer = possibleAnswers[i];
+        NSLog(@"Possible Answer: %ld, Weight: %ld", (long)possibleAnswer.answer, (long)possibleAnswer.weight);
+    }
+    NSLog(@"\n");
 }
 
 - (HMDSudokuTreeNode *)getNextParentNodeWithSibling:(HMDSudokuTreeNode *)parent
@@ -766,6 +797,8 @@ static NSNumberFormatter *numberFormatter;
         HMDCellCoordinates *coordinates = self.listOfCellsToGuess[parent.treeLevel + 1];
         
         HMDSudokuCell *cell = self.internalSudokuBoard[coordinates.row][coordinates.column];
+        [self evaluateOptimalPossibleAnswerPathForCell:cell inCoordinates:coordinates];
+
         NSArray *possibleAnswers = [cell.possibleAnswers copy];
         
         if ([possibleAnswers count] == 0) {
@@ -782,6 +815,7 @@ static NSNumberFormatter *numberFormatter;
                 NSLog(@"New answer: %@ for treeLevel %ld", parentCell.answer, (long)parent.treeLevel);
                 [self restorePossibleAnswersForCellsToGuess];
                 [self updatePossibleAnswersForCellsToGuess];
+                [self evaluateOptimalPossibleAnswerPathForCell:cell inCoordinates:coordinates];
                 
                 possibleAnswers = [cell.possibleAnswers copy];
                 
@@ -841,11 +875,10 @@ static NSNumberFormatter *numberFormatter;
                 NSLog(@"--------------------------");
 
                 continue;
-                
-                //break;
             }
             
         }
+
         
         for (NSInteger i = [possibleAnswers count] - 1; i >= 0; i--) {
             HMDPossibleAnswer *possibleAnswer = possibleAnswers[i];
