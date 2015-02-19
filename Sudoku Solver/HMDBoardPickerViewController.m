@@ -51,15 +51,24 @@ static NSNumberFormatter *numberFormatter;
     //self.startingNumbers = @"000502800400010090005000300370850000600000004000029053006000400040070002003406000";
     //self.startingNumbers = @"610700800000000000084095037750004300000060000001900076340150720000000000008002014";
     //self.startingNumbers = @"500600400800030002030009600003507000400000001000302700002800040300060007004001006";
-    //self.startingNumbers = @"760100000108000002005060007804600000020901070000005201900080600200000704000006038";
-    //self.startingNumbers = @"900006000000091408380000200005009004007080300600100900009000027803650000000900005"; // 201 without, 782 with
-    //self.startingNumbers = @"000670050080000009070980100052403800000000000003507690005039010300000080010052000"; //Tested one
     
-    //Evil level puzzles
+    //Hard Level Puzzles
+    //self.startingNumbers = @"700900020000007003190520000000200870006000200079005000000012046300700000080004001"; // solved with logic
+    //self.startingNumbers = @"386007190007008004001000000003080000050020060000050200000000900800300600092800573"; // solved with logic
+    //self.startingNumbers = @"760100000108000002005060007804600000020901070000005201900080600200000704000006038"; // 681 without, 63 with
+    //self.startingNumbers = @"900006000000091408380000200005009004007080300600100900009000027803650000000900005"; // 201 without, 782 with
+    self.startingNumbers = @"000670050080000009070980100052403800000000000003507690005039010300000080010052000"; // Tested one
+    
+    //Evil Level Puzzles
     //self.startingNumbers = @"700060300000500000090300875100600000004050200000008007436007090000006000001080006"; // 3,291 without, 4,200 with
     //self.startingNumbers = @"592001000000500000470002050000250008200000005300076000060100072000008000000700134"; // 5,000 without, 15,000 with
     //self.startingNumbers = @"000500048020040007530000960000780000009000400000056000013000025600010070890005000"; // 35,000 without, 6,587 with
-    self.startingNumbers = @"800730000000500186005090000057000000690000014000000690000020800963007000000054003"; // 6417 without,
+    //self.startingNumbers = @"800730000000500186005090000057000000690000014000000690000020800963007000000054003"; // 6417 without, 27873 with, 22487 with sorted smallest first
+    //self.startingNumbers = @"060001007400783000000000100300200070001070600070005002002000000000367004800400010"; // 8680 without, 8070 with, 8803 with sorted smallest first (23:90 32-bit) (19:90 64-bit)
+    //self.startingNumbers = @"002000039604000870000070400020100000500302008000009020007050000059000601130000200"; // 3249 without, 3676 with, 34629 with sorted smallest first
+    //self.startingNumbers = @"103500040009000006000096300870000503000000000401000027004670000300000200020001708"; // 3982 without (14:33 32-bit) (11:71 64-bit), 7204 with (23:20 32-bit) (17:50 64-bit), 1199 with sorted smallest first (6:25 32-bit)
+    //self.startingNumbers = @"003004000500871000208000000800050010006030900070040002000000307000419006000300400"; // 1375 without, 1876 with, 6658 with sorted smallest first
+    //self.startingNumbers = @"700096001094500000000000260200064700000000000005720006028000000000001930900250004"; // 6877 without, 20819 with
 }
 
 #pragma mark - Initial board setup
@@ -797,7 +806,7 @@ static NSNumberFormatter *numberFormatter;
         HMDCellCoordinates *coordinates = self.listOfCellsToGuess[parent.treeLevel + 1];
         
         HMDSudokuCell *cell = self.internalSudokuBoard[coordinates.row][coordinates.column];
-        [self evaluateOptimalPossibleAnswerPathForCell:cell inCoordinates:coordinates];
+        //[self evaluateOptimalPossibleAnswerPathForCell:cell inCoordinates:coordinates];
 
         NSArray *possibleAnswers = [cell.possibleAnswers copy];
         
@@ -815,7 +824,7 @@ static NSNumberFormatter *numberFormatter;
                 NSLog(@"New answer: %@ for treeLevel %ld", parentCell.answer, (long)parent.treeLevel);
                 [self restorePossibleAnswersForCellsToGuess];
                 [self updatePossibleAnswersForCellsToGuess];
-                [self evaluateOptimalPossibleAnswerPathForCell:cell inCoordinates:coordinates];
+                //[self evaluateOptimalPossibleAnswerPathForCell:cell inCoordinates:coordinates];
                 
                 possibleAnswers = [cell.possibleAnswers copy];
                 
@@ -974,7 +983,6 @@ static NSNumberFormatter *numberFormatter;
             [MBProgressHUD hideHUDForView:self.view animated:YES];
         });
     });
-    
 
 }
 

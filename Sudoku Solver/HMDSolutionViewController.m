@@ -50,7 +50,7 @@
         return;
     }
     
-    CGFloat labelSize = 30.0;
+    CGFloat labelSize = ([UIScreen mainScreen].bounds.size.width - 15.0f) / 9.0;
     
     CGFloat xStartPosition = ([UIScreen mainScreen].bounds.size.width - (labelSize * 9)) / 2.0;
     CGFloat yStartPosition = ([UIScreen mainScreen].bounds.size.height / 2.0) - (labelSize * 4.5);
