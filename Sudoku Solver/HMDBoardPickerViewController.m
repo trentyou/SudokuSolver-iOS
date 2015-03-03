@@ -5,6 +5,7 @@
 //  Created by Trent You on 1/26/15.
 //  Copyright (c) 2015 Trent You. All rights reserved.
 //
+#import <QuartzCore/QuartzCore.h>
 
 #import "HMDBoardPickerViewController.h"
 #import "HMDSolutionViewController.h"
@@ -15,10 +16,22 @@
 #import "HMDPossibleAnswer.h"
 #import "MBProgressHUD.h"
 
+const CGFloat PICKER_VIEW_ANIMATION_DURATION = 0.4;
+
+@interface HMDBoardPickerViewController () <UIPickerViewDataSource, UIPickerViewDelegate>
+
+// Picker view
+
+@property (strong, nonatomic) IBOutlet UIView *pickerContainerView;
+@property (weak, nonatomic) IBOutlet UIPickerView *pickerView;
+@property (weak, nonatomic) IBOutlet UIButton *doneButton;
+
+@property (nonatomic, weak) UILabel *currentlySelectedLabel;
+@property (nonatomic, strong) NSArray *numbersForPickerData;
 
 
-@interface HMDBoardPickerViewController ()
 
+// Solving ivars
 @property (nonatomic, strong) NSMutableArray *internalSudokuBoard;
 @property (nonatomic, strong) NSMutableArray *internalSudokuBoardCopy;
 
@@ -41,11 +54,25 @@ static NSNumberFormatter *numberFormatter;
 
 #pragma mark - View life cycle
 
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    
+    if (self) {
+        _numbersForPickerData = @[@0, @1, @2, @3, @4, @5, @6, @7, @8, @9];
+
+    }
+    
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     if (!numberFormatter) numberFormatter = [[NSNumberFormatter alloc] init];
+    [self setupInputBoard];
+    [self setupPickerContainerView];
     
     //self.startingNumbers = @"000260701680070090190004500820100040004602900050003028009300074040050036703018000";
     //self.startingNumbers = @"031200700040080019006000000007040001014090560800050400000000900260030040005008270";
@@ -59,18 +86,185 @@ static NSNumberFormatter *numberFormatter;
     //self.startingNumbers = @"386007190007008004001000000003080000050020060000050200000000900800300600092800573"; // solved with logic
     //self.startingNumbers = @"760100000108000002005060007804600000020901070000005201900080600200000704000006038"; // 681 without, 63 with
     //self.startingNumbers = @"900006000000091408380000200005009004007080300600100900009000027803650000000900005"; // 201 without, 782 with
-    //self.startingNumbers = @"000670050080000009070980100052403800000000000003507690005039010300000080010052000"; // Tested one
+    self.startingNumbers = @"000670050080000009070980100052403800000000000003507690005039010300000080010052000"; // Tested one
     
     //Evil Level Puzzles
     //self.startingNumbers = @"700060300000500000090300875100600000004050200000008007436007090000006000001080006"; // 3,291 without, 4,200 with
     //self.startingNumbers = @"592001000000500000470002050000250008200000005300076000060100072000008000000700134"; // 5,000 without, 15,000 with
     //self.startingNumbers = @"000500048020040007530000960000780000009000400000056000013000025600010070890005000"; // 35,000 without, 6,587 with
     //self.startingNumbers = @"800730000000500186005090000057000000690000014000000690000020800963007000000054003"; // 6417 without, 27873 with, 22487 with sorted smallest first
-    self.startingNumbers = @"060001007400783000000000100300200070001070600070005002002000000000367004800400010"; // 8680 without, 8070 with, 8803 with sorted smallest first (23:90 32-bit) (19:90 64-bit)
+    //self.startingNumbers = @"060001007400783000000000100300200070001070600070005002002000000000367004800400010"; // 8680 without, 8070 with, 8803 with sorted smallest first (23:90 32-bit) (19:90 64-bit)
     //self.startingNumbers = @"002000039604000870000070400020100000500302008000009020007050000059000601130000200"; // 3249 without, 3676 with, 34629 with sorted smallest first
     //self.startingNumbers = @"103500040009000006000096300870000503000000000401000027004670000300000200020001708"; // 3982 without (14:33 32-bit) (11:71 64-bit), 7204 with (23:20 32-bit) (17:50 64-bit), 1199 with sorted smallest first (6:25 32-bit)
     //self.startingNumbers = @"003004000500871000208000000800050010006030900070040002000000307000419006000300400"; // 1375 without, 1876 with, 6658 with sorted smallest first
     //self.startingNumbers = @"700096001094500000000000260200064700000000000005720006028000000000001930900250004"; // 6877 without, 20819 with
+}
+
+#pragma mark - Setup input board
+
+- (void)setupInputBoard
+{
+
+    CGFloat labelOffset = 10.0f;
+    CGFloat labelSize = ([[UIScreen mainScreen] bounds].size.width - (labelOffset * 2.0)) / 3.0;
+    
+    CGFloat xStartPosition = labelOffset;
+    CGFloat yStartPosition = ([[UIScreen mainScreen] bounds].size.height / 2.0) - (1.5 * labelSize);
+    
+    CGFloat xPosition = xStartPosition;
+    CGFloat yPosition = yStartPosition;
+    
+    for (NSInteger i = 1; i <= 9; i++) {
+        UILabel *cell = [[UILabel alloc] initWithFrame:CGRectMake(xPosition, yPosition, labelSize, labelSize)];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(presentNumberPicker:)];
+        tap.numberOfTouchesRequired = 1;
+        [cell addGestureRecognizer:tap];
+        cell.userInteractionEnabled = YES;
+        
+        cell.layer.borderWidth = 1.0f;
+        cell.layer.borderColor = [UIColor grayColor].CGColor;
+        
+        cell.textAlignment = NSTextAlignmentCenter;
+        cell.font = [UIFont fontWithName:@"quicksand-light" size:45];
+        
+        [self.view addSubview:cell];
+        
+        xPosition += labelSize;
+        
+        if (i % 3 == 0) {
+            xPosition = xStartPosition;
+            yPosition += labelSize;
+        }
+        
+    }
+}
+
+
+#pragma mark - Input board methods
+
+- (void)presentNumberPicker:(UITapGestureRecognizer *)sender
+{
+    self.currentlySelectedLabel = (UILabel *)sender.view;
+    
+    CGFloat initialWidth = self.currentlySelectedLabel.frame.size.width;
+    CGFloat initialHeight = self.currentlySelectedLabel.frame.size.height;
+    
+    CGFloat initialXPosition = self.currentlySelectedLabel.frame.origin.x;
+    CGFloat initialYPosition = self.currentlySelectedLabel.frame.origin.y;
+    
+    self.pickerContainerView.frame = CGRectMake(initialXPosition, initialYPosition, initialWidth, initialHeight);
+    
+    [self.view addSubview:self.pickerContainerView];
+    
+    CGFloat pickerViewWidth = 216.0f;
+    CGFloat pickerViewHeight = 216.0f;
+    
+    CGFloat pickerViewSideOffset = ([[UIScreen mainScreen] bounds].size.width - pickerViewWidth) / 2.0;
+    
+    CGFloat pickerViewXPosition = pickerViewSideOffset;
+    CGFloat pickerViewYPosition = ([[UIScreen mainScreen] bounds].size.height / 2.0) - (pickerViewHeight / 2.0);
+    
+    NSInteger selectedRow;
+    
+    if (self.currentlySelectedLabel.text) {
+        selectedRow = [self.currentlySelectedLabel.text integerValue];
+    } else {
+        selectedRow = 0;
+    }
+    
+    [self.pickerView selectRow:selectedRow inComponent:0 animated:NO];
+    [UIView animateWithDuration:PICKER_VIEW_ANIMATION_DURATION delay:0.0 usingSpringWithDamping:1.0 initialSpringVelocity:0.0 options:0 animations:^{
+        self.pickerContainerView.alpha = 1.0;
+        self.pickerContainerView.frame = CGRectMake(pickerViewXPosition, pickerViewYPosition, pickerViewWidth, pickerViewHeight);
+        
+    } completion:nil];
+    self.doneButton.hidden = NO;
+    self.pickerView.hidden = NO;
+}
+
+- (void)setupPickerContainerView
+{
+    self.pickerContainerView.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.9];
+    self.pickerContainerView.layer.borderColor = [UIColor grayColor].CGColor;
+    self.pickerContainerView.layer.borderWidth = 0.3f;
+    self.pickerContainerView.layer.shadowColor = [UIColor grayColor].CGColor;
+    self.pickerContainerView.layer.shadowOpacity = 0.8;
+    self.pickerContainerView.layer.shadowRadius = 2.0f;
+    self.pickerContainerView.layer.shadowOffset = CGSizeMake(2.0f, 2.0f);
+    
+    self.pickerView.delegate = self;
+    self.pickerView.dataSource = self;
+    
+}
+
+- (IBAction)dismissPicker:(id)sender
+{
+
+    CGFloat finalWidth = self.currentlySelectedLabel.frame.size.width;
+    CGFloat finalHeight = self.currentlySelectedLabel.frame.size.height;
+    
+    CGFloat finalXPosition = self.currentlySelectedLabel.frame.origin.x;
+    CGFloat finalYPosition = self.currentlySelectedLabel.frame.origin.y;
+    
+    self.pickerView.hidden = YES;
+    self.doneButton.hidden = YES;
+    
+    [UIView animateKeyframesWithDuration:PICKER_VIEW_ANIMATION_DURATION delay:0.0 options:0 animations:^{
+        self.pickerContainerView.frame = CGRectMake(finalXPosition, finalYPosition, finalWidth, finalHeight);
+        self.pickerContainerView.alpha = 0.1;
+        
+    }completion:^(BOOL finished) {
+        self.doneButton.enabled = NO;
+        [self.pickerContainerView removeFromSuperview];
+    }];
+    
+
+    
+}
+
+
+#pragma mark - UIPickerView delegate/datasource methods
+
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return [self.numbersForPickerData count];
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    return [self.numbersForPickerData[row] stringValue];
+}
+
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+{
+    UILabel *label = [[UILabel alloc] init];
+    
+    label.text = [self.numbersForPickerData[row] stringValue];
+    label.font = [UIFont fontWithName:@"quicksand-light" size:30];
+    label.textAlignment = NSTextAlignmentCenter;
+    
+    return label;
+}
+
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    self.doneButton.enabled = YES;
+    NSNumber *number = self.numbersForPickerData[row];
+    
+    if ([number integerValue] == 0) {
+        self.currentlySelectedLabel.text = nil;
+    } else {
+        self.currentlySelectedLabel.text = [number stringValue];
+    }
+    
 }
 
 #pragma mark - Initial board setup
@@ -1106,6 +1300,7 @@ static NSNumberFormatter *numberFormatter;
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"Solving..";
+    hud.labelFont = [UIFont fontWithName:@"quicksand-light" size:21];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSDate *startTime = [NSDate date];

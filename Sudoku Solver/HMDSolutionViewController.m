@@ -97,7 +97,7 @@
     CGFloat xPosition = xStartPosition;
     CGFloat yPosition = yStartPosition;
     
-    for (int i = 1; i <= 81; i++) {
+    for (NSInteger i = 1; i <= 81; i++) {
         
         UILabel *cell = [[UILabel alloc] initWithFrame:CGRectMake(xPosition, yPosition, labelSize, labelSize)];
         
@@ -130,9 +130,10 @@
         NSNumber *originalBoardValue = self.originalBoard[i - 1];
         
         if ([originalBoardValue integerValue] != [answer integerValue]) {
-            cell.textColor = [UIColor colorWithRed:135/255.0 green:211/255.0 blue:124/255.0 alpha:1.0];
+            cell.textColor = [UIColor colorWithRed:0/255.0 green:150/255.0 blue:50/255.0 alpha:1.0];
         }
         
+        cell.font = [UIFont fontWithName:@"quicksand-regular" size:20];
         if ([answer integerValue] == 0) {
             cell.text = @"";
         } else {

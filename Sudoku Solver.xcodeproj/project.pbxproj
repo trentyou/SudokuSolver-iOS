@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8559A0291AA5B1C300C6D4BF /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8559A0281AA5B17100C6D4BF /* Quicksand-Light.ttf */; };
+		8559A02A1AA5B1C400C6D4BF /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8559A0281AA5B17100C6D4BF /* Quicksand-Light.ttf */; };
+		8559A02C1AA5B48200C6D4BF /* Quicksand-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8559A02B1AA5B44B00C6D4BF /* Quicksand-Regular.otf */; };
+		8559A02D1AA5B48200C6D4BF /* Quicksand-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8559A02B1AA5B44B00C6D4BF /* Quicksand-Regular.otf */; };
 		8594DB821A93037400888099 /* HMDPossibleAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8594DB811A93037400888099 /* HMDPossibleAnswer.m */; };
 		859D885F1A7DECD7007007B0 /* HMDSudokuTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 859D885E1A7DECD7007007B0 /* HMDSudokuTreeNode.m */; };
 		859D88651A7E0E99007007B0 /* HMDCellCoordinates.m in Sources */ = {isa = PBXBuildFile; fileRef = 859D88641A7E0E99007007B0 /* HMDCellCoordinates.m */; };
@@ -37,6 +41,8 @@
 /* Begin PBXFileReference section */
 		36AF5BBEC7200E23654BF740 /* Pods-Sudoku Solver.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sudoku Solver.release.xcconfig"; path = "Pods/Target Support Files/Pods-Sudoku Solver/Pods-Sudoku Solver.release.xcconfig"; sourceTree = "<group>"; };
 		6C06B72111C64DCA69E3FBBD /* libPods-Sudoku Solver.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sudoku Solver.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8559A0281AA5B17100C6D4BF /* Quicksand-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Light.ttf"; sourceTree = "<group>"; };
+		8559A02B1AA5B44B00C6D4BF /* Quicksand-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Quicksand-Regular.otf"; path = "../Quicksand-Regular.otf"; sourceTree = "<group>"; };
 		8594DB801A93037400888099 /* HMDPossibleAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDPossibleAnswer.h; sourceTree = "<group>"; };
 		8594DB811A93037400888099 /* HMDPossibleAnswer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDPossibleAnswer.m; sourceTree = "<group>"; };
 		859D885D1A7DECD7007007B0 /* HMDSudokuTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSudokuTreeNode.h; sourceTree = "<group>"; };
@@ -144,6 +150,8 @@
 		85DE02ED1A7640D500B9A8BF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8559A0281AA5B17100C6D4BF /* Quicksand-Light.ttf */,
+				8559A02B1AA5B44B00C6D4BF /* Quicksand-Regular.otf */,
 				85DE02EE1A7640D500B9A8BF /* Info.plist */,
 				85DE02EF1A7640D500B9A8BF /* main.m */,
 			);
@@ -262,6 +270,8 @@
 				85DE02FB1A7640D500B9A8BF /* Images.xcassets in Resources */,
 				85DE03171A7645B600B9A8BF /* HMDBoardPickerViewController.xib in Resources */,
 				85D44FB21A77497300363F0E /* HMDSolutionViewController.xib in Resources */,
+				8559A02C1AA5B48200C6D4BF /* Quicksand-Regular.otf in Resources */,
+				8559A0291AA5B1C300C6D4BF /* Quicksand-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,6 +279,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8559A02D1AA5B48200C6D4BF /* Quicksand-Regular.otf in Resources */,
+				8559A02A1AA5B1C400C6D4BF /* Quicksand-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
