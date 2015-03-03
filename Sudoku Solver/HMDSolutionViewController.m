@@ -13,18 +13,27 @@
 
 @interface HMDSolutionViewController ()
 
+@property (weak, nonatomic) IBOutlet UILabel *timeToSolveLabel;
+
+
 @property (nonatomic, copy) NSArray *solution;
 @property (nonatomic, copy) NSArray *originalBoard;
+
+@property (nonatomic) double timeToSolve;
 
 @end
 
 @implementation HMDSolutionViewController
 
-- (instancetype)initWithSolution:(NSArray *)solution andOriginalBoard:(NSArray *)originalBoard
+- (instancetype)initWithSolution:(NSArray *)solution originalBoard:(NSArray *)originalBoard andTimeToSolve:(double)timeToSolve
 {
     self = [super initWithNibName:nil bundle:nil];
     
     if (self) {
+        
+        if (timeToSolve != 0.0) {
+            _timeToSolve = timeToSolve;
+        }
         
         _solution = solution;
         _originalBoard = originalBoard;
@@ -38,10 +47,40 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self setupTimeToSolveLabel];
     [self setupSolutionBoard];
-    
 }
 
+- (NSString *)formatTimeToSolveToString:(double)timeToSolve
+{
+    NSString *timeString;
+    
+    NSInteger minutes = (NSInteger)(timeToSolve / 60);
+    timeToSolve -= minutes * 60.0;
+    
+    NSString *secondsString = [NSString stringWithFormat:@"%f seconds", timeToSolve];
+    
+    if (minutes != 0) {
+        if (minutes == 1) {
+            timeString = [NSString stringWithFormat:@"%ld minute ", (long)minutes];
+        } else {
+            timeString = [NSString stringWithFormat:@"%ld minutes ", (long)minutes];
+        }
+        
+        timeString = [timeString stringByAppendingString:secondsString];
+    } else {
+        timeString = secondsString;
+    }
+    
+    return timeString;
+}
+
+#pragma mark - Setup sudoku board
+
+- (void)setupTimeToSolveLabel
+{
+    self.timeToSolveLabel.text = [self formatTimeToSolveToString:self.timeToSolve];
+}
 
 - (void)setupSolutionBoard
 {
@@ -114,7 +153,7 @@
     
 }
 
-
+#pragma mark - Navigation
 
 
 - (IBAction)dismiss:(id)sender
