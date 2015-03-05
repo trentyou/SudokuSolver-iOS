@@ -30,6 +30,7 @@ const CGFloat PICKER_VIEW_ANIMATION_DURATION = 0.4;
 @property (strong, nonatomic) IBOutlet UIView *pickerContainerView;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerView;
 @property (weak, nonatomic) IBOutlet UIButton *doneButton;
+@property (nonatomic) BOOL pickerPresented;
 
 @property (nonatomic, strong) UIView *clearLayer;
 @property (nonatomic, weak) UILabel *currentlySelectedLabel;
@@ -79,6 +80,7 @@ static NSNumberFormatter *numberFormatter;
     self.view.backgroundColor = [UIColor colorWithRed:253/255.0 green:245/255.0 blue:230/255.0 alpha:1.0];
     [self presentQuadrantViewForQuadrant:1 fromDirection:NoDirection];
     [self setupSwipeGesturesForQuadrantView];
+    [self setupClearLayer];
     [self setupPickerContainerView];
 
     
@@ -198,18 +200,20 @@ static NSNumberFormatter *numberFormatter;
 
     [self.view addSubview:quadrantView];
     
+    HMDQuadrantView *buffer = self.currentQuadrantView;
+
     self.solveButton.alpha = 0.0;
     
-    [UIView animateWithDuration:0.75 delay:0.0 usingSpringWithDamping:0.6 initialSpringVelocity:0.0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
+    [UIView animateWithDuration:0.75 delay:0.0 usingSpringWithDamping:0.65 initialSpringVelocity:0.0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
         self.currentQuadrantView.frame = CGRectMake(-xStart, -yStart, width, height);
         quadrantView.frame = CGRectMake(0.0f, 0.0f, width, height);
         
     }completion:^(BOOL finished) {
-
+        [buffer removeFromSuperview];
     }];
     self.solveButton.alpha = 1.0;
-    self.currentQuadrantView = quadrantView;
 
+    self.currentQuadrantView = quadrantView;
 }
 
 - (UIImage *)indicatorImageForQuadrant:(NSInteger)quadrant
@@ -286,6 +290,9 @@ static NSNumberFormatter *numberFormatter;
     if (currentQuadrant == 3 || currentQuadrant == 6 || currentQuadrant == 9) {
         return;
     } else {
+        if (self.pickerPresented) {
+            [self dismissPicker:nil];
+        }
         [self presentQuadrantViewForQuadrant:(currentQuadrant + 1) fromDirection:LeftDirection];
     }
 }
@@ -297,6 +304,9 @@ static NSNumberFormatter *numberFormatter;
     if (currentQuadrant == 1 || currentQuadrant == 4 || currentQuadrant == 7) {
         return;
     } else {
+        if (self.pickerPresented) {
+            [self dismissPicker:nil];
+        }
         [self presentQuadrantViewForQuadrant:(currentQuadrant - 1) fromDirection:RightDirection];
     }
 }
@@ -308,6 +318,9 @@ static NSNumberFormatter *numberFormatter;
     if (currentQuadrant == 7 || currentQuadrant == 8 || currentQuadrant == 9) {
         return;
     } else {
+        if (self.pickerPresented) {
+            [self dismissPicker:nil];
+        }
         [self presentQuadrantViewForQuadrant:(currentQuadrant + 3) fromDirection:UpDirection];
     }
 }
@@ -319,6 +332,9 @@ static NSNumberFormatter *numberFormatter;
     if (currentQuadrant == 1 || currentQuadrant == 2 || currentQuadrant == 3) {
         return;
     } else {
+        if (self.pickerPresented) {
+            [self dismissPicker:nil];
+        }
         [self presentQuadrantViewForQuadrant:(currentQuadrant - 3) fromDirection:DownDirection];
     }
 }
@@ -338,6 +354,7 @@ static NSNumberFormatter *numberFormatter;
     
     self.pickerContainerView.frame = CGRectMake(initialXPosition, initialYPosition, initialWidth, initialHeight);
     
+    [self.view addSubview:self.clearLayer];
     [self.view addSubview:self.pickerContainerView];
     
     CGFloat pickerViewWidth = 216.0f;
@@ -356,6 +373,7 @@ static NSNumberFormatter *numberFormatter;
         selectedRow = 0;
     }
     
+    [self cancelAllSwipeGestures];
     [self.pickerView selectRow:selectedRow inComponent:0 animated:NO];
     
     [UIView animateWithDuration:PICKER_VIEW_ANIMATION_DURATION delay:0.0 usingSpringWithDamping:1.0 initialSpringVelocity:0.0 options:0 animations:^{
@@ -364,8 +382,27 @@ static NSNumberFormatter *numberFormatter;
         
     } completion:nil];
     
+    self.pickerPresented = YES;
     self.doneButton.hidden = NO;
     self.pickerView.hidden = NO;
+}
+
+- (void)cancelAllSwipeGestures
+{
+    for (UIGestureRecognizer *recognizer in self.view.gestureRecognizers) {
+        if ([recognizer isKindOfClass:[UISwipeGestureRecognizer class]]) {
+            recognizer.enabled = NO;
+        }
+    }
+}
+
+- (void)reenableAllSwipeGestures
+{
+    for (UIGestureRecognizer *recognizer in self.view.gestureRecognizers) {
+        if ([recognizer isKindOfClass:[UISwipeGestureRecognizer class]]) {
+            recognizer.enabled = YES;
+        }
+    }
 }
 
 - (void)setupClearLayer
@@ -373,7 +410,11 @@ static NSNumberFormatter *numberFormatter;
     self.clearLayer = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
     self.clearLayer.backgroundColor = [UIColor clearColor];
     
-    //UITapGestureRecognizer *tap = [UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissPicker:)
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissPicker:)];
+    tap.numberOfTapsRequired = 1;
+    tap.cancelsTouchesInView = YES;
+    
+    [self.clearLayer addGestureRecognizer:tap];
 }
 
 - (void)setupPickerContainerView
@@ -402,6 +443,7 @@ static NSNumberFormatter *numberFormatter;
     self.pickerView.hidden = YES;
     self.doneButton.hidden = YES;
     
+    [self reenableAllSwipeGestures];
     [UIView animateKeyframesWithDuration:PICKER_VIEW_ANIMATION_DURATION delay:0.0 options:0 animations:^{
         self.pickerContainerView.frame = CGRectMake(finalXPosition, finalYPosition, finalWidth, finalHeight);
         self.pickerContainerView.alpha = 0.1;
@@ -411,8 +453,9 @@ static NSNumberFormatter *numberFormatter;
         [self.pickerContainerView removeFromSuperview];
     }];
     
-
-    
+    self.pickerPresented = NO;
+    self.currentlySelectedLabel = nil;
+    [self.clearLayer removeFromSuperview];
 }
 
 
@@ -1514,7 +1557,7 @@ static NSNumberFormatter *numberFormatter;
 
 - (void)didReceiveMemoryWarning
 {
-    //NSLog(@"Received memory warning");
+    NSLog(@"Received memory warning");
 }
 
 
