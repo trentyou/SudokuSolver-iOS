@@ -88,6 +88,7 @@
         NSLog(@"Solution incorrect length");
         return;
     }
+    self.view.backgroundColor = [UIColor colorWithRed:253/255.0 green:245/255.0 blue:230/255.0 alpha:1.0];
     
     CGFloat labelSize = ([UIScreen mainScreen].bounds.size.width - 15.0f) / 9.0;
     
@@ -102,6 +103,7 @@
         UILabel *cell = [[UILabel alloc] initWithFrame:CGRectMake(xPosition, yPosition, labelSize, labelSize)];
         
         cell.textAlignment = NSTextAlignmentCenter;
+        //cell.backgroundColor = [UIColor whiteColor];
         cell.layer.borderColor = [UIColor lightGrayColor].CGColor;
         cell.layer.borderWidth = 0.5f;
         

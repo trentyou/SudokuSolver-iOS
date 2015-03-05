@@ -25,6 +25,7 @@
 		85DE030A1A7640D500B9A8BF /* Sudoku_SolverTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DE03091A7640D500B9A8BF /* Sudoku_SolverTests.m */; };
 		85DE03161A7645B600B9A8BF /* HMDBoardPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DE03141A7645B600B9A8BF /* HMDBoardPickerViewController.m */; };
 		85DE03171A7645B600B9A8BF /* HMDBoardPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85DE03151A7645B600B9A8BF /* HMDBoardPickerViewController.xib */; };
+		85F197D01AA8087A002984CA /* HMDQuadrantView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F197CF1AA8087A002984CA /* HMDQuadrantView.m */; };
 		F38B46CF454174795C765EDF /* libPods-Sudoku Solver.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C06B72111C64DCA69E3FBBD /* libPods-Sudoku Solver.a */; };
 /* End PBXBuildFile section */
 
@@ -69,6 +70,8 @@
 		85DE03131A7645B600B9A8BF /* HMDBoardPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDBoardPickerViewController.h; sourceTree = "<group>"; };
 		85DE03141A7645B600B9A8BF /* HMDBoardPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDBoardPickerViewController.m; sourceTree = "<group>"; };
 		85DE03151A7645B600B9A8BF /* HMDBoardPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HMDBoardPickerViewController.xib; sourceTree = "<group>"; };
+		85F197CE1AA8087A002984CA /* HMDQuadrantView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDQuadrantView.h; sourceTree = "<group>"; };
+		85F197CF1AA8087A002984CA /* HMDQuadrantView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDQuadrantView.m; sourceTree = "<group>"; };
 		90467000BA838523C569709A /* Pods-Sudoku Solver.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sudoku Solver.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Sudoku Solver/Pods-Sudoku Solver.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -127,6 +130,8 @@
 				85DE03131A7645B600B9A8BF /* HMDBoardPickerViewController.h */,
 				85DE03141A7645B600B9A8BF /* HMDBoardPickerViewController.m */,
 				85DE03151A7645B600B9A8BF /* HMDBoardPickerViewController.xib */,
+				85F197CE1AA8087A002984CA /* HMDQuadrantView.h */,
+				85F197CF1AA8087A002984CA /* HMDQuadrantView.m */,
 				85D44FAE1A77497300363F0E /* HMDSolutionViewController.h */,
 				85D44FAF1A77497300363F0E /* HMDSolutionViewController.m */,
 				85D44FB01A77497300363F0E /* HMDSolutionViewController.xib */,
@@ -330,6 +335,7 @@
 				85B5DAAB1A778D69002A1979 /* HMDSudokuCell.m in Sources */,
 				859D885F1A7DECD7007007B0 /* HMDSudokuTreeNode.m in Sources */,
 				859D88651A7E0E99007007B0 /* HMDCellCoordinates.m in Sources */,
+				85F197D01AA8087A002984CA /* HMDQuadrantView.m in Sources */,
 				85DE02F01A7640D500B9A8BF /* main.m in Sources */,
 				85DE03161A7645B600B9A8BF /* HMDBoardPickerViewController.m in Sources */,
 				85D44FB11A77497300363F0E /* HMDSolutionViewController.m in Sources */,

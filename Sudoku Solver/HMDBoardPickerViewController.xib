@@ -17,6 +17,7 @@
                 <outlet property="doneButton" destination="6pZ-ye-b97" id="wPG-bW-IjE"/>
                 <outlet property="pickerContainerView" destination="aOF-Dq-vca" id="Dgd-Xd-CqL"/>
                 <outlet property="pickerView" destination="XuM-en-PRL" id="jgU-GP-Kwu"/>
+                <outlet property="solveButton" destination="WO4-pE-cwa" id="Huo-OZ-vcN"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

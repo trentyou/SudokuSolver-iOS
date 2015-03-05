@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, Direction) {
+    NoDirection,
+    LeftDirection,
+    RightDirection,
+    UpDirection,
+    DownDirection
+};
+
 @interface HMDBoardPickerViewController : UIViewController
 
 @end

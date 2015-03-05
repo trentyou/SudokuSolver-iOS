@@ -9,6 +9,7 @@
 
 #import "HMDBoardPickerViewController.h"
 #import "HMDSolutionViewController.h"
+#import "HMDQuadrantView.h"
 #import "HMDSudokuCell.h"
 #import "HMDCellCoordinates.h"
 #import "HMDSudokuTree.h"
@@ -20,12 +21,17 @@ const CGFloat PICKER_VIEW_ANIMATION_DURATION = 0.4;
 
 @interface HMDBoardPickerViewController () <UIPickerViewDataSource, UIPickerViewDelegate>
 
+@property (weak, nonatomic) IBOutlet UIButton *solveButton;
+
+
 // Picker view
 
+@property (nonatomic, strong) HMDQuadrantView *currentQuadrantView;
 @property (strong, nonatomic) IBOutlet UIView *pickerContainerView;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerView;
 @property (weak, nonatomic) IBOutlet UIButton *doneButton;
 
+@property (nonatomic, strong) UIView *clearLayer;
 @property (nonatomic, weak) UILabel *currentlySelectedLabel;
 @property (nonatomic, strong) NSArray *numbersForPickerData;
 
@@ -60,7 +66,6 @@ static NSNumberFormatter *numberFormatter;
     
     if (self) {
         _numbersForPickerData = @[@0, @1, @2, @3, @4, @5, @6, @7, @8, @9];
-
     }
     
     return self;
@@ -71,8 +76,11 @@ static NSNumberFormatter *numberFormatter;
     [super viewDidLoad];
     
     if (!numberFormatter) numberFormatter = [[NSNumberFormatter alloc] init];
-    [self setupInputBoard];
+    self.view.backgroundColor = [UIColor colorWithRed:253/255.0 green:245/255.0 blue:230/255.0 alpha:1.0];
+    [self presentQuadrantViewForQuadrant:1 fromDirection:NoDirection];
+    [self setupSwipeGesturesForQuadrantView];
     [self setupPickerContainerView];
+
     
     //self.startingNumbers = @"000260701680070090190004500820100040004602900050003028009300074040050036703018000";
     //self.startingNumbers = @"031200700040080019006000000007040001014090560800050400000000900260030040005008270";
@@ -100,11 +108,51 @@ static NSNumberFormatter *numberFormatter;
     //self.startingNumbers = @"700096001094500000000000260200064700000000000005720006028000000000001930900250004"; // 6877 without, 20819 with
 }
 
+
 #pragma mark - Setup input board
 
-- (void)setupInputBoard
+- (void)presentQuadrantViewForQuadrant:(NSInteger)quadrant fromDirection:(Direction)direction
 {
+    CGFloat xStart;
+    CGFloat yStart;
 
+    switch (direction) {
+        case LeftDirection:
+            xStart = [[UIScreen mainScreen] bounds].size.width;
+            yStart = 0.0f;
+            break;
+            
+        case RightDirection:
+            xStart = -[[UIScreen mainScreen] bounds].size.width;
+            yStart = 0.0f;
+            break;
+            
+        case UpDirection:
+            xStart = 0.0f;
+            yStart = [[UIScreen mainScreen] bounds].size.height;
+            break;
+            
+        case DownDirection:
+            xStart = 0.0f;
+            yStart = -[[UIScreen mainScreen] bounds].size.height;
+            break;
+            
+        default:
+            xStart = 0.0f;
+            yStart = 0.0f;
+            break;
+    }
+    
+    CGFloat width = [[UIScreen mainScreen] bounds].size.width;
+    CGFloat height = [[UIScreen mainScreen] bounds].size.height - 100.0f;
+    
+    HMDQuadrantView *quadrantView = [[HMDQuadrantView alloc] initWithFrame:CGRectMake(xStart, yStart, width, height)];
+    
+    
+    quadrantView.backgroundColor = [UIColor colorWithRed:253/255.0 green:245/255.0 blue:230/255.0 alpha:1.0];
+    quadrantView.quadrant = quadrant;
+    
+    
     CGFloat labelOffset = 10.0f;
     CGFloat labelSize = ([[UIScreen mainScreen] bounds].size.width - (labelOffset * 2.0)) / 3.0;
     
@@ -122,13 +170,14 @@ static NSNumberFormatter *numberFormatter;
         [cell addGestureRecognizer:tap];
         cell.userInteractionEnabled = YES;
         
+        cell.backgroundColor = [UIColor whiteColor];
         cell.layer.borderWidth = 1.0f;
         cell.layer.borderColor = [UIColor grayColor].CGColor;
         
         cell.textAlignment = NSTextAlignmentCenter;
         cell.font = [UIFont fontWithName:@"quicksand-light" size:45];
         
-        [self.view addSubview:cell];
+        [quadrantView addSubview:cell];
         
         xPosition += labelSize;
         
@@ -137,6 +186,140 @@ static NSNumberFormatter *numberFormatter;
             yPosition += labelSize;
         }
         
+    }
+    CGFloat quadrantIndicatorSize = 30.0f;
+    
+    UIImageView *quadrantIndicator = [[UIImageView alloc] init];
+    
+    quadrantIndicator.image = [self indicatorImageForQuadrant:quadrant];
+    quadrantIndicator.frame = CGRectMake(width - labelOffset - quadrantIndicatorSize, height - quadrantIndicatorSize, quadrantIndicatorSize, quadrantIndicatorSize);
+    
+    [quadrantView addSubview:quadrantIndicator];
+
+    [self.view addSubview:quadrantView];
+    
+    self.solveButton.alpha = 0.0;
+    
+    [UIView animateWithDuration:0.75 delay:0.0 usingSpringWithDamping:0.6 initialSpringVelocity:0.0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
+        self.currentQuadrantView.frame = CGRectMake(-xStart, -yStart, width, height);
+        quadrantView.frame = CGRectMake(0.0f, 0.0f, width, height);
+        
+    }completion:^(BOOL finished) {
+
+    }];
+    self.solveButton.alpha = 1.0;
+    self.currentQuadrantView = quadrantView;
+
+}
+
+- (UIImage *)indicatorImageForQuadrant:(NSInteger)quadrant
+{
+    switch (quadrant) {
+        case 1:
+            return [UIImage imageNamed:@"Quadrant1"];
+            break;
+            
+        case 2:
+            return [UIImage imageNamed:@"Quadrant2"];
+            break;
+            
+        case 3:
+            return [UIImage imageNamed:@"Quadrant3"];
+            break;
+            
+        case 4:
+            return [UIImage imageNamed:@"Quadrant4"];
+            break;
+            
+        case 5:
+            return [UIImage imageNamed:@"Quadrant5"];
+            break;
+            
+        case 6:
+            return [UIImage imageNamed:@"Quadrant6"];
+            break;
+            
+        case 7:
+            return [UIImage imageNamed:@"Quadrant7"];
+            break;
+            
+        case 8:
+            return [UIImage imageNamed:@"Quadrant8"];
+            break;
+            
+        case 9:
+            return [UIImage imageNamed:@"Quadrant9"];
+            break;
+            
+        default:
+            return [UIImage imageNamed:@"Quadrant1"];
+            break;
+    }
+}
+
+- (void)setupSwipeGesturesForQuadrantView
+{
+    UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(leftSwipeFromQuadrant)];
+    leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
+    
+    UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(rightSwipeFromQuadrant)];
+    rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
+    
+    UISwipeGestureRecognizer *upSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(upSwipeFromQuadrant)];
+    upSwipe.direction = UISwipeGestureRecognizerDirectionUp;
+    
+    UISwipeGestureRecognizer *downSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(downSwipeFromQuadrant)];
+    downSwipe.direction = UISwipeGestureRecognizerDirectionDown;
+    
+    [self.view addGestureRecognizer:leftSwipe];
+    [self.view addGestureRecognizer:rightSwipe];
+    [self.view addGestureRecognizer:upSwipe];
+    [self.view addGestureRecognizer:downSwipe];
+}
+
+#pragma mark - Quadrant view navigation
+
+- (void)leftSwipeFromQuadrant
+{
+    NSInteger currentQuadrant = self.currentQuadrantView.quadrant;
+    
+    if (currentQuadrant == 3 || currentQuadrant == 6 || currentQuadrant == 9) {
+        return;
+    } else {
+        [self presentQuadrantViewForQuadrant:(currentQuadrant + 1) fromDirection:LeftDirection];
+    }
+}
+
+- (void)rightSwipeFromQuadrant
+{
+    NSInteger currentQuadrant = self.currentQuadrantView.quadrant;
+    
+    if (currentQuadrant == 1 || currentQuadrant == 4 || currentQuadrant == 7) {
+        return;
+    } else {
+        [self presentQuadrantViewForQuadrant:(currentQuadrant - 1) fromDirection:RightDirection];
+    }
+}
+
+- (void)upSwipeFromQuadrant
+{
+    NSInteger currentQuadrant = self.currentQuadrantView.quadrant;
+    
+    if (currentQuadrant == 7 || currentQuadrant == 8 || currentQuadrant == 9) {
+        return;
+    } else {
+        [self presentQuadrantViewForQuadrant:(currentQuadrant + 3) fromDirection:UpDirection];
+    }
+}
+
+- (void)downSwipeFromQuadrant
+{
+    NSInteger currentQuadrant = self.currentQuadrantView.quadrant;
+    
+    if (currentQuadrant == 1 || currentQuadrant == 2 || currentQuadrant == 3) {
+        return;
+    } else {
+        [self presentQuadrantViewForQuadrant:(currentQuadrant - 3) fromDirection:DownDirection];
     }
 }
 
@@ -174,13 +357,23 @@ static NSNumberFormatter *numberFormatter;
     }
     
     [self.pickerView selectRow:selectedRow inComponent:0 animated:NO];
+    
     [UIView animateWithDuration:PICKER_VIEW_ANIMATION_DURATION delay:0.0 usingSpringWithDamping:1.0 initialSpringVelocity:0.0 options:0 animations:^{
         self.pickerContainerView.alpha = 1.0;
         self.pickerContainerView.frame = CGRectMake(pickerViewXPosition, pickerViewYPosition, pickerViewWidth, pickerViewHeight);
         
     } completion:nil];
+    
     self.doneButton.hidden = NO;
     self.pickerView.hidden = NO;
+}
+
+- (void)setupClearLayer
+{
+    self.clearLayer = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height)];
+    self.clearLayer.backgroundColor = [UIColor clearColor];
+    
+    //UITapGestureRecognizer *tap = [UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissPicker:)
 }
 
 - (void)setupPickerContainerView
@@ -200,7 +393,6 @@ static NSNumberFormatter *numberFormatter;
 
 - (IBAction)dismissPicker:(id)sender
 {
-
     CGFloat finalWidth = self.currentlySelectedLabel.frame.size.width;
     CGFloat finalHeight = self.currentlySelectedLabel.frame.size.height;
     
@@ -1300,7 +1492,7 @@ static NSNumberFormatter *numberFormatter;
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"Solving..";
-    hud.labelFont = [UIFont fontWithName:@"quicksand-light" size:21];
+    hud.labelFont = [UIFont fontWithName:@"quicksand-regular" size:20];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSDate *startTime = [NSDate date];
