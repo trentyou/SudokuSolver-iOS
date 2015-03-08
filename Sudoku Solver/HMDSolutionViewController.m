@@ -35,6 +35,7 @@
             _timeToSolve = timeToSolve;
         }
         
+        
         _solution = solution;
         _originalBoard = originalBoard;
     }
@@ -84,10 +85,6 @@
 
 - (void)setupSolutionBoard
 {
-    if ([self.solution count] != 81) {
-        NSLog(@"Solution incorrect length");
-        return;
-    }
     self.view.backgroundColor = [UIColor colorWithRed:253/255.0 green:245/255.0 blue:230/255.0 alpha:1.0];
     
     CGFloat labelSize = ([UIScreen mainScreen].bounds.size.width - 15.0f) / 9.0;
@@ -98,57 +95,59 @@
     CGFloat xPosition = xStartPosition;
     CGFloat yPosition = yStartPosition;
     
-    for (NSInteger i = 1; i <= 81; i++) {
-        
-        UILabel *cell = [[UILabel alloc] initWithFrame:CGRectMake(xPosition, yPosition, labelSize, labelSize)];
-        
-        cell.textAlignment = NSTextAlignmentCenter;
-        cell.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        cell.layer.borderWidth = 0.5f;
-        
-        if ((i > 18 && i < 28) || (i > 45 && i < 55)) {
-            CALayer *bottomBorder = [CALayer layer];
+    for (NSInteger row = 0; row < 9; row++) {
+        for (NSInteger column = 0; column < 9; column++) {
+    
+            UILabel *cell = [[UILabel alloc] initWithFrame:CGRectMake(xPosition, yPosition, labelSize, labelSize)];
             
-            bottomBorder.borderColor = [UIColor blackColor].CGColor;
-            bottomBorder.borderWidth = 2.0f;
-            bottomBorder.frame = CGRectMake(0.0f, labelSize, labelSize, 1.0f);
+            cell.textAlignment = NSTextAlignmentCenter;
+            cell.layer.borderColor = [UIColor lightGrayColor].CGColor;
+            cell.layer.borderWidth = 0.5f;
             
-            [cell.layer addSublayer:bottomBorder];
-        }
-        
-        if ((i % 3 == 0 || i % 6 == 0) && i % 9 != 0) {
-            CALayer *rightBorder = [CALayer layer];
+            if (row == 2 || row == 5) {
+                CALayer *bottomBorder = [CALayer layer];
+                
+                bottomBorder.borderColor = [UIColor darkGrayColor].CGColor;
+                bottomBorder.borderWidth = 2.0f;
+                bottomBorder.frame = CGRectMake(0.0f, labelSize, labelSize, 1.0f);
+                
+                [cell.layer addSublayer:bottomBorder];
+            }
             
-            rightBorder.borderColor = [UIColor blackColor].CGColor;
-            rightBorder.borderWidth = 2.0f;
-            rightBorder.frame = CGRectMake(labelSize, 0.0f, 2.0f, labelSize);
+            if (column == 2 || column == 5) {
+                CALayer *rightBorder = [CALayer layer];
+                
+                rightBorder.borderColor = [UIColor darkGrayColor].CGColor;
+                rightBorder.borderWidth = 2.0f;
+                rightBorder.frame = CGRectMake(labelSize, 0.0f, 2.0f, labelSize);
+                
+                [cell.layer addSublayer:rightBorder];
+            }
             
-            [cell.layer addSublayer:rightBorder];
-        }
-        
-        cell.backgroundColor = [UIColor whiteColor];
-        
-        NSNumber *answer = self.solution[i - 1];
-        NSNumber *originalBoardValue = self.originalBoard[i - 1];
-        
-        if ([originalBoardValue integerValue] != [answer integerValue]) {
-            cell.textColor = [UIColor colorWithRed:0/255.0 green:150/255.0 blue:50/255.0 alpha:1.0];
-        }
-        
-        cell.font = [UIFont fontWithName:@"quicksand-regular" size:20];
-        if ([answer integerValue] == 0) {
-            cell.text = @"";
-        } else {
-            cell.text = [answer stringValue];
-        }
-        
-        [self.view addSubview:cell];
-        
-        xPosition += labelSize;
-        
-        if (i % 9 == 0) {
-            yPosition += labelSize;
-            xPosition = xStartPosition;
+            cell.backgroundColor = [UIColor whiteColor];
+            
+            HMDSudokuCell *answer = self.solution[row][column];
+            HMDSudokuCell *originalBoardValue = self.originalBoard[row][column];
+            
+            if ([originalBoardValue.answer integerValue] != [answer.answer integerValue]) {
+                cell.textColor = [UIColor colorWithRed:0/255.0 green:150/255.0 blue:50/255.0 alpha:1.0];
+            }
+            
+            cell.font = [UIFont fontWithName:@"quicksand-regular" size:20];
+            if ([answer.answer integerValue] == 0) {
+                cell.text = @"";
+            } else {
+                cell.text = [answer.answer stringValue];
+            }
+            
+            [self.view addSubview:cell];
+            
+            xPosition += labelSize;
+            
+            if (column == 8) {
+                yPosition += labelSize;
+                xPosition = xStartPosition;
+            }
         }
         
     }

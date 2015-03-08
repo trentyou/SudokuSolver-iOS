@@ -44,37 +44,6 @@ static NSNumberFormatter *numberFormatter;
     return self;
 }
 
-//- (NSArray *)solvePuzzleWithStartingNumbers:(NSString *)startingNumbers
-//{
-//    if (!self.internalSudokuBoard) {
-//        self.internalSudokuBoard = [[NSMutableArray alloc] init];
-//        self.originalBoard = [[NSMutableArray alloc] init];
-//    }
-//    
-//    // Setup the internalSudokuBoard
-//    for (NSInteger row = 0; row < 9; row++) {
-//        NSMutableArray *column = [[NSMutableArray alloc] init];
-//        [self.internalSudokuBoard insertObject:column atIndex:row];
-//    }
-//    
-//    // Filling the internalSudokuBoard from initial numbers
-//    for (NSInteger row = 0; row < 9; row++) {
-//        for (NSInteger column = 0; column < 9; column++) {
-//            
-//            NSNumber *answer = [numberFormatter numberFromString:[startingNumbers substringToIndex:1]];
-//            HMDSudokuCell *cell = [[HMDSudokuCell alloc] initWithAnswer:answer possibleAnswers:nil];
-//            [self.originalBoard addObject:answer];
-//            
-//            [self.internalSudokuBoard[row] insertObject:cell atIndex:column];
-//            startingNumbers = [startingNumbers substringFromIndex:1];
-//        }
-//    }
-//    
-//    //[self printBoard];
-//    [self fillPossibleAnswers];
-//    return [self solveBoard];
-//}
-
 
 - (NSArray *)solvePuzzleWithStartingNumbers:(NSMutableArray *)startingNumbers
 {

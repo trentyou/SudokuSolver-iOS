@@ -10,7 +10,6 @@
 
 @interface HMDSolver : NSObject
 
-//- (NSArray *)solvePuzzleWithStartingNumbers:(NSString *)startingNumbers;
 - (NSArray *)solvePuzzleWithStartingNumbers:(NSMutableArray *)startingNumbers;
 
 
