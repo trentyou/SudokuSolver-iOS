@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		851F9EA21AABFC1800F994CD /* HMDSolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 851F9EA11AABFC1800F994CD /* HMDSolver.m */; };
 		8559A0291AA5B1C300C6D4BF /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8559A0281AA5B17100C6D4BF /* Quicksand-Light.ttf */; };
 		8559A02A1AA5B1C400C6D4BF /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8559A0281AA5B17100C6D4BF /* Quicksand-Light.ttf */; };
 		8559A02C1AA5B48200C6D4BF /* Quicksand-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8559A02B1AA5B44B00C6D4BF /* Quicksand-Regular.otf */; };
@@ -42,6 +43,8 @@
 /* Begin PBXFileReference section */
 		36AF5BBEC7200E23654BF740 /* Pods-Sudoku Solver.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sudoku Solver.release.xcconfig"; path = "Pods/Target Support Files/Pods-Sudoku Solver/Pods-Sudoku Solver.release.xcconfig"; sourceTree = "<group>"; };
 		6C06B72111C64DCA69E3FBBD /* libPods-Sudoku Solver.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sudoku Solver.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		851F9EA01AABFC1800F994CD /* HMDSolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSolver.h; sourceTree = "<group>"; };
+		851F9EA11AABFC1800F994CD /* HMDSolver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDSolver.m; sourceTree = "<group>"; };
 		8559A0281AA5B17100C6D4BF /* Quicksand-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Light.ttf"; sourceTree = "<group>"; };
 		8559A02B1AA5B44B00C6D4BF /* Quicksand-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Quicksand-Regular.otf"; path = "../Quicksand-Regular.otf"; sourceTree = "<group>"; };
 		8594DB801A93037400888099 /* HMDPossibleAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDPossibleAnswer.h; sourceTree = "<group>"; };
@@ -130,6 +133,8 @@
 				85DE03131A7645B600B9A8BF /* HMDBoardPickerViewController.h */,
 				85DE03141A7645B600B9A8BF /* HMDBoardPickerViewController.m */,
 				85DE03151A7645B600B9A8BF /* HMDBoardPickerViewController.xib */,
+				851F9EA01AABFC1800F994CD /* HMDSolver.h */,
+				851F9EA11AABFC1800F994CD /* HMDSolver.m */,
 				85F197CE1AA8087A002984CA /* HMDQuadrantView.h */,
 				85F197CF1AA8087A002984CA /* HMDQuadrantView.m */,
 				85D44FAE1A77497300363F0E /* HMDSolutionViewController.h */,
@@ -336,6 +341,7 @@
 				859D885F1A7DECD7007007B0 /* HMDSudokuTreeNode.m in Sources */,
 				859D88651A7E0E99007007B0 /* HMDCellCoordinates.m in Sources */,
 				85F197D01AA8087A002984CA /* HMDQuadrantView.m in Sources */,
+				851F9EA21AABFC1800F994CD /* HMDSolver.m in Sources */,
 				85DE02F01A7640D500B9A8BF /* main.m in Sources */,
 				85DE03161A7645B600B9A8BF /* HMDBoardPickerViewController.m in Sources */,
 				85D44FB11A77497300363F0E /* HMDSolutionViewController.m in Sources */,

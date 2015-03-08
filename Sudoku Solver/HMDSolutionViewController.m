@@ -103,7 +103,6 @@
         UILabel *cell = [[UILabel alloc] initWithFrame:CGRectMake(xPosition, yPosition, labelSize, labelSize)];
         
         cell.textAlignment = NSTextAlignmentCenter;
-        //cell.backgroundColor = [UIColor whiteColor];
         cell.layer.borderColor = [UIColor lightGrayColor].CGColor;
         cell.layer.borderWidth = 0.5f;
         
@@ -127,6 +126,7 @@
             [cell.layer addSublayer:rightBorder];
         }
         
+        cell.backgroundColor = [UIColor whiteColor];
         
         NSNumber *answer = self.solution[i - 1];
         NSNumber *originalBoardValue = self.originalBoard[i - 1];
