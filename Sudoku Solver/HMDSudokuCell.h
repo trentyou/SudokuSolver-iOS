@@ -10,10 +10,12 @@
 
 @interface HMDSudokuCell : NSObject <NSCopying>
 
-@property (nonatomic, strong) NSNumber *answer;
+//@property (nonatomic, strong) NSNumber *answer;
+@property (nonatomic) NSInteger answer;
 @property (nonatomic, strong) NSMutableArray *possibleAnswers;
+@property (nonatomic) BOOL isPartOfInitialBoard;
 
-- (instancetype)initWithAnswer:(NSNumber *)answer possibleAnswers:(NSArray *)possibleAnswers;
+- (instancetype)initWithAnswer:(NSInteger)answer possibleAnswers:(NSArray *)possibleAnswers;
 - (instancetype)copyWithZone:(NSZone *)zone;
 
 @end

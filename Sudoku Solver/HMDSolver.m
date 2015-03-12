@@ -11,6 +11,7 @@
 #import "HMDSudokuCell.h"
 #import "HMDSudokuTree.h"
 #import "HMDSudokuTreeNode.h"
+#import "HMDRowAndColumnMinMaxCoordinates.h"
 
 
 @interface HMDSolver ()
@@ -64,9 +65,9 @@ static NSNumberFormatter *numberFormatter;
         for (NSInteger column = 0; column < 9; column++) {
             
             HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
-            NSNumber *answer = cell.answer;
+            NSInteger answer = cell.answer;
             
-            if ([answer integerValue] == 0) {
+            if (answer == 0) {
                 NSMutableArray *possibleAnswers = [[NSMutableArray alloc] init];
                 
                 for (NSInteger number = 1; number <= 9; number++) {
@@ -91,10 +92,9 @@ static NSNumberFormatter *numberFormatter;
         for (NSInteger column = 0; column < 9; column++) {
             
             HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
-            NSNumber *answer = cell.answer;
+            NSInteger answer = cell.answer;
             
-            if ([answer integerValue] == 0) {
-                
+            if (answer == 0) {
                 NSArray *possibleAnswers = [cell.possibleAnswers copy];
                 
                 for (HMDPossibleAnswer *possibleAnswer in possibleAnswers) {
@@ -114,7 +114,7 @@ static NSNumberFormatter *numberFormatter;
     for (NSInteger column = inputColumn + 1; column < 9; column++) {
         HMDSudokuCell *cell = self.internalSudokuBoard[inputRow][column];
         
-        if ([cell.answer integerValue] == 0) {
+        if (cell.answer == 0) {
             for (HMDPossibleAnswer *possibleAnswer in cell.possibleAnswers) {
                 if (possibleAnswer.answer == answer) {
                     [cell.possibleAnswers removeObject:possibleAnswer];
@@ -127,7 +127,7 @@ static NSNumberFormatter *numberFormatter;
     for (NSInteger row = inputRow + 1; row < 9; row++) {
         HMDSudokuCell *cell = self.internalSudokuBoard[row][inputColumn];
         
-        if ([cell.answer integerValue] == 0) {
+        if (cell.answer == 0) {
             for (HMDPossibleAnswer *possibleAnswer in cell.possibleAnswers) {
                 if (possibleAnswer.answer == answer) {
                     [cell.possibleAnswers removeObject:possibleAnswer];
@@ -137,101 +137,13 @@ static NSNumberFormatter *numberFormatter;
         }
     }
     
-    NSInteger rowMin;
-    NSInteger rowMax;
+    HMDRowAndColumnMinMaxCoordinates *coordinates = [self quadrantBoundariesForRow:inputRow andColumn:inputColumn];
     
-    NSInteger columnMin;
-    NSInteger columnMax;
-    
-    switch ([self getQuadrantFromRow:inputRow andColumn:inputColumn]) {
-        case 1:
-            rowMin = 0;
-            rowMax = 2;
-            
-            columnMin = 0;
-            columnMax = 2;
-            break;
-            
-        case 2:
-            rowMin = 0;
-            rowMax = 2;
-            
-            columnMin = 3;
-            columnMax = 5;
-            break;
-            
-        case 3:
-            rowMin = 0;
-            rowMax = 2;
-            
-            columnMin = 6;
-            columnMax = 8;
-            break;
-            
-        case 4:
-            rowMin = 3;
-            rowMax = 5;
-            
-            columnMin = 0;
-            columnMax = 2;
-            break;
-            
-        case 5:
-            rowMin = 3;
-            rowMax = 5;
-            
-            columnMin = 3;
-            columnMax = 5;
-            break;
-            
-        case 6:
-            rowMin = 3;
-            rowMax = 5;
-            
-            columnMin = 6;
-            columnMax = 8;
-            break;
-            
-        case 7:
-            rowMin = 6;
-            rowMax = 8;
-            
-            columnMin = 0;
-            columnMax = 2;
-            break;
-            
-        case 8:
-            rowMin = 6;
-            rowMax = 8;
-            
-            columnMin = 3;
-            columnMax = 5;
-            break;
-            
-        case 9:
-            rowMin = 6;
-            rowMax = 8;
-            
-            columnMin = 6;
-            columnMax = 8;
-            break;
-            
-            
-        default:
-            rowMin = 0;
-            rowMax = 2;
-            
-            columnMin = 0;
-            columnMax = 2;
-            break;
-    }
-    
-    
-    for (NSInteger row = inputRow + 1; row <= rowMax; row++) {
-        for (NSInteger column = columnMin; column <= columnMax; column++) {
+    for (NSInteger row = inputRow + 1; row <= coordinates.rowMax; row++) {
+        for (NSInteger column = coordinates.columnMin; column <= coordinates.columnMax; column++) {
             HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
             
-            if ([cell.answer integerValue] == 0) {
+            if (cell.answer == 0) {
                 for (HMDPossibleAnswer *possibleAnswer in cell.possibleAnswers) {
                     if (possibleAnswer.answer == answer) {
                         [cell.possibleAnswers removeObject:possibleAnswer];
@@ -248,7 +160,7 @@ static NSNumberFormatter *numberFormatter;
     for (HMDCellCoordinates *coordinates in self.listOfCellsToGuess) {
         HMDSudokuCell *cell = self.internalSudokuBoard[coordinates.row][coordinates.column];
         
-        if ([cell.answer integerValue] == 0) {
+        if (cell.answer == 0) {
             NSArray *possibleAnswers = [cell.possibleAnswers copy];
             
             for (HMDPossibleAnswer *possibleAnswer in possibleAnswers) {
@@ -268,7 +180,7 @@ static NSNumberFormatter *numberFormatter;
     for (HMDCellCoordinates *coordinates in self.listOfCellsToGuess) {
         HMDSudokuCell *cell = self.internalSudokuBoard[coordinates.row][coordinates.column];
         
-        if ([cell.answer integerValue] == 0) {
+        if (cell.answer == 0) {
             NSMutableArray *possibleAnswers = [[NSMutableArray alloc] init];
             
             for (NSInteger number = 1; number <= 9; number++) {
@@ -285,28 +197,148 @@ static NSNumberFormatter *numberFormatter;
     
 }
 
-- (NSInteger)instancesOfAnswerInRowColumnAndQuadrant:(NSInteger)answer inRow:(NSInteger)row andColumn:(NSInteger)column
+- (void)restorePossibleAnswer:(NSInteger)possibleAnswerToRestore forRow:(NSInteger)inputRow andColumn:(NSInteger)inputColumn andRemovePossibleAnswer:(NSInteger)possibleAnswerToRemove
 {
+    for (NSInteger column = inputColumn + 1; column < 9; column++) {
+        HMDSudokuCell *cell = self.internalSudokuBoard[inputRow][column];
+        
+        if (cell.answer == 0) {
+            if ([self checkValidPlacementOfAnswer:possibleAnswerToRestore inRow:inputRow andColumn:column]) {
+                HMDPossibleAnswer *possibleAnswer = [[HMDPossibleAnswer alloc] init];
+                possibleAnswer.answer = possibleAnswerToRestore;
+                
+                if ([cell.possibleAnswers count] == 0) {
+                    [cell.possibleAnswers addObject:possibleAnswer];
+                } else {
+                    for (NSInteger i = 0; i < [cell.possibleAnswers count]; i++) {
+                        HMDPossibleAnswer *answer = cell.possibleAnswers[i];
+                        
+                        if (possibleAnswerToRestore < answer.answer) {
+                            [cell.possibleAnswers insertObject:possibleAnswer atIndex:i];
+                            break;
+                        } else if (i == [cell.possibleAnswers count] - 1) {
+                            for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
+                                NSLog(@"possibleAnswers before: %ld", (long)pa.answer);
+                            }
+                            [cell.possibleAnswers insertObject:possibleAnswer atIndex:i + 1];
+                            for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
+                                NSLog(@"possibleAnswers: %ld", (long)pa.answer);
+                            }
+                            NSLog(@"\n");
+                            break;
+                        }
+                    }
+                }
+            }
+         
+            for (HMDPossibleAnswer *answer in cell.possibleAnswers) {
+                if (answer.answer == possibleAnswerToRemove) {
+                    [cell.possibleAnswers removeObject:answer];
+                    break;
+                }
+            }
+        
+        }
+    }
     
-    NSInteger columnCount = [self instancesOfAnswerInColumn:column inRow:row forAnswer:answer];
-    NSInteger rowCount = [self instancesOfAnswerInRow:row inColumn:column forAnswer:answer];
-    NSInteger quadrantCount = [self instancesOfAnswerInQuadrantFromRow:row inColumn:column forAnswer:answer];
     
+    for (NSInteger row = inputRow + 1; row < 9; row++) {
+        HMDSudokuCell *cell = self.internalSudokuBoard[row][inputColumn];
+        
+        if (cell.answer == 0) {
+            if ([self checkValidPlacementOfAnswer:possibleAnswerToRestore inRow:row andColumn:inputColumn]) {
+                HMDPossibleAnswer *possibleAnswer = [[HMDPossibleAnswer alloc] init];
+                possibleAnswer.answer = possibleAnswerToRestore;
+                
+                if ([cell.possibleAnswers count] == 0) {
+                    [cell.possibleAnswers addObject:possibleAnswer];
+                } else {
+                    for (NSInteger i = 0; i < [cell.possibleAnswers count]; i++) {
+                        HMDPossibleAnswer *answer = cell.possibleAnswers[i];
+                        if (possibleAnswerToRestore < answer.answer) {
+                            [cell.possibleAnswers insertObject:possibleAnswer atIndex:i];
+                            break;
+                        } else if (i == [cell.possibleAnswers count] - 1) {
+                            for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
+                                NSLog(@"possibleAnswers before: %ld", (long)pa.answer);
+                            }
+                            [cell.possibleAnswers insertObject:possibleAnswer atIndex:i + 1];
+                            for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
+                                NSLog(@"possibleAnswers: %ld", (long)pa.answer);
+                            }
+                            NSLog(@"\n");
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            for (HMDPossibleAnswer *answer in cell.possibleAnswers) {
+                if (answer.answer == possibleAnswerToRemove) {
+                    [cell.possibleAnswers removeObject:answer];
+                    break;
+                }
+            }
+            
+        }
+    }
+
+    HMDRowAndColumnMinMaxCoordinates *coordinates = [self quadrantBoundariesForRow:inputRow andColumn:inputColumn];
     
-    return columnCount + rowCount + quadrantCount;
+    for (NSInteger row = inputRow + 1; row <= coordinates.rowMax; row++) {
+        for (NSInteger column = coordinates.columnMin; column <= coordinates.columnMax; column++) {
+            HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
+            
+            if (cell.answer == 0) {
+                if ([self checkValidPlacementOfAnswer:possibleAnswerToRestore inRow:row andColumn:column]) {
+                    HMDPossibleAnswer *possibleAnswer = [[HMDPossibleAnswer alloc] init];
+                    possibleAnswer.answer = possibleAnswerToRestore;
+                    
+                    if ([cell.possibleAnswers count] == 0) {
+                        [cell.possibleAnswers addObject:possibleAnswer];
+                    } else {
+                        for (NSInteger i = 0; i < [cell.possibleAnswers count]; i++) {
+                            HMDPossibleAnswer *answer = cell.possibleAnswers[i];
+                            
+                            if (possibleAnswerToRestore < answer.answer) {
+                                [cell.possibleAnswers insertObject:possibleAnswer atIndex:i];
+                                break;
+                            } else if (i == [cell.possibleAnswers count] - 1) {
+                                for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
+                                    NSLog(@"possibleAnswers before: %ld", (long)pa.answer);
+                                }
+                                [cell.possibleAnswers insertObject:possibleAnswer atIndex:i + 1];
+                                for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
+                                    NSLog(@"possibleAnswers: %ld", (long)pa.answer);
+                                }
+                                NSLog(@"\n");
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                for (HMDPossibleAnswer *answer in cell.possibleAnswers) {
+                    if (answer.answer == possibleAnswerToRemove) {
+                        [cell.possibleAnswers removeObject:answer];
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
 }
 
-- (NSInteger)instancesOfAnswerInQuadrantFromRow:(NSInteger)inputRow inColumn:(NSInteger)inputColumn forAnswer:(NSInteger)answer
+- (HMDRowAndColumnMinMaxCoordinates *)quadrantBoundariesForRow:(NSInteger)row andColumn:(NSInteger)column
 {
-    NSInteger count = 0;
-    
     NSInteger rowMin;
     NSInteger rowMax;
     
     NSInteger columnMin;
     NSInteger columnMax;
     
-    switch ([self getQuadrantFromRow:inputRow andColumn:inputColumn]) {
+    switch ([self getQuadrantFromRow:row andColumn:column]) {
         case 1:
             rowMin = 0;
             rowMax = 2;
@@ -389,13 +421,39 @@ static NSNumberFormatter *numberFormatter;
             break;
     }
     
+    HMDRowAndColumnMinMaxCoordinates *coordinates = [[HMDRowAndColumnMinMaxCoordinates alloc] init];
+    coordinates.rowMin = rowMin;
+    coordinates.rowMax = rowMax;
     
-    for (NSInteger row = rowMin; row <= rowMax; row++) {
-        for (NSInteger column = columnMin; column <= columnMax; column++) {
+    coordinates.columnMin = columnMin;
+    coordinates.columnMax = columnMax;
+    
+    return coordinates;
+}
+
+- (NSInteger)instancesOfAnswerInRowColumnAndQuadrant:(NSInteger)answer inRow:(NSInteger)row andColumn:(NSInteger)column
+{
+    
+    NSInteger columnCount = [self instancesOfAnswerInColumn:column inRow:row forAnswer:answer];
+    NSInteger rowCount = [self instancesOfAnswerInRow:row inColumn:column forAnswer:answer];
+    NSInteger quadrantCount = [self instancesOfAnswerInQuadrantFromRow:row inColumn:column forAnswer:answer];
+    
+    
+    return columnCount + rowCount + quadrantCount;
+}
+
+- (NSInteger)instancesOfAnswerInQuadrantFromRow:(NSInteger)inputRow inColumn:(NSInteger)inputColumn forAnswer:(NSInteger)answer
+{
+    NSInteger count = 0;
+    
+    HMDRowAndColumnMinMaxCoordinates *coordinates = [self quadrantBoundariesForRow:inputRow andColumn:inputColumn];
+    
+    for (NSInteger row = coordinates.rowMin; row <= coordinates.rowMax; row++) {
+        for (NSInteger column = coordinates.columnMin; column <= coordinates.columnMax; column++) {
             if (row != inputRow && column != inputColumn) {
                 HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
                 
-                if ([cell.answer integerValue] == 0) {
+                if (cell.answer == 0) {
                     NSArray *possibleAnswers = [cell.possibleAnswers copy];
                     
                     for (HMDPossibleAnswer *possibleAnswer in possibleAnswers) {
@@ -420,7 +478,7 @@ static NSNumberFormatter *numberFormatter;
         if (column != inputColumn) {
             HMDSudokuCell *cell = self.internalSudokuBoard[inputRow][column];
             
-            if ([cell.answer integerValue] == 0) {
+            if (cell.answer == 0) {
                 NSArray *possibleAnswers = [cell.possibleAnswers copy];
                 
                 for (HMDPossibleAnswer *possibleAnswer in possibleAnswers) {
@@ -443,7 +501,7 @@ static NSNumberFormatter *numberFormatter;
         if (row != inputRow) {
             HMDSudokuCell *cell = self.internalSudokuBoard[row][inputColumn];
             
-            if ([cell.answer integerValue] == 0) {
+            if (cell.answer == 0) {
                 NSArray *possibleAnswers = [cell.possibleAnswers copy];
                 
                 for (HMDPossibleAnswer *possibleAnswer in possibleAnswers) {
@@ -472,9 +530,9 @@ static NSNumberFormatter *numberFormatter;
     for (NSInteger row = 0; row < 9; row++) {
         if (row != inputRow) {
             HMDSudokuCell *cell = self.internalSudokuBoard[row][inputColumn];
-            NSNumber *cellAnswer = cell.answer;
+            NSInteger cellAnswer = cell.answer;
             
-            if ([cellAnswer integerValue] == answer) {
+            if (cellAnswer == answer) {
                 return YES;
             }
         }
@@ -489,9 +547,9 @@ static NSNumberFormatter *numberFormatter;
         if (column != inputColumn) {
             
             HMDSudokuCell *cell = self.internalSudokuBoard[inputRow][column];
-            NSNumber *cellAnswer = cell.answer;
+            NSInteger cellAnswer = cell.answer;
             
-            if ([cellAnswer integerValue] == answer) {
+            if (cellAnswer == answer) {
                 return YES;
             }
         }
@@ -513,111 +571,22 @@ static NSNumberFormatter *numberFormatter;
 
 - (BOOL)checkQuadrantForAnswer:(NSInteger)answer inRow:(NSInteger)inputRow andColumn:(NSInteger)inputColumn
 {
-    NSInteger rowMin;
-    NSInteger rowMax;
+    HMDRowAndColumnMinMaxCoordinates *coordinates = [self quadrantBoundariesForRow:inputRow andColumn:inputColumn];
     
-    NSInteger columnMin;
-    NSInteger columnMax;
-    
-    switch ([self getQuadrantFromRow:inputRow andColumn:inputColumn]) {
-        case 1:
-            rowMin = 0;
-            rowMax = 2;
-            
-            columnMin = 0;
-            columnMax = 2;
-            break;
-            
-        case 2:
-            rowMin = 0;
-            rowMax = 2;
-            
-            columnMin = 3;
-            columnMax = 5;
-            break;
-            
-        case 3:
-            rowMin = 0;
-            rowMax = 2;
-            
-            columnMin = 6;
-            columnMax = 8;
-            break;
-            
-        case 4:
-            rowMin = 3;
-            rowMax = 5;
-            
-            columnMin = 0;
-            columnMax = 2;
-            break;
-            
-        case 5:
-            rowMin = 3;
-            rowMax = 5;
-            
-            columnMin = 3;
-            columnMax = 5;
-            break;
-            
-        case 6:
-            rowMin = 3;
-            rowMax = 5;
-            
-            columnMin = 6;
-            columnMax = 8;
-            break;
-            
-        case 7:
-            rowMin = 6;
-            rowMax = 8;
-            
-            columnMin = 0;
-            columnMax = 2;
-            break;
-            
-        case 8:
-            rowMin = 6;
-            rowMax = 8;
-            
-            columnMin = 3;
-            columnMax = 5;
-            break;
-            
-        case 9:
-            rowMin = 6;
-            rowMax = 8;
-            
-            columnMin = 6;
-            columnMax = 8;
-            break;
-            
-            
-        default:
-            rowMin = 0;
-            rowMax = 2;
-            
-            columnMin = 0;
-            columnMax = 2;
-            break;
-    }
-    
-    
-    for (NSInteger row = rowMin; row <= rowMax; row++) {
-        for (NSInteger column = columnMin; column <= columnMax; column++) {
+    for (NSInteger row = coordinates.rowMin; row <= coordinates.rowMax; row++) {
+        for (NSInteger column = coordinates.columnMin; column <= coordinates.columnMax; column++) {
             if (row != inputRow && column != inputColumn) {
                 
                 HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
-                NSNumber *cellAnswer = cell.answer;
+                NSInteger cellAnswer = cell.answer;
                 
-                if ([cellAnswer integerValue] == answer) {
+                if (cellAnswer == answer) {
                     return YES;
                 }
             }
             
         }
     }
-    
     
     return NO;
     
@@ -654,7 +623,7 @@ static NSNumberFormatter *numberFormatter;
                 
                 if (occurenceCount == 1) {
                     HMDSudokuCell *cell = self.internalSudokuBoard[rowCoordinateOfOccurence][columnCoordinateOfOccurence];
-                    cell.answer = [NSNumber numberWithInteger:answer];
+                    cell.answer = answer;
                     [cell.possibleAnswers removeAllObjects];
                     changed = YES;
                     
@@ -675,9 +644,9 @@ static NSNumberFormatter *numberFormatter;
         for (NSInteger column = 0; column < 9; column++) {
             
             HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
-            if ([cell.answer integerValue] == 0) return NO;
             
-            if (![self checkValidPlacementOfAnswer:[cell.answer integerValue] inRow:row andColumn:column]) return NO;
+            if (cell.answer == 0) return NO;
+            if (![self checkValidPlacementOfAnswer:cell.answer inRow:row andColumn:column]) return NO;
             
         }
     }
@@ -698,16 +667,16 @@ static NSNumberFormatter *numberFormatter;
             for (NSInteger column = 0; column < 9; column++) {
                 
                 HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
-                NSNumber *answer = cell.answer;
+                NSInteger answer = cell.answer;
                 
                 //                NSLog(@"Row: %ld", (long)row);
                 //                NSLog(@"Column %ld", (long)column);
                 //                NSLog(@"cell.possibleAnswers before: %@", cell.possibleAnswers);
                 
-                if ([answer integerValue] == 0 && [cell.possibleAnswers count] == 1) {
+                if (answer == 0 && [cell.possibleAnswers count] == 1) {
                     
                     HMDPossibleAnswer *possibleAnswer = [cell.possibleAnswers firstObject];
-                    cell.answer = [NSNumber numberWithInteger:possibleAnswer.answer];
+                    cell.answer = possibleAnswer.answer;
                     [cell.possibleAnswers removeAllObjects];
                     //                    NSLog(@"cell.possibleAnswers after: %@", cell.possibleAnswers);
                     
@@ -774,7 +743,7 @@ static NSNumberFormatter *numberFormatter;
                 
                 HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
                 
-                if ([cell.answer integerValue] == 0) {
+                if (cell.answer == 0) {
                     HMDCellCoordinates *coordinates = [[HMDCellCoordinates alloc] initWithRowCoordinates:row column:column];
                     [self.listOfCellsToGuess addObject:coordinates];
                 }
@@ -865,36 +834,41 @@ static NSNumberFormatter *numberFormatter;
             HMDSudokuCell *parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column];
             
             if (parent.nextSibling) {
-                //                NSLog(@"Encountered empty possible answers in treeLevel %ld, moving to sibling", (long)(parent.treeLevel + 1));
+//                                NSLog(@"Encountered empty possible answers in treeLevel %ld, moving to sibling", (long)(parent.treeLevel + 1));
+                NSInteger prevAnswer = parent.parent.firstChild.answer;
                 
                 parent.parent.firstChild = parent.nextSibling;
                 parent = parent.nextSibling;
-                parentCell.answer = [parent.answer copy];
+                parentCell.answer = parent.answer;
                 
-                //                NSLog(@"New answer: %@ for treeLevel %ld", parentCell.answer, (long)parent.treeLevel);
+//                                NSLog(@"New answer: %ld for treeLevel %ld", (long)parentCell.answer, (long)parent.treeLevel);
+                
                 [self restorePossibleAnswersForCellsToGuess];
                 [self updatePossibleAnswersForCellsToGuess];
+                
+                //[self restorePossibleAnswer:prevAnswer forRow:parentCoordinates.row andColumn:parentCoordinates.column andRemovePossibleAnswer: parentCell.answer];
+                
                 //[self evaluateOptimalPossibleAnswerPathForCell:cell inCoordinates:coordinates];
                 
                 possibleAnswers = [cell.possibleAnswers copy];
                 
-                //                NSLog(@"--------------------------");
-                //                NSLog(@"current treeLevel: %ld", (long)parent.treeLevel + 1);
-                //                NSLog(@"possible answers for treeLevel:");
-                //                for (NSInteger i = 0; i < [possibleAnswers count]; i++) {
-                //                    HMDPossibleAnswer *pa = possibleAnswers[i];
-                //                    NSLog(@"%ld", (long)pa.answer);
-                //                }
-                //                NSLog(@"--------------------------");
+//                                NSLog(@"--------------------------");
+//                                NSLog(@"current treeLevel: %ld", (long)parent.treeLevel + 1);
+//                                NSLog(@"possible answers for treeLevel:");
+//                                for (NSInteger i = 0; i < [possibleAnswers count]; i++) {
+//                                    HMDPossibleAnswer *pa = possibleAnswers[i];
+//                                    NSLog(@"%ld", (long)pa.answer);
+//                                }
+//                                NSLog(@"--------------------------");
                 
                 
             } else {
-                //                NSLog(@"Encountered empty possible answers in treeLevel %ld, searching for next higher parent with sibling", (long)(parent.treeLevel + 1));
+//                                NSLog(@"Encountered empty possible answers in treeLevel %ld, searching for next higher parent with sibling", (long)(parent.treeLevel + 1));
                 
                 NSInteger previousTreeLevel = parent.treeLevel;
                 
                 parent = [self getNextParentNodeWithSibling:parent];
-                //                NSLog(@"Coordinates of next parent with sibling, row: %ld, column: %ld", (long)parent.coordinates.row, (long)parent.coordinates.column);
+//                                NSLog(@"Coordinates of next parent with sibling, row: %ld, column: %ld", (long)parent.coordinates.row, (long)parent.coordinates.column);
                 NSInteger newTreeLevel = parent.treeLevel;
                 
                 parent.parent.firstChild = parent.nextSibling;
@@ -905,33 +879,33 @@ static NSNumberFormatter *numberFormatter;
                     HMDCellCoordinates *coordinatesForCellToReset = self.listOfCellsToGuess[level];
                     HMDSudokuCell *cellToReset = self.internalSudokuBoard[coordinatesForCellToReset.row][coordinatesForCellToReset.column];
                     
-                    cellToReset.answer = @0;
+                    cellToReset.answer = 0;
                 }
                 
                 parentCoordinates = self.listOfCellsToGuess[newTreeLevel];
                 parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column];
                 
-                parentCell.answer = [parent.answer copy];
+                parentCell.answer = parent.answer;
                 //                NSLog(@"New answer: %@ for treeLevel: %ld", parentCell.answer, (long)newTreeLevel);
                 
                 [self restorePossibleAnswersForCellsToGuess];
                 [self updatePossibleAnswersForCellsToGuess];
                 
-                //                NSLog(@"--------------------------");
-                //
-                //                for (NSInteger level = newTreeLevel + 1; level <= previousTreeLevel; level++) {
-                //                    HMDCellCoordinates *coordinatesForCellToReset = self.listOfCellsToGuess[level];
-                //                    HMDSudokuCell *cellToReset = self.internalSudokuBoard[coordinatesForCellToReset.row][coordinatesForCellToReset.column];
-                //
-                //                    NSLog(@"Cell row: %ld, column: %ld", (long)coordinatesForCellToReset.row, (long)coordinatesForCellToReset.column);
-                //                    NSLog(@"possible answers:");
-                //                    for (HMDPossibleAnswer *possibleAnswer in cellToReset.possibleAnswers) {
-                //                        NSLog(@"%ld", (long)possibleAnswer.answer);
-                //                    }
-                //                    NSLog(@"\n");
-                //                }
-                //
-                //                NSLog(@"--------------------------");
+//                                NSLog(@"--------------------------");
+//                
+//                                for (NSInteger level = newTreeLevel + 1; level <= previousTreeLevel; level++) {
+//                                    HMDCellCoordinates *coordinatesForCellToReset = self.listOfCellsToGuess[level];
+//                                    HMDSudokuCell *cellToReset = self.internalSudokuBoard[coordinatesForCellToReset.row][coordinatesForCellToReset.column];
+//                
+//                                    NSLog(@"Cell row: %ld, column: %ld", (long)coordinatesForCellToReset.row, (long)coordinatesForCellToReset.column);
+//                                    NSLog(@"possible answers:");
+//                                    for (HMDPossibleAnswer *possibleAnswer in cellToReset.possibleAnswers) {
+//                                        NSLog(@"%ld", (long)possibleAnswer.answer);
+//                                    }
+//                                    NSLog(@"\n");
+//                                }
+//                
+//                                NSLog(@"--------------------------");
                 
                 continue;
             }
@@ -942,7 +916,7 @@ static NSNumberFormatter *numberFormatter;
             HMDPossibleAnswer *possibleAnswer = possibleAnswers[i];
             HMDSudokuTreeNode *child = [[HMDSudokuTreeNode alloc] init];
             
-            child.answer = [NSNumber numberWithInteger:possibleAnswer.answer];
+            child.answer = possibleAnswer.answer;
             child.parent = parent;
             
             child.treeLevel = parent.treeLevel + 1;
@@ -955,11 +929,11 @@ static NSNumberFormatter *numberFormatter;
                 child.nextSibling = nextSibling;
                 nextSibling = nil;
                 
-                cell.answer = [NSNumber numberWithInteger:possibleAnswer.answer];
+                cell.answer = possibleAnswer.answer;
                 [cell.possibleAnswers removeAllObjects];
                 
                 parent = child;
-                //                NSLog(@"Selected answer:");
+//                NSLog(@"Selected answer:");
                 
             } else {
                 if (nextSibling) {
@@ -971,23 +945,22 @@ static NSNumberFormatter *numberFormatter;
                 nextSibling = child;
             }
             
-            //            NSLog(@"Node: %@", [child.answer stringValue]);
+//                NSLog(@"Node: %ld", (long)child.answer);
         }
-        //[self updatePossibleAnswers];
         
         HMDCellCoordinates *parentCoordinates = self.listOfCellsToGuess[parent.treeLevel];
         HMDSudokuCell *parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column];
         
-        [self updatePossibleAnswersInRow:parentCoordinates.row andColumn:parentCoordinates.column forAnswer:[parentCell.answer integerValue]];
+        [self updatePossibleAnswersInRow:parentCoordinates.row andColumn:parentCoordinates.column forAnswer:parentCell.answer];
         
         
-        //        NSLog(@"\n");
-        //        NSLog(@"Tree Level %ld", (long)parent.treeLevel);
-        //        NSLog(@"--");
-        //        NSLog(@"\n");
-        //        NSLog(@"\n");
-        //        NSLog(@"\n");
-        //        NSLog(@"--");
+//                NSLog(@"\n");
+//                NSLog(@"Tree Level %ld", (long)parent.treeLevel);
+//                NSLog(@"--");
+//                NSLog(@"\n");
+//                NSLog(@"\n");
+//                NSLog(@"\n");
+//                NSLog(@"--");
         
     }
     

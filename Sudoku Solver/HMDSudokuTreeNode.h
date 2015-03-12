@@ -11,7 +11,8 @@
 
 @interface HMDSudokuTreeNode : NSObject
 
-@property (nonatomic, strong) NSNumber *answer;
+//@property (nonatomic, strong) NSNumber *answer;
+@property (nonatomic) NSInteger answer;
 
 @property (nonatomic, weak) HMDSudokuTreeNode *parent;
 @property (nonatomic, strong) HMDSudokuTreeNode *firstChild;

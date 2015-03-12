@@ -17,7 +17,6 @@
 
 
 @property (nonatomic, copy) NSArray *solution;
-@property (nonatomic, copy) NSArray *originalBoard;
 
 @property (nonatomic) double timeToSolve;
 
@@ -25,19 +24,14 @@
 
 @implementation HMDSolutionViewController
 
-- (instancetype)initWithSolution:(NSArray *)solution originalBoard:(NSArray *)originalBoard andTimeToSolve:(double)timeToSolve
+- (instancetype)initWithSolution:(NSArray *)solution andTimeToSolve:(double)timeToSolve
 {
     self = [super initWithNibName:nil bundle:nil];
     
     if (self) {
-        
-        if (timeToSolve != 0.0) {
-            _timeToSolve = timeToSolve;
-        }
-        
-        
+
+        _timeToSolve = timeToSolve;
         _solution = solution;
-        _originalBoard = originalBoard;
     }
     
     return self;
@@ -80,7 +74,9 @@
 
 - (void)setupTimeToSolveLabel
 {
-    self.timeToSolveLabel.text = [self formatTimeToSolveToString:self.timeToSolve];
+    if (self.timeToSolve != 0.0) {
+        self.timeToSolveLabel.text = [self formatTimeToSolveToString:self.timeToSolve];
+    }
 }
 
 - (void)setupSolutionBoard
@@ -105,39 +101,39 @@
             cell.layer.borderWidth = 0.5f;
             
             if (row == 2 || row == 5) {
-                CALayer *bottomBorder = [CALayer layer];
+                CAShapeLayer *bottomBorder = [CAShapeLayer layer];
                 
                 bottomBorder.borderColor = [UIColor darkGrayColor].CGColor;
                 bottomBorder.borderWidth = 2.0f;
-                bottomBorder.frame = CGRectMake(0.0f, labelSize, labelSize, 1.0f);
+                bottomBorder.frame = CGRectMake(0.0f, labelSize - 1.5f, labelSize, 1.0f);
                 
                 [cell.layer addSublayer:bottomBorder];
             }
             
             if (column == 2 || column == 5) {
-                CALayer *rightBorder = [CALayer layer];
+                CAShapeLayer *rightBorder = [CAShapeLayer layer];
                 
                 rightBorder.borderColor = [UIColor darkGrayColor].CGColor;
                 rightBorder.borderWidth = 2.0f;
-                rightBorder.frame = CGRectMake(labelSize, 0.0f, 2.0f, labelSize);
+                rightBorder.frame = CGRectMake(labelSize - 1.5f, 0.0f, 2.0f, labelSize);
                 
                 [cell.layer addSublayer:rightBorder];
             }
             
-            cell.backgroundColor = [UIColor whiteColor];
+            cell.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.9];
             
-            HMDSudokuCell *answer = self.solution[row][column];
-            HMDSudokuCell *originalBoardValue = self.originalBoard[row][column];
-            
-            if ([originalBoardValue.answer integerValue] != [answer.answer integerValue]) {
+            HMDSudokuCell *sudokuCell = self.solution[row][column];
+      
+            if (!sudokuCell.isPartOfInitialBoard) {
                 cell.textColor = [UIColor colorWithRed:0/255.0 green:150/255.0 blue:50/255.0 alpha:1.0];
             }
             
             cell.font = [UIFont fontWithName:@"quicksand-regular" size:20];
-            if ([answer.answer integerValue] == 0) {
+            
+            if (sudokuCell.answer == 0) {
                 cell.text = @"";
             } else {
-                cell.text = [answer.answer stringValue];
+                cell.text = [NSString stringWithFormat:@"%ld", sudokuCell.answer];
             }
             
             [self.view addSubview:cell];

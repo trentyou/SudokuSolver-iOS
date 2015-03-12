@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		851174061AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.m in Sources */ = {isa = PBXBuildFile; fileRef = 851174051AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.m */; };
 		851F9EA21AABFC1800F994CD /* HMDSolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 851F9EA11AABFC1800F994CD /* HMDSolver.m */; };
 		8559A0291AA5B1C300C6D4BF /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8559A0281AA5B17100C6D4BF /* Quicksand-Light.ttf */; };
 		8559A02A1AA5B1C400C6D4BF /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8559A0281AA5B17100C6D4BF /* Quicksand-Light.ttf */; };
@@ -43,6 +44,8 @@
 /* Begin PBXFileReference section */
 		36AF5BBEC7200E23654BF740 /* Pods-Sudoku Solver.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sudoku Solver.release.xcconfig"; path = "Pods/Target Support Files/Pods-Sudoku Solver/Pods-Sudoku Solver.release.xcconfig"; sourceTree = "<group>"; };
 		6C06B72111C64DCA69E3FBBD /* libPods-Sudoku Solver.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sudoku Solver.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		851174041AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDRowAndColumnMinMaxCoordinates.h; sourceTree = "<group>"; };
+		851174051AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDRowAndColumnMinMaxCoordinates.m; sourceTree = "<group>"; };
 		851F9EA01AABFC1800F994CD /* HMDSolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSolver.h; sourceTree = "<group>"; };
 		851F9EA11AABFC1800F994CD /* HMDSolver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDSolver.m; sourceTree = "<group>"; };
 		8559A0281AA5B17100C6D4BF /* Quicksand-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Light.ttf"; sourceTree = "<group>"; };
@@ -150,6 +153,8 @@
 				859D88671A7E11B1007007B0 /* HMDSudokuTree.m */,
 				8594DB801A93037400888099 /* HMDPossibleAnswer.h */,
 				8594DB811A93037400888099 /* HMDPossibleAnswer.m */,
+				851174041AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.h */,
+				851174051AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.m */,
 				85DE02FA1A7640D500B9A8BF /* Images.xcassets */,
 				85DE02FC1A7640D500B9A8BF /* LaunchScreen.xib */,
 				85DE02ED1A7640D500B9A8BF /* Supporting Files */,
@@ -338,6 +343,7 @@
 				859D88681A7E11B1007007B0 /* HMDSudokuTree.m in Sources */,
 				85DE02F31A7640D500B9A8BF /* AppDelegate.m in Sources */,
 				85B5DAAB1A778D69002A1979 /* HMDSudokuCell.m in Sources */,
+				851174061AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.m in Sources */,
 				859D885F1A7DECD7007007B0 /* HMDSudokuTreeNode.m in Sources */,
 				859D88651A7E0E99007007B0 /* HMDCellCoordinates.m in Sources */,
 				85F197D01AA8087A002984CA /* HMDQuadrantView.m in Sources */,
