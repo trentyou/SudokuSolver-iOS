@@ -13,6 +13,7 @@
 //@property (nonatomic, strong) NSNumber *answer;
 @property (nonatomic) NSInteger answer;
 @property (nonatomic, strong) NSMutableArray *possibleAnswers;
+@property (nonatomic, strong) NSMutableArray *initialPossibleAnswers;
 @property (nonatomic) BOOL isPartOfInitialBoard;
 
 - (instancetype)initWithAnswer:(NSInteger)answer possibleAnswers:(NSArray *)possibleAnswers;

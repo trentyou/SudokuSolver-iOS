@@ -175,6 +175,48 @@ static NSNumberFormatter *numberFormatter;
     }
 }
 
+- (void)restorePossibleAnswerForCellInRow:(NSInteger)row andColumn:(NSInteger)column
+{
+    HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
+    
+    NSArray *possibleAnswersCopy = [cell.possibleAnswers copy];
+    
+    if ([possibleAnswersCopy count] == 0) {
+        for (HMDPossibleAnswer *initialPossibleAnswer in cell.initialPossibleAnswers) {
+        
+            if ([self checkValidPlacementOfAnswer:initialPossibleAnswer.answer inRow:row andColumn:column]) {
+                [cell.possibleAnswers addObject:initialPossibleAnswer];
+            }
+        }
+        
+    } else {
+        for (HMDPossibleAnswer *initialPossibleAnswer in cell.initialPossibleAnswers) {
+            
+            for (HMDPossibleAnswer *possibleAnswer in possibleAnswersCopy) {
+                if (possibleAnswer.answer != initialPossibleAnswer.answer) {
+                    
+                    if ([self checkValidPlacementOfAnswer:initialPossibleAnswer.answer inRow:row andColumn:column]) {
+                        for (NSInteger i = 0; i < [cell.possibleAnswers count]; i++) {
+                            HMDPossibleAnswer *answer = cell.possibleAnswers[i];
+                            
+                            if (initialPossibleAnswer.answer < answer.answer) {
+                                [cell.possibleAnswers insertObject:initialPossibleAnswer atIndex:i];
+                                break;
+                            } else if (i == [cell.possibleAnswers count] - 1) {
+                                [cell.possibleAnswers insertObject:initialPossibleAnswer atIndex:i + 1];
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
+
+    }
+    
+}
+
 - (void)restorePossibleAnswersForCellsToGuess
 {
     for (HMDCellCoordinates *coordinates in self.listOfCellsToGuess) {
@@ -194,7 +236,6 @@ static NSNumberFormatter *numberFormatter;
             cell.possibleAnswers = possibleAnswers;
         }
     }
-    
 }
 
 - (void)restorePossibleAnswer:(NSInteger)possibleAnswerToRestore forRow:(NSInteger)inputRow andColumn:(NSInteger)inputColumn andRemovePossibleAnswer:(NSInteger)possibleAnswerToRemove
@@ -208,23 +249,33 @@ static NSNumberFormatter *numberFormatter;
                 possibleAnswer.answer = possibleAnswerToRestore;
                 
                 if ([cell.possibleAnswers count] == 0) {
+//                    NSLog(@"empty possibleAnswers before in column check for row: %ld, column: %ld",(long)inputRow, (long)column);
+
                     [cell.possibleAnswers addObject:possibleAnswer];
+//                    HMDPossibleAnswer *pa = cell.possibleAnswers[0];
+//                    NSLog(@"possibleAnswers after in column check for row: %ld, column: %ld: %ld",(long)inputRow, (long)column, (long)pa.answer);
                 } else {
                     for (NSInteger i = 0; i < [cell.possibleAnswers count]; i++) {
                         HMDPossibleAnswer *answer = cell.possibleAnswers[i];
                         
                         if (possibleAnswerToRestore < answer.answer) {
+//                            for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
+//                                NSLog(@"possibleAnswers before in column check for row: %ld, column: %ld: %ld",(long)inputRow, (long)column, (long)pa.answer);
+//                            }
                             [cell.possibleAnswers insertObject:possibleAnswer atIndex:i];
+//                            for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
+//                                NSLog(@"possibleAnswers after in column check for row: %ld, column: %ld: %ld",(long)inputRow, (long)column, (long)pa.answer);
+//                            }
                             break;
                         } else if (i == [cell.possibleAnswers count] - 1) {
-                            for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
-                                NSLog(@"possibleAnswers before: %ld", (long)pa.answer);
-                            }
+//                            for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
+//                                NSLog(@"possibleAnswers before in column check for row: %ld, column: %ld: %ld",(long)inputRow, (long)column, (long)pa.answer);
+//                            }
                             [cell.possibleAnswers insertObject:possibleAnswer atIndex:i + 1];
-                            for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
-                                NSLog(@"possibleAnswers: %ld", (long)pa.answer);
-                            }
-                            NSLog(@"\n");
+//                            for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
+//                                NSLog(@"possibleAnswers after in column check for row: %ld, column: %ld: %ld",(long)inputRow, (long)column, (long)pa.answer);
+//                            }
+//                            NSLog(@"\n");
                             break;
                         }
                     }
@@ -251,22 +302,32 @@ static NSNumberFormatter *numberFormatter;
                 possibleAnswer.answer = possibleAnswerToRestore;
                 
                 if ([cell.possibleAnswers count] == 0) {
+//                    NSLog(@"empty possibleAnswers before in row check for row: %ld, column: %ld",(long)row, (long)inputColumn);
                     [cell.possibleAnswers addObject:possibleAnswer];
+//                    HMDPossibleAnswer *pa = cell.possibleAnswers[0];
+
+//                    NSLog(@"possibleAnswers after in row check for row: %ld, column: %ld: %ld",(long)row, (long)inputColumn, (long)pa.answer);
                 } else {
                     for (NSInteger i = 0; i < [cell.possibleAnswers count]; i++) {
                         HMDPossibleAnswer *answer = cell.possibleAnswers[i];
                         if (possibleAnswerToRestore < answer.answer) {
+//                            for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
+//                                NSLog(@"possibleAnswers before in row check for row: %ld, column: %ld: %ld",(long)row, (long)inputColumn, (long)pa.answer);
+//                            }
                             [cell.possibleAnswers insertObject:possibleAnswer atIndex:i];
+//                            for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
+//                                NSLog(@"possibleAnswers after in row check for row: %ld, column: %ld: %ld",(long)row, (long)inputColumn, (long)pa.answer);
+//                            }
                             break;
                         } else if (i == [cell.possibleAnswers count] - 1) {
-                            for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
-                                NSLog(@"possibleAnswers before: %ld", (long)pa.answer);
-                            }
+//                            for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
+//                                NSLog(@"possibleAnswers before in row check for row: %ld, column: %ld: %ld",(long)row, (long)inputColumn, (long)pa.answer);
+//                            }
                             [cell.possibleAnswers insertObject:possibleAnswer atIndex:i + 1];
-                            for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
-                                NSLog(@"possibleAnswers: %ld", (long)pa.answer);
-                            }
-                            NSLog(@"\n");
+//                            for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
+//                                NSLog(@"possibleAnswers after in row check for row: %ld, column: %ld: %ld",(long)row, (long)inputColumn, (long)pa.answer);
+//                            }
+//                            NSLog(@"\n");
                             break;
                         }
                     }
@@ -289,29 +350,40 @@ static NSNumberFormatter *numberFormatter;
         for (NSInteger column = coordinates.columnMin; column <= coordinates.columnMax; column++) {
             HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
             
-            if (cell.answer == 0) {
+            if (cell.answer == 0 && column != inputColumn) {
                 if ([self checkValidPlacementOfAnswer:possibleAnswerToRestore inRow:row andColumn:column]) {
                     HMDPossibleAnswer *possibleAnswer = [[HMDPossibleAnswer alloc] init];
                     possibleAnswer.answer = possibleAnswerToRestore;
                     
                     if ([cell.possibleAnswers count] == 0) {
+//                        NSLog(@"empty possibleAnswers before in quadrant check for row: %ld, column: %ld", (long)row, (long)column);
+
                         [cell.possibleAnswers addObject:possibleAnswer];
+//                        HMDPossibleAnswer *pa = cell.possibleAnswers[0];
+
+//                        NSLog(@"possibleAnswers after in quadrant check for row: %ld, column: %ld: %ld",(long)row, (long)column, (long)pa.answer);
                     } else {
                         for (NSInteger i = 0; i < [cell.possibleAnswers count]; i++) {
                             HMDPossibleAnswer *answer = cell.possibleAnswers[i];
                             
                             if (possibleAnswerToRestore < answer.answer) {
+//                                for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
+//                                    NSLog(@"possibleAnswers before in quadrant check for row: %ld, column: %ld: %ld",(long)row, (long)column, (long)pa.answer);
+//                                }
                                 [cell.possibleAnswers insertObject:possibleAnswer atIndex:i];
+//                                for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
+//                                    NSLog(@"possibleAnswers after in quadrant check for row: %ld, column: %ld: %ld",(long)row, (long)column, (long)pa.answer);
+//                                }
                                 break;
                             } else if (i == [cell.possibleAnswers count] - 1) {
-                                for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
-                                    NSLog(@"possibleAnswers before: %ld", (long)pa.answer);
-                                }
+//                                for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
+//                                    NSLog(@"possibleAnswers before in quadrant check for row: %ld, column: %ld: %ld",(long)row, (long)column, (long)pa.answer);
+//                                }
                                 [cell.possibleAnswers insertObject:possibleAnswer atIndex:i + 1];
-                                for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
-                                    NSLog(@"possibleAnswers: %ld", (long)pa.answer);
-                                }
-                                NSLog(@"\n");
+//                                for (HMDPossibleAnswer *pa in cell.possibleAnswers) {
+//                                    NSLog(@"possibleAnswers after in quadrant check for row: %ld, column: %ld: %ld",(long)row, (long)column, (long)pa.answer);
+//                                }
+//                                NSLog(@"\n");
                                 break;
                             }
                         }
@@ -746,6 +818,7 @@ static NSNumberFormatter *numberFormatter;
                 if (cell.answer == 0) {
                     HMDCellCoordinates *coordinates = [[HMDCellCoordinates alloc] initWithRowCoordinates:row column:column];
                     [self.listOfCellsToGuess addObject:coordinates];
+                    cell.initialPossibleAnswers = [cell.possibleAnswers copy];
                 }
             }
         }
@@ -822,8 +895,8 @@ static NSNumberFormatter *numberFormatter;
     while ((signed long)parent.treeLevel < (signed long)[self.listOfCellsToGuess count] - 1) {
         iterationCount++;
         
-        HMDCellCoordinates *coordinates = self.listOfCellsToGuess[parent.treeLevel + 1];
-        HMDSudokuCell *cell = self.internalSudokuBoard[coordinates.row][coordinates.column];
+        HMDCellCoordinates *childCoordinates = self.listOfCellsToGuess[parent.treeLevel + 1];
+        HMDSudokuCell *cell = self.internalSudokuBoard[childCoordinates.row][childCoordinates.column];
         
         //[self evaluateOptimalPossibleAnswerPathForCell:cell inCoordinates:coordinates];
         
@@ -833,7 +906,7 @@ static NSNumberFormatter *numberFormatter;
             HMDCellCoordinates *parentCoordinates = self.listOfCellsToGuess[parent.treeLevel];
             HMDSudokuCell *parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column];
             
-            if (parent.nextSibling) {
+            if (parent.nextSibling && (parentCoordinates.row == childCoordinates.row || parentCoordinates.column == childCoordinates.column)) {
 //                                NSLog(@"Encountered empty possible answers in treeLevel %ld, moving to sibling", (long)(parent.treeLevel + 1));
                 NSInteger prevAnswer = parent.parent.firstChild.answer;
                 
@@ -843,10 +916,7 @@ static NSNumberFormatter *numberFormatter;
                 
 //                                NSLog(@"New answer: %ld for treeLevel %ld", (long)parentCell.answer, (long)parent.treeLevel);
                 
-                [self restorePossibleAnswersForCellsToGuess];
-                [self updatePossibleAnswersForCellsToGuess];
-                
-                //[self restorePossibleAnswer:prevAnswer forRow:parentCoordinates.row andColumn:parentCoordinates.column andRemovePossibleAnswer: parentCell.answer];
+                [self restorePossibleAnswer:prevAnswer forRow:parentCoordinates.row andColumn:parentCoordinates.column andRemovePossibleAnswer: parentCell.answer];
                 
                 //[self evaluateOptimalPossibleAnswerPathForCell:cell inCoordinates:coordinates];
                 
@@ -860,14 +930,14 @@ static NSNumberFormatter *numberFormatter;
 //                                    NSLog(@"%ld", (long)pa.answer);
 //                                }
 //                                NSLog(@"--------------------------");
-                
+//                
                 
             } else {
 //                                NSLog(@"Encountered empty possible answers in treeLevel %ld, searching for next higher parent with sibling", (long)(parent.treeLevel + 1));
                 
                 NSInteger previousTreeLevel = parent.treeLevel;
                 
-                parent = [self getNextParentNodeWithSibling:parent];
+                parent = [self getNextParentNodeWithSibling:parent.parent];
 //                                NSLog(@"Coordinates of next parent with sibling, row: %ld, column: %ld", (long)parent.coordinates.row, (long)parent.coordinates.column);
                 NSInteger newTreeLevel = parent.treeLevel;
                 
@@ -876,8 +946,8 @@ static NSNumberFormatter *numberFormatter;
                 
                 
                 for (NSInteger level = previousTreeLevel; level > newTreeLevel; level--) {
-                    HMDCellCoordinates *coordinatesForCellToReset = self.listOfCellsToGuess[level];
-                    HMDSudokuCell *cellToReset = self.internalSudokuBoard[coordinatesForCellToReset.row][coordinatesForCellToReset.column];
+                    HMDCellCoordinates *coordinatesForCellsToReset = self.listOfCellsToGuess[level];
+                    HMDSudokuCell *cellToReset = self.internalSudokuBoard[coordinatesForCellsToReset.row][coordinatesForCellsToReset.column];
                     
                     cellToReset.answer = 0;
                 }
@@ -885,9 +955,17 @@ static NSNumberFormatter *numberFormatter;
                 parentCoordinates = self.listOfCellsToGuess[newTreeLevel];
                 parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column];
                 
+                NSInteger prevAnswer = parentCell.answer;
                 parentCell.answer = parent.answer;
-                //                NSLog(@"New answer: %@ for treeLevel: %ld", parentCell.answer, (long)newTreeLevel);
+//                                NSLog(@"New answer: %ld for treeLevel: %ld", (long)parentCell.answer, (long)newTreeLevel);
                 
+//                [self restorePossibleAnswer:prevAnswer forRow:parentCoordinates.row andColumn:parentCoordinates.column andRemovePossibleAnswer:parentCell.answer];
+//                
+//                for (NSInteger level = previousTreeLevel; level > newTreeLevel; level--) {
+//                    HMDCellCoordinates *coordinatesForCellsToRestore = self.listOfCellsToGuess[level];
+//                    [self restorePossibleAnswerForCellInRow:coordinatesForCellsToRestore.row andColumn:coordinatesForCellsToRestore.column];
+//                }
+//                
                 [self restorePossibleAnswersForCellsToGuess];
                 [self updatePossibleAnswersForCellsToGuess];
                 
