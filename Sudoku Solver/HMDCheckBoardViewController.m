@@ -10,6 +10,7 @@
 #import "HMDSolutionViewController.h"
 #import "HMDSudokuCell.h"
 #import "HMDSolver.h"
+#import "HMDRowAndColumnMinMaxCoordinates.h"
 #import "MBProgressHUD.h"
 
 #import "UIColor+_SudokuSolver.h"
@@ -21,8 +22,12 @@
 @property (nonatomic, copy) NSString *startingNumbers;
 @property (nonatomic, strong) HMDSolver *solver;
 
+@property (nonatomic) BOOL hasErrors;
+
 @property (weak, nonatomic) IBOutlet UIButton *yesButton;
 @property (weak, nonatomic) IBOutlet UIButton *noButton;
+
+
 
 
 @end
@@ -46,9 +51,9 @@
     [super viewDidLoad];
     
     [self setupNavigationController];
-    [self setupButtons];
     [self setupSolutionBoard];
-    
+    [self setupButtons];
+
 }
 
 #pragma mark - Setup
@@ -62,8 +67,11 @@
 {
     self.yesButton.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:ACTION_BUTTON_NORMAL];
     self.noButton.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:ACTION_BUTTON_NORMAL];
-
-
+    
+    if (self.hasErrors) {
+        self.yesButton.enabled = NO;
+        self.yesButton.alpha = 0.4;
+    }
 }
 
 - (void)setupSolutionBoard
@@ -112,7 +120,13 @@
             cell.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.9];
             
             HMDSudokuCell *sudokuCell = self.initialBoard[row][column];
-
+            
+            if (sudokuCell.answer != 0 && ![self checkValidPlacementOfAnswer:sudokuCell.answer inRow:row andColumn:column]) {
+                cell.textColor = [UIColor redColor];
+                self.hasErrors = YES;
+            }
+            
+            
             cell.font = [UIFont fontWithName:@"quicksand-regular" size:20];
             
             if (sudokuCell.answer == 0) {
@@ -136,8 +150,188 @@
     
 }
 
+#pragma mark - Checking for input errors
+
+- (BOOL)checkValidPlacementOfAnswer:(NSInteger)answer inRow:(NSInteger)row andColumn:(NSInteger)column
+{
+    if (![self checkColumnForAnswer:answer inRow:row andColumn:column] && ![self checkRowForAnswer:answer inRow:row andColumn:column] && ![self checkQuadrantForAnswer:answer inRow:row andColumn:column]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (BOOL)checkColumnForAnswer:(NSInteger)answer inRow:(NSInteger)inputRow andColumn:(NSInteger)inputColumn
+{
+    for (NSInteger row = 0; row < 9; row++) {
+        if (row != inputRow) {
+            HMDSudokuCell *cell = self.initialBoard[row][inputColumn];
+            NSInteger cellAnswer = cell.answer;
+            
+            if (cellAnswer == answer) {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
+
+- (BOOL)checkRowForAnswer:(NSInteger)answer inRow:(NSInteger)inputRow andColumn:(NSInteger)inputColumn
+{
+    for (NSInteger column = 0; column < 9; column++) {
+        if (column != inputColumn) {
+            
+            HMDSudokuCell *cell = self.initialBoard[inputRow][column];
+            NSInteger cellAnswer = cell.answer;
+            
+            if (cellAnswer == answer) {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
+
+- (NSInteger)getQuadrantFromRow:(NSInteger)row andColumn:(NSInteger)column
+{
+    if (row <= 2) {
+        return (column / 3) + 1;
+    } else if (row > 2 && row < 6) {
+        return (column / 3) + 4;
+    } else {
+        return (column / 3) + 7;
+    }
+}
+
+- (BOOL)checkQuadrantForAnswer:(NSInteger)answer inRow:(NSInteger)inputRow andColumn:(NSInteger)inputColumn
+{
+    HMDRowAndColumnMinMaxCoordinates *coordinates = [self quadrantBoundariesForRow:inputRow andColumn:inputColumn];
+    
+    for (NSInteger row = coordinates.rowMin; row <= coordinates.rowMax; row++) {
+        for (NSInteger column = coordinates.columnMin; column <= coordinates.columnMax; column++) {
+            if (row != inputRow && column != inputColumn) {
+                
+                HMDSudokuCell *cell = self.initialBoard[row][column];
+                NSInteger cellAnswer = cell.answer;
+                
+                if (cellAnswer == answer) {
+                    return YES;
+                }
+            }
+            
+        }
+    }
+    
+    return NO;
+    
+}
+
+- (HMDRowAndColumnMinMaxCoordinates *)quadrantBoundariesForRow:(NSInteger)row andColumn:(NSInteger)column
+{
+    NSInteger rowMin;
+    NSInteger rowMax;
+    
+    NSInteger columnMin;
+    NSInteger columnMax;
+    
+    switch ([self getQuadrantFromRow:row andColumn:column]) {
+        case 1:
+            rowMin = 0;
+            rowMax = 2;
+            
+            columnMin = 0;
+            columnMax = 2;
+            break;
+            
+        case 2:
+            rowMin = 0;
+            rowMax = 2;
+            
+            columnMin = 3;
+            columnMax = 5;
+            break;
+            
+        case 3:
+            rowMin = 0;
+            rowMax = 2;
+            
+            columnMin = 6;
+            columnMax = 8;
+            break;
+            
+        case 4:
+            rowMin = 3;
+            rowMax = 5;
+            
+            columnMin = 0;
+            columnMax = 2;
+            break;
+            
+        case 5:
+            rowMin = 3;
+            rowMax = 5;
+            
+            columnMin = 3;
+            columnMax = 5;
+            break;
+            
+        case 6:
+            rowMin = 3;
+            rowMax = 5;
+            
+            columnMin = 6;
+            columnMax = 8;
+            break;
+            
+        case 7:
+            rowMin = 6;
+            rowMax = 8;
+            
+            columnMin = 0;
+            columnMax = 2;
+            break;
+            
+        case 8:
+            rowMin = 6;
+            rowMax = 8;
+            
+            columnMin = 3;
+            columnMax = 5;
+            break;
+            
+        case 9:
+            rowMin = 6;
+            rowMax = 8;
+            
+            columnMin = 6;
+            columnMax = 8;
+            break;
+            
+            
+        default:
+            rowMin = 0;
+            rowMax = 2;
+            
+            columnMin = 0;
+            columnMax = 2;
+            break;
+    }
+    
+    HMDRowAndColumnMinMaxCoordinates *coordinates = [[HMDRowAndColumnMinMaxCoordinates alloc] init];
+    coordinates.rowMin = rowMin;
+    coordinates.rowMax = rowMax;
+    
+    coordinates.columnMin = columnMin;
+    coordinates.columnMax = columnMax;
+    
+    return coordinates;
+}
 
 
+
+#pragma mark - User actions
 
 - (IBAction)solve:(id)sender
 {

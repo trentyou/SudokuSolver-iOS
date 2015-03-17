@@ -8,6 +8,9 @@
             <string>Quicksand-Light</string>
             <string>Quicksand-Light</string>
         </mutableArray>
+        <mutableArray key="Quicksand-Regular.otf">
+            <string>Quicksand-Regular</string>
+        </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HMDSolutionViewController">
@@ -31,15 +34,6 @@
                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your solution" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GTX-l5-sF9">
-                    <rect key="frame" x="0.0" y="20" width="320" height="50"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="50" id="hxb-gJ-Buc"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cuw-ml-QBl" customClass="HMDActionButton">
                     <rect key="frame" x="0.0" y="520" width="320" height="48"/>
                     <constraints>
@@ -54,6 +48,15 @@
                         <action selector="dismiss:" destination="-1" eventType="touchUpInside" id="j92-G4-q29"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Solved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GTX-l5-sF9">
+                    <rect key="frame" x="0.0" y="35" width="320" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="hxb-gJ-Buc"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Quicksand-Regular" family="Quicksand" pointSize="39"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
@@ -64,7 +67,7 @@
                 <constraint firstItem="Cuw-ml-QBl" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="WaO-es-xzq"/>
                 <constraint firstItem="Cuw-ml-QBl" firstAttribute="top" secondItem="bGg-fv-o71" secondAttribute="bottom" constant="54" id="cZT-8a-Z0c"/>
                 <constraint firstItem="bGg-fv-o71" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="fOx-dQ-gEG"/>
-                <constraint firstItem="GTX-l5-sF9" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="gFn-K6-Lh2"/>
+                <constraint firstItem="GTX-l5-sF9" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="35" id="gFn-K6-Lh2"/>
                 <constraint firstAttribute="trailing" secondItem="GTX-l5-sF9" secondAttribute="trailing" id="hFA-F6-aiM"/>
             </constraints>
             <point key="canvasLocation" x="140" y="155"/>

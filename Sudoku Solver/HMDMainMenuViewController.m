@@ -8,6 +8,8 @@
 
 #import "HMDMainMenuViewController.h"
 #import "HMDBoardPickerViewController.h"
+#import "HMDPrevSolutionPageViewController.h"
+
 #import "UIColor+_SudokuSolver.h"
 
 @interface HMDMainMenuViewController () <UITableViewDataSource, UITableViewDelegate>
@@ -141,7 +143,7 @@ const float ACTION_BUTTON_HIGHLIGHTED = 0.2;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60.0f;
+    return 70.0f;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -166,7 +168,16 @@ const float ACTION_BUTTON_HIGHLIGHTED = 0.2;
             
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
         }
+    } else if (indexPath.section == 1) {
+        HMDPrevSolutionPageViewController *prevSolutions = [[HMDPrevSolutionPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+        [self.navigationController pushViewController:prevSolutions animated:YES];
     }
 }
+
+
+
+
+
+
 
 @end

@@ -14,6 +14,8 @@
 		85101CFD1AB7FA1E00708586 /* HMDMainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85101CFC1AB7FA1E00708586 /* HMDMainMenuViewController.m */; };
 		85101CFF1AB7FA9500708586 /* HMDMainMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85101CFE1AB7FA9500708586 /* HMDMainMenuViewController.xib */; };
 		85101D021AB8029F00708586 /* HMDActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 85101D011AB8029F00708586 /* HMDActionButton.m */; };
+		85101D0B1AB82ADF00708586 /* HMDPrevSolutionPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85101D091AB82ADF00708586 /* HMDPrevSolutionPageViewController.m */; };
+		85101D0C1AB82ADF00708586 /* HMDPrevSolutionPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85101D0A1AB82ADF00708586 /* HMDPrevSolutionPageViewController.xib */; };
 		851174061AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.m in Sources */ = {isa = PBXBuildFile; fileRef = 851174051AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.m */; };
 		851F9EA21AABFC1800F994CD /* HMDSolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 851F9EA11AABFC1800F994CD /* HMDSolver.m */; };
 		8559A0291AA5B1C300C6D4BF /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8559A0281AA5B17100C6D4BF /* Quicksand-Light.ttf */; };
@@ -63,6 +65,9 @@
 		85101CFE1AB7FA9500708586 /* HMDMainMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HMDMainMenuViewController.xib; sourceTree = "<group>"; };
 		85101D001AB8029F00708586 /* HMDActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDActionButton.h; sourceTree = "<group>"; };
 		85101D011AB8029F00708586 /* HMDActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDActionButton.m; sourceTree = "<group>"; };
+		85101D081AB82ADF00708586 /* HMDPrevSolutionPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HMDPrevSolutionPageViewController.h; path = ../HMDPrevSolutionPageViewController.h; sourceTree = "<group>"; };
+		85101D091AB82ADF00708586 /* HMDPrevSolutionPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HMDPrevSolutionPageViewController.m; path = ../HMDPrevSolutionPageViewController.m; sourceTree = "<group>"; };
+		85101D0A1AB82ADF00708586 /* HMDPrevSolutionPageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HMDPrevSolutionPageViewController.xib; path = ../HMDPrevSolutionPageViewController.xib; sourceTree = "<group>"; };
 		851174041AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDRowAndColumnMinMaxCoordinates.h; sourceTree = "<group>"; };
 		851174051AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDRowAndColumnMinMaxCoordinates.m; sourceTree = "<group>"; };
 		851F9EA01AABFC1800F994CD /* HMDSolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSolver.h; sourceTree = "<group>"; };
@@ -164,6 +169,9 @@
 				851F9EA11AABFC1800F994CD /* HMDSolver.m */,
 				85F197CE1AA8087A002984CA /* HMDQuadrantView.h */,
 				85F197CF1AA8087A002984CA /* HMDQuadrantView.m */,
+				85101D081AB82ADF00708586 /* HMDPrevSolutionPageViewController.h */,
+				85101D091AB82ADF00708586 /* HMDPrevSolutionPageViewController.m */,
+				85101D0A1AB82ADF00708586 /* HMDPrevSolutionPageViewController.xib */,
 				85101CE81AB7DDE900708586 /* HMDCheckBoardViewController.h */,
 				85101CE91AB7DDE900708586 /* HMDCheckBoardViewController.m */,
 				85101CEA1AB7DDE900708586 /* HMDCheckBoardViewController.xib */,
@@ -319,6 +327,7 @@
 				85D44FB21A77497300363F0E /* HMDSolutionViewController.xib in Resources */,
 				85101CEC1AB7DDE900708586 /* HMDCheckBoardViewController.xib in Resources */,
 				8559A02C1AA5B48200C6D4BF /* Quicksand-Regular.otf in Resources */,
+				85101D0C1AB82ADF00708586 /* HMDPrevSolutionPageViewController.xib in Resources */,
 				8559A0291AA5B1C300C6D4BF /* Quicksand-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -383,6 +392,7 @@
 				859D88651A7E0E99007007B0 /* HMDCellCoordinates.m in Sources */,
 				85101CFD1AB7FA1E00708586 /* HMDMainMenuViewController.m in Sources */,
 				85F197D01AA8087A002984CA /* HMDQuadrantView.m in Sources */,
+				85101D0B1AB82ADF00708586 /* HMDPrevSolutionPageViewController.m in Sources */,
 				851F9EA21AABFC1800F994CD /* HMDSolver.m in Sources */,
 				85101CEB1AB7DDE900708586 /* HMDCheckBoardViewController.m in Sources */,
 				85DE02F01A7640D500B9A8BF /* main.m in Sources */,
