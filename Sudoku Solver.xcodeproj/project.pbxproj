@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		85101CE71AB7C64500708586 /* HMDSudokuCellLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 85101CE61AB7C64500708586 /* HMDSudokuCellLabel.m */; };
+		85101CEB1AB7DDE900708586 /* HMDCheckBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85101CE91AB7DDE900708586 /* HMDCheckBoardViewController.m */; };
+		85101CEC1AB7DDE900708586 /* HMDCheckBoardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85101CEA1AB7DDE900708586 /* HMDCheckBoardViewController.xib */; };
+		85101CFA1AB7F6A300708586 /* UIColor+_SudokuSolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 85101CF91AB7F6A300708586 /* UIColor+_SudokuSolver.m */; };
+		85101CFD1AB7FA1E00708586 /* HMDMainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85101CFC1AB7FA1E00708586 /* HMDMainMenuViewController.m */; };
+		85101CFF1AB7FA9500708586 /* HMDMainMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85101CFE1AB7FA9500708586 /* HMDMainMenuViewController.xib */; };
+		85101D021AB8029F00708586 /* HMDActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 85101D011AB8029F00708586 /* HMDActionButton.m */; };
 		851174061AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.m in Sources */ = {isa = PBXBuildFile; fileRef = 851174051AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.m */; };
 		851F9EA21AABFC1800F994CD /* HMDSolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 851F9EA11AABFC1800F994CD /* HMDSolver.m */; };
 		8559A0291AA5B1C300C6D4BF /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8559A0281AA5B17100C6D4BF /* Quicksand-Light.ttf */; };
@@ -44,6 +51,18 @@
 /* Begin PBXFileReference section */
 		36AF5BBEC7200E23654BF740 /* Pods-Sudoku Solver.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sudoku Solver.release.xcconfig"; path = "Pods/Target Support Files/Pods-Sudoku Solver/Pods-Sudoku Solver.release.xcconfig"; sourceTree = "<group>"; };
 		6C06B72111C64DCA69E3FBBD /* libPods-Sudoku Solver.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sudoku Solver.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		85101CE51AB7C64500708586 /* HMDSudokuCellLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSudokuCellLabel.h; sourceTree = "<group>"; };
+		85101CE61AB7C64500708586 /* HMDSudokuCellLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDSudokuCellLabel.m; sourceTree = "<group>"; };
+		85101CE81AB7DDE900708586 /* HMDCheckBoardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDCheckBoardViewController.h; sourceTree = "<group>"; };
+		85101CE91AB7DDE900708586 /* HMDCheckBoardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDCheckBoardViewController.m; sourceTree = "<group>"; };
+		85101CEA1AB7DDE900708586 /* HMDCheckBoardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HMDCheckBoardViewController.xib; sourceTree = "<group>"; };
+		85101CF81AB7F6A300708586 /* UIColor+_SudokuSolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+_SudokuSolver.h"; sourceTree = "<group>"; };
+		85101CF91AB7F6A300708586 /* UIColor+_SudokuSolver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+_SudokuSolver.m"; sourceTree = "<group>"; };
+		85101CFB1AB7FA1E00708586 /* HMDMainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDMainMenuViewController.h; sourceTree = "<group>"; };
+		85101CFC1AB7FA1E00708586 /* HMDMainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDMainMenuViewController.m; sourceTree = "<group>"; };
+		85101CFE1AB7FA9500708586 /* HMDMainMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HMDMainMenuViewController.xib; sourceTree = "<group>"; };
+		85101D001AB8029F00708586 /* HMDActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDActionButton.h; sourceTree = "<group>"; };
+		85101D011AB8029F00708586 /* HMDActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDActionButton.m; sourceTree = "<group>"; };
 		851174041AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDRowAndColumnMinMaxCoordinates.h; sourceTree = "<group>"; };
 		851174051AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDRowAndColumnMinMaxCoordinates.m; sourceTree = "<group>"; };
 		851F9EA01AABFC1800F994CD /* HMDSolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSolver.h; sourceTree = "<group>"; };
@@ -133,13 +152,21 @@
 			children = (
 				85DE02F11A7640D500B9A8BF /* AppDelegate.h */,
 				85DE02F21A7640D500B9A8BF /* AppDelegate.m */,
+				85101CFB1AB7FA1E00708586 /* HMDMainMenuViewController.h */,
+				85101CFC1AB7FA1E00708586 /* HMDMainMenuViewController.m */,
+				85101CFE1AB7FA9500708586 /* HMDMainMenuViewController.xib */,
 				85DE03131A7645B600B9A8BF /* HMDBoardPickerViewController.h */,
 				85DE03141A7645B600B9A8BF /* HMDBoardPickerViewController.m */,
 				85DE03151A7645B600B9A8BF /* HMDBoardPickerViewController.xib */,
+				85101CE51AB7C64500708586 /* HMDSudokuCellLabel.h */,
+				85101CE61AB7C64500708586 /* HMDSudokuCellLabel.m */,
 				851F9EA01AABFC1800F994CD /* HMDSolver.h */,
 				851F9EA11AABFC1800F994CD /* HMDSolver.m */,
 				85F197CE1AA8087A002984CA /* HMDQuadrantView.h */,
 				85F197CF1AA8087A002984CA /* HMDQuadrantView.m */,
+				85101CE81AB7DDE900708586 /* HMDCheckBoardViewController.h */,
+				85101CE91AB7DDE900708586 /* HMDCheckBoardViewController.m */,
+				85101CEA1AB7DDE900708586 /* HMDCheckBoardViewController.xib */,
 				85D44FAE1A77497300363F0E /* HMDSolutionViewController.h */,
 				85D44FAF1A77497300363F0E /* HMDSolutionViewController.m */,
 				85D44FB01A77497300363F0E /* HMDSolutionViewController.xib */,
@@ -155,6 +182,10 @@
 				8594DB811A93037400888099 /* HMDPossibleAnswer.m */,
 				851174041AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.h */,
 				851174051AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.m */,
+				85101CF81AB7F6A300708586 /* UIColor+_SudokuSolver.h */,
+				85101CF91AB7F6A300708586 /* UIColor+_SudokuSolver.m */,
+				85101D001AB8029F00708586 /* HMDActionButton.h */,
+				85101D011AB8029F00708586 /* HMDActionButton.m */,
 				85DE02FA1A7640D500B9A8BF /* Images.xcassets */,
 				85DE02FC1A7640D500B9A8BF /* LaunchScreen.xib */,
 				85DE02ED1A7640D500B9A8BF /* Supporting Files */,
@@ -281,10 +312,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85101CFF1AB7FA9500708586 /* HMDMainMenuViewController.xib in Resources */,
 				85DE02FE1A7640D500B9A8BF /* LaunchScreen.xib in Resources */,
 				85DE02FB1A7640D500B9A8BF /* Images.xcassets in Resources */,
 				85DE03171A7645B600B9A8BF /* HMDBoardPickerViewController.xib in Resources */,
 				85D44FB21A77497300363F0E /* HMDSolutionViewController.xib in Resources */,
+				85101CEC1AB7DDE900708586 /* HMDCheckBoardViewController.xib in Resources */,
 				8559A02C1AA5B48200C6D4BF /* Quicksand-Regular.otf in Resources */,
 				8559A0291AA5B1C300C6D4BF /* Quicksand-Light.ttf in Resources */,
 			);
@@ -344,13 +377,18 @@
 				85DE02F31A7640D500B9A8BF /* AppDelegate.m in Sources */,
 				85B5DAAB1A778D69002A1979 /* HMDSudokuCell.m in Sources */,
 				851174061AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.m in Sources */,
+				85101D021AB8029F00708586 /* HMDActionButton.m in Sources */,
+				85101CE71AB7C64500708586 /* HMDSudokuCellLabel.m in Sources */,
 				859D885F1A7DECD7007007B0 /* HMDSudokuTreeNode.m in Sources */,
 				859D88651A7E0E99007007B0 /* HMDCellCoordinates.m in Sources */,
+				85101CFD1AB7FA1E00708586 /* HMDMainMenuViewController.m in Sources */,
 				85F197D01AA8087A002984CA /* HMDQuadrantView.m in Sources */,
 				851F9EA21AABFC1800F994CD /* HMDSolver.m in Sources */,
+				85101CEB1AB7DDE900708586 /* HMDCheckBoardViewController.m in Sources */,
 				85DE02F01A7640D500B9A8BF /* main.m in Sources */,
 				85DE03161A7645B600B9A8BF /* HMDBoardPickerViewController.m in Sources */,
 				85D44FB11A77497300363F0E /* HMDSolutionViewController.m in Sources */,
+				85101CFA1AB7F6A300708586 /* UIColor+_SudokuSolver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

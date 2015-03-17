@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "HMDBoardPickerViewController.h"
+#import "HMDMainMenuViewController.h"
 
 @interface AppDelegate ()
 
@@ -21,8 +22,10 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
-    HMDBoardPickerViewController *boardPicker = [[HMDBoardPickerViewController alloc] init];
-    self.window.rootViewController = boardPicker;
+    HMDMainMenuViewController *mainMenu = [[HMDMainMenuViewController alloc] init];
+    
+    UINavigationController *mainNav = [[UINavigationController alloc] initWithRootViewController:mainMenu];
+    self.window.rootViewController = mainNav;
     [self.window makeKeyAndVisible];
     
     return YES;

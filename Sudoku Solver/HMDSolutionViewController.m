@@ -6,8 +6,11 @@
 //  Copyright (c) 2015 Trent You. All rights reserved.
 //
 
+#import "HMDMainMenuViewController.h"
 #import "HMDSolutionViewController.h"
 #import "HMDSudokuCell.h"
+
+#import "UIColor+_SudokuSolver.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -20,9 +23,13 @@
 
 @property (nonatomic) double timeToSolve;
 
+@property (weak, nonatomic) IBOutlet UIButton *doneButton;
+
 @end
 
 @implementation HMDSolutionViewController
+
+#pragma mark - Init
 
 - (instancetype)initWithSolution:(NSArray *)solution andTimeToSolve:(double)timeToSolve
 {
@@ -37,13 +44,22 @@
     return self;
 }
 
-
+#pragma mark - View life cycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self setupBackgroundColors];
     [self setupTimeToSolveLabel];
     [self setupSolutionBoard];
+}
+
+#pragma mark - Setup
+
+- (void)setupBackgroundColors
+{
+    self.doneButton.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:ACTION_BUTTON_NORMAL];
+
 }
 
 - (NSString *)formatTimeToSolveToString:(double)timeToSolve
@@ -81,11 +97,12 @@
 
 - (void)setupSolutionBoard
 {
-    self.view.backgroundColor = [UIColor colorWithRed:253/255.0 green:245/255.0 blue:230/255.0 alpha:1.0];
+    self.view.backgroundColor = [UIColor beigeColor];
     
-    CGFloat labelSize = ([UIScreen mainScreen].bounds.size.width - 15.0f) / 9.0;
+    CGFloat labelOffset = 10.0f;
+    CGFloat labelSize = ([UIScreen mainScreen].bounds.size.width - (labelOffset * 2.0)) / 9.0;
     
-    CGFloat xStartPosition = ([UIScreen mainScreen].bounds.size.width - (labelSize * 9)) / 2.0;
+    CGFloat xStartPosition = labelOffset;
     CGFloat yStartPosition = ([UIScreen mainScreen].bounds.size.height / 2.0) - (labelSize * 4.5);
     
     CGFloat xPosition = xStartPosition;
@@ -133,7 +150,7 @@
             if (sudokuCell.answer == 0) {
                 cell.text = @"";
             } else {
-                cell.text = [NSString stringWithFormat:@"%ld", sudokuCell.answer];
+                cell.text = [NSString stringWithFormat:@"%ld", (long)sudokuCell.answer];
             }
             
             [self.view addSubview:cell];
@@ -156,7 +173,8 @@
 
 - (IBAction)dismiss:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"resetBoardPicker" object:nil];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 

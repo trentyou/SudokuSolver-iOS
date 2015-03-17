@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1066" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="Quicksand-Regular.otf">
+            <string>Quicksand-Regular</string>
+            <string>Quicksand-Regular</string>
+            <string>Quicksand-Regular</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HMDCheckBoardViewController">
+            <connections>
+                <outlet property="noButton" destination="HhW-1y-Xu4" id="ukD-52-Xdy"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="yesButton" destination="YFP-bp-yGz" id="HDl-TA-fcy"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HhW-1y-Xu4" customClass="HMDActionButton">
+                    <rect key="frame" x="0.0" y="552" width="600" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="G9U-yp-Mem"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Quicksand-Regular" family="Quicksand" pointSize="15"/>
+                    <state key="normal" title="No, I need to make changes.">
+                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="goBack:" destination="-1" eventType="touchUpInside" id="onH-fD-3Mf"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YFP-bp-yGz" customClass="HMDActionButton">
+                    <rect key="frame" x="0.0" y="504" width="600" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="dOx-1w-SrB"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Quicksand-Regular" family="Quicksand" pointSize="15"/>
+                    <state key="normal" title="Yes, solve it.">
+                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="solve:" destination="-1" eventType="touchUpInside" id="Fl4-1Z-isY"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Just to double check, is this your puzzle?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5OE-zY-r6q">
+                    <rect key="frame" x="0.0" y="59" width="600" height="57"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="57" id="Jha-tz-Mu7">
+                            <variation key="widthClass=compact" constant="57"/>
+                        </constraint>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Quicksand-Regular" family="Quicksand" pointSize="16"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="5OE-zY-r6q" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="59" id="2lM-9T-gaD">
+                    <variation key="widthClass=compact" constant="20"/>
+                </constraint>
+                <constraint firstAttribute="bottom" secondItem="HhW-1y-Xu4" secondAttribute="bottom" constant="8.5" id="6xv-Tv-1qy"/>
+                <constraint firstItem="YFP-bp-yGz" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="JaN-ZA-EnW"/>
+                <constraint firstItem="5OE-zY-r6q" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="j4x-Ko-zPg"/>
+                <constraint firstAttribute="trailing" secondItem="HhW-1y-Xu4" secondAttribute="trailing" id="lVr-rE-ebR"/>
+                <constraint firstItem="HhW-1y-Xu4" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="lw1-tc-GGt"/>
+                <constraint firstAttribute="trailing" secondItem="YFP-bp-yGz" secondAttribute="trailing" id="o0t-VC-rSM"/>
+                <constraint firstAttribute="trailing" secondItem="5OE-zY-r6q" secondAttribute="trailing" id="q7I-Sr-GhB"/>
+                <constraint firstItem="HhW-1y-Xu4" firstAttribute="top" secondItem="YFP-bp-yGz" secondAttribute="bottom" constant="8" id="ynI-LJ-Jib"/>
+            </constraints>
+            <point key="canvasLocation" x="140" y="155"/>
+        </view>
+    </objects>
+</document>
