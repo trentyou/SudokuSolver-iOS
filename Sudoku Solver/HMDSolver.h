@@ -10,7 +10,7 @@
 
 @interface HMDSolver : NSObject
 
-- (NSArray *)solvePuzzleWithStartingNumbers:(NSMutableArray *)startingNumbers;
+- (NSArray *)solvePuzzleWithStartingNumbers:(NSMutableArray *)startingNumbers andDirection:(TreeSolverDirection)direction;
 
 
 

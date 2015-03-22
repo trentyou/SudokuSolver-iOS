@@ -174,6 +174,7 @@
 - (IBAction)dismiss:(id)sender
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"resetBoardPicker" object:nil];
+    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 

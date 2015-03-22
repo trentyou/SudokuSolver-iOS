@@ -16,16 +16,23 @@
 #import "UIColor+_SudokuSolver.h"
 
 @interface HMDCheckBoardViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *headerLabel;
 
 @property (nonatomic, copy) NSMutableArray *initialBoard;
 
 @property (nonatomic, copy) NSString *startingNumbers;
-@property (nonatomic, strong) HMDSolver *solver;
+
 
 @property (nonatomic) BOOL hasErrors;
 
 @property (weak, nonatomic) IBOutlet UIButton *yesButton;
 @property (weak, nonatomic) IBOutlet UIButton *noButton;
+
+@property (nonatomic, strong) HMDSolver *forwardSolver;
+@property (nonatomic, strong) HMDSolver *backwardSolver;
+
+@property (nonatomic) BOOL backwardFinished;
+@property (nonatomic) BOOL forwardFinished;
 
 
 
@@ -40,6 +47,9 @@
     
     if (self) {
         _initialBoard = initialBoard;
+        _forwardFinished = NO;
+        _backwardFinished = NO;
+        
     }
     
     return self;
@@ -50,8 +60,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    
     [self setupNavigationController];
     [self setupSolutionBoard];
+    [self setupErrorLabel];
     [self setupButtons];
 
 }
@@ -148,6 +160,13 @@
     }
     
     
+}
+
+- (void)setupErrorLabel
+{
+    if (self.hasErrors) {
+        self.headerLabel.text = @"You may have some errors in your board.";
+    }
 }
 
 #pragma mark - Checking for input errors
@@ -329,41 +348,119 @@
     return coordinates;
 }
 
-
+- (NSMutableArray *)makeBoardCopyFrom:(NSMutableArray *)original
+{
+    NSMutableArray *copy = [[NSMutableArray alloc] init];
+    
+    for (NSInteger row = 0; row < 9; row++) {
+        NSMutableArray *column = [[NSMutableArray alloc] init];
+        [copy insertObject:column atIndex:row];
+    }
+    
+    for (NSInteger row = 0; row < 9; row++) {
+        for (NSInteger column = 0; column < 9; column++) {
+            HMDSudokuCell *cell = self.initialBoard[row][column];
+            HMDSudokuCell *cellCopy = [[HMDSudokuCell alloc] init];
+            
+            cellCopy.answer = cell.answer;
+            cellCopy.isPartOfInitialBoard = cell.isPartOfInitialBoard;
+            
+            copy[row][column] = cellCopy;
+        }
+    }
+    
+    return copy;
+}
 
 #pragma mark - User actions
 
 - (IBAction)solve:(id)sender
 {
-    self.solver = [[HMDSolver alloc] init];
+    self.yesButton.enabled = NO;
+    self.noButton.enabled = NO;
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     
+    self.forwardSolver = [[HMDSolver alloc] init];
+    self.backwardSolver = [[HMDSolver alloc] init];
+    
+//    NSLog(@"forwardSolver: %p", self.forwardSolver);
+//    NSLog(@"backwardSolver: %p", self.backwardSolver);
+
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"Solving..";
     hud.labelFont = [UIFont fontWithName:@"quicksand-regular" size:20];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSDate *startTime = [NSDate date];
-        NSArray *solution = [self.solver solvePuzzleWithStartingNumbers:[self.initialBoard copy]];
+        NSArray *solution = [self.forwardSolver solvePuzzleWithStartingNumbers:[self makeBoardCopyFrom:self.initialBoard] andDirection:Forward];
+
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            
+            if (!self.backwardFinished) {
+                NSDate *endTime = [NSDate date];
+                NSTimeInterval timeToSolve = [endTime timeIntervalSinceDate:startTime];
+                
+                if (solution) {
+                    self.forwardFinished = YES; // Stops two solutionviewcontrollers from being presented
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"anotherThreadFinished" object:nil]; // Stop execution of other thread
+                    
+                    [self printBoardWithSolution:solution andTimeToSolve:timeToSolve]; // Presents solutionviewcontroller with solution from this thread
+                    [MBProgressHUD hideHUDForView:self.view animated:YES];
+                    
+                    self.forwardSolver = nil; // deallocing finished solver for memory purposes
+                    
+                } else {
+                    //error message for incorrect starting puzzle
+                    [MBProgressHUD hideHUDForView:self.view animated:YES];
+                    
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:@"Did you enter the puzzle correctly?" delegate:nil cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+                    [alert show];
+                }
+            } else {
+                self.forwardSolver = nil;
+            }
+
+        });
+        
+            
+        
+    });
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSDate *startTime = [NSDate date];
+        NSArray *solution = [self.backwardSolver solvePuzzleWithStartingNumbers:[self makeBoardCopyFrom:self.initialBoard] andDirection:Backward];
         
         dispatch_sync(dispatch_get_main_queue(), ^{
-            NSDate *endTime = [NSDate date];
-            NSTimeInterval timeToSolve = [endTime timeIntervalSinceDate:startTime];
             
-            if (solution) {
-                [self printBoardWithSolution:solution andTimeToSolve:timeToSolve];
-                self.solver = nil;
-                [MBProgressHUD hideHUDForView:self.view animated:YES];
+            if (!self.forwardFinished) {
+                NSDate *endTime = [NSDate date];
+                NSTimeInterval timeToSolve = [endTime timeIntervalSinceDate:startTime];
                 
+                if (solution) {
+                    self.backwardFinished = YES;
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"anotherThreadFinished" object:nil];
+                    
+                    [self printBoardWithSolution:solution andTimeToSolve:timeToSolve];
+                    [MBProgressHUD hideHUDForView:self.view animated:YES];
+                    
+                    self.backwardSolver = nil;
+                    
+                } else {
+                    //error message for incorrect starting puzzle
+                    [MBProgressHUD hideHUDForView:self.view animated:YES];
+                    
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:@"Did you enter the puzzle correctly?" delegate:nil cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+                    [alert show];
+                }
             } else {
-                //error message for incorrect starting puzzle
-                [MBProgressHUD hideHUDForView:self.view animated:YES];
-                
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:@"Did you enter the puzzle correctly?" delegate:nil cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
-                [alert show];
+                self.backwardSolver = nil;
             }
             
         });
+        
     });
+    
+    
 }
 
 - (void)printBoardWithSolution:(NSArray *)solution andTimeToSolve:(double)timeToSolve

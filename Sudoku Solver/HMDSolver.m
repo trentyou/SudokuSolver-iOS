@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Trent You. All rights reserved.
 //
 
+#import "HMDMainMenuViewController.h"
 #import "HMDSolver.h"
 #import "HMDPossibleAnswer.h"
 #import "HMDSudokuCell.h"
@@ -25,6 +26,9 @@
 
 @property (nonatomic, copy) NSString *startingNumbers;
 
+@property (nonatomic) TreeSolverDirection direction;
+@property (nonatomic) BOOL anotherThreadFinished;
+
 @end
 
 
@@ -40,15 +44,20 @@ static NSNumberFormatter *numberFormatter;
     
     if (self) {
         numberFormatter = [[NSNumberFormatter alloc] init];
+        _anotherThreadFinished = NO;
     }
     
     return self;
 }
 
 
-- (NSArray *)solvePuzzleWithStartingNumbers:(NSMutableArray *)startingNumbers
+- (NSArray *)solvePuzzleWithStartingNumbers:(NSMutableArray *)startingNumbers andDirection:(TreeSolverDirection)direction
 {
-    self.internalSudokuBoard = [startingNumbers copy];
+    self.direction = direction;
+    self.internalSudokuBoard = startingNumbers;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelTreeTraversalOperations) name:@"anotherThreadFinished" object:nil];
+
     
     [self fillPossibleAnswers];
     return [self solveBoard];
@@ -730,7 +739,7 @@ static NSNumberFormatter *numberFormatter;
 - (NSArray *)solveBoard
 {
     BOOL changed;
-    static NSInteger logicLoopCount = 0;
+    NSInteger logicLoopCount = 0;
     
     do {
         changed = NO;
@@ -741,16 +750,11 @@ static NSNumberFormatter *numberFormatter;
                 HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
                 NSInteger answer = cell.answer;
                 
-                //                NSLog(@"Row: %ld", (long)row);
-                //                NSLog(@"Column %ld", (long)column);
-                //                NSLog(@"cell.possibleAnswers before: %@", cell.possibleAnswers);
-                
                 if (answer == 0 && [cell.possibleAnswers count] == 1) {
                     
                     HMDPossibleAnswer *possibleAnswer = [cell.possibleAnswers firstObject];
                     cell.answer = possibleAnswer.answer;
                     [cell.possibleAnswers removeAllObjects];
-                    //                    NSLog(@"cell.possibleAnswers after: %@", cell.possibleAnswers);
                     
                     [self updatePossibleAnswers];
                     
@@ -761,17 +765,25 @@ static NSNumberFormatter *numberFormatter;
         
         if (changed == NO) changed = [self subGroupExclusionCheck];
         logicLoopCount++;
-        
-    } while (changed);
+    } while (!self.anotherThreadFinished && changed);
     
     
     NSLog(@"Number of logic loops: %ld", (long)logicLoopCount);
     
-    if ([self isSolved]) {
+    if (self.anotherThreadFinished) {
+        NSLog(@"Quitting from another thread finishing before tree traversal");
+    }
+    
+    if (self.anotherThreadFinished || [self isSolved]) {
         return self.internalSudokuBoard;
     } else {
         [self setupTree];
-        return [self treeTraverseGuess:self.sudokuTree.root];
+        
+        if (self.direction == Forward) {
+            return [self treeTraverseGuessForward:self.sudokuTree.root];
+        } else {
+            return [self treeTraverseGuessBackward:self.sudokuTree.root];
+        }
 
     }
 }
@@ -886,13 +898,14 @@ static NSNumberFormatter *numberFormatter;
     return parent;
 }
 
-- (NSArray *)treeTraverseGuess:(HMDSudokuTreeNode *)root
+- (NSArray *)treeTraverseGuessForward:(HMDSudokuTreeNode *)root
 {
     HMDSudokuTreeNode *parent = root;
     HMDSudokuTreeNode *nextSibling;
+
     NSInteger iterationCount = 0;
     
-    while ((signed long)parent.treeLevel < (signed long)[self.listOfCellsToGuess count] - 1) {
+    while ((signed long)parent.treeLevel < (signed long)[self.listOfCellsToGuess count] - 1 && !self.anotherThreadFinished) {
         iterationCount++;
         
         HMDCellCoordinates *childCoordinates = self.listOfCellsToGuess[parent.treeLevel + 1];
@@ -989,7 +1002,6 @@ static NSNumberFormatter *numberFormatter;
             }
         }
         
-        
         for (NSInteger i = [possibleAnswers count] - 1; i >= 0; i--) {
             HMDPossibleAnswer *possibleAnswer = possibleAnswers[i];
             HMDSudokuTreeNode *child = [[HMDSudokuTreeNode alloc] init];
@@ -1026,6 +1038,7 @@ static NSNumberFormatter *numberFormatter;
 //                NSLog(@"Node: %ld", (long)child.answer);
         }
         
+
         HMDCellCoordinates *parentCoordinates = self.listOfCellsToGuess[parent.treeLevel];
         HMDSudokuCell *parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column];
         
@@ -1043,7 +1056,7 @@ static NSNumberFormatter *numberFormatter;
     }
     
     if ([self isSolved]) {
-        NSLog(@"SOLVED");
+        NSLog(@"SOLVED USING FORWARD");
         NSLog(@"Iteration count: %ld", (long)iterationCount);
         self.sudokuTree.root.firstChild = nil;
         return [self.internalSudokuBoard copy];
@@ -1053,8 +1066,188 @@ static NSNumberFormatter *numberFormatter;
 }
 
 
+- (NSArray *)treeTraverseGuessBackward:(HMDSudokuTreeNode *)root
+{
+    HMDSudokuTreeNode *parent = root;
+    HMDSudokuTreeNode *nextSibling;
+    
+    NSInteger iterationCount = 0;
+    
+    while ((signed long)parent.treeLevel < (signed long)[self.listOfCellsToGuess count] - 1 && !self.anotherThreadFinished) {
+        iterationCount++;
+        
+        HMDCellCoordinates *childCoordinates = self.listOfCellsToGuess[parent.treeLevel + 1];
+        HMDSudokuCell *cell = self.internalSudokuBoard[childCoordinates.row][childCoordinates.column];
+        
+        //[self evaluateOptimalPossibleAnswerPathForCell:cell inCoordinates:coordinates];
+        
+        NSArray *possibleAnswers = [cell.possibleAnswers copy];
+        
+        if ([possibleAnswers count] == 0) {
+            HMDCellCoordinates *parentCoordinates = self.listOfCellsToGuess[parent.treeLevel];
+            HMDSudokuCell *parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column];
+            
+            if (parent.nextSibling && (parentCoordinates.row == childCoordinates.row || parentCoordinates.column == childCoordinates.column)) {
+//                                                NSLog(@"Encountered empty possible answers in treeLevel %ld, moving to sibling", (long)(parent.treeLevel + 1));
+                NSInteger prevAnswer = parent.parent.firstChild.answer;
+                
+                parent.parent.firstChild = parent.nextSibling;
+                parent = parent.nextSibling;
+                parentCell.answer = parent.answer;
+                
+//                                                NSLog(@"New answer: %ld for treeLevel %ld", (long)parentCell.answer, (long)parent.treeLevel);
+                
+                [self restorePossibleAnswer:prevAnswer forRow:parentCoordinates.row andColumn:parentCoordinates.column andRemovePossibleAnswer: parentCell.answer];
+                
+                //[self evaluateOptimalPossibleAnswerPathForCell:cell inCoordinates:coordinates];
+                
+                possibleAnswers = [cell.possibleAnswers copy];
+                
+//                                                NSLog(@"--------------------------");
+//                                                NSLog(@"current treeLevel: %ld", (long)parent.treeLevel + 1);
+//                                                NSLog(@"possible answers for treeLevel:");
+//                                                for (NSInteger i = 0; i < [possibleAnswers count]; i++) {
+//                                                    HMDPossibleAnswer *pa = possibleAnswers[i];
+//                                                    NSLog(@"%ld", (long)pa.answer);
+//                                                }
+//                                                NSLog(@"--------------------------");
+                //
+                
+            } else {
+//                                                NSLog(@"Encountered empty possible answers in treeLevel %ld, searching for next higher parent with sibling", (long)(parent.treeLevel + 1));
+                
+                NSInteger previousTreeLevel = parent.treeLevel;
+                
+                parent = [self getNextParentNodeWithSibling:parent.parent];
+//                                                NSLog(@"Coordinates of next parent with sibling, row: %ld, column: %ld", (long)parent.coordinates.row, (long)parent.coordinates.column);
+                NSInteger newTreeLevel = parent.treeLevel;
+                
+                parent.parent.firstChild = parent.nextSibling;
+                parent = parent.nextSibling;
+                
+                
+                for (NSInteger level = previousTreeLevel; level > newTreeLevel; level--) {
+                    HMDCellCoordinates *coordinatesForCellsToReset = self.listOfCellsToGuess[level];
+                    HMDSudokuCell *cellToReset = self.internalSudokuBoard[coordinatesForCellsToReset.row][coordinatesForCellsToReset.column];
+                    
+                    cellToReset.answer = 0;
+                }
+                
+                parentCoordinates = self.listOfCellsToGuess[newTreeLevel];
+                parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column];
+                
+                NSInteger prevAnswer = parentCell.answer;
+                parentCell.answer = parent.answer;
+//                                                NSLog(@"New answer: %ld for treeLevel: %ld", (long)parentCell.answer, (long)newTreeLevel);
+                
+                //                [self restorePossibleAnswer:prevAnswer forRow:parentCoordinates.row andColumn:parentCoordinates.column andRemovePossibleAnswer:parentCell.answer];
+                //
+                //                for (NSInteger level = previousTreeLevel; level > newTreeLevel; level--) {
+                //                    HMDCellCoordinates *coordinatesForCellsToRestore = self.listOfCellsToGuess[level];
+                //                    [self restorePossibleAnswerForCellInRow:coordinatesForCellsToRestore.row andColumn:coordinatesForCellsToRestore.column];
+                //                }
+                //
+                [self restorePossibleAnswersForCellsToGuess];
+                [self updatePossibleAnswersForCellsToGuess];
+                
+//                                                NSLog(@"--------------------------");
+//                
+//                                                for (NSInteger level = newTreeLevel + 1; level <= previousTreeLevel; level++) {
+//                                                    HMDCellCoordinates *coordinatesForCellToReset = self.listOfCellsToGuess[level];
+//                                                    HMDSudokuCell *cellToReset = self.internalSudokuBoard[coordinatesForCellToReset.row][coordinatesForCellToReset.column];
+//                
+//                                                    NSLog(@"Cell row: %ld, column: %ld", (long)coordinatesForCellToReset.row, (long)coordinatesForCellToReset.column);
+//                                                    NSLog(@"possible answers:");
+//                                                    for (HMDPossibleAnswer *possibleAnswer in cellToReset.possibleAnswers) {
+//                                                        NSLog(@"%ld", (long)possibleAnswer.answer);
+//                                                    }
+//                                                    NSLog(@"\n");
+//                                                }
+//                
+//                                                NSLog(@"--------------------------");
+                
+                continue;
+            }
+        }
+        
+        for (NSInteger i = 0; i < [possibleAnswers count]; i++) {
+            HMDPossibleAnswer *possibleAnswer = possibleAnswers[i];
+            HMDSudokuTreeNode *child = [[HMDSudokuTreeNode alloc] init];
+            
+            child.answer = possibleAnswer.answer;
+            child.parent = parent;
+            
+            child.treeLevel = parent.treeLevel + 1;
+            
+            HMDCellCoordinates *childCoordinates = self.listOfCellsToGuess[child.treeLevel];
+            child.coordinates = childCoordinates;
+            
+            if (i == [possibleAnswers count] - 1) {
+                parent.firstChild = child;
+                child.nextSibling = nextSibling;
+                nextSibling = nil;
+                
+                cell.answer = possibleAnswer.answer;
+                [cell.possibleAnswers removeAllObjects];
+                
+                parent = child;
+//                                NSLog(@"Selected answer:");
+                
+            } else {
+                if (nextSibling) {
+                    child.nextSibling = nextSibling;
+                } else {
+                    child.nextSibling = nil;
+                }
+                
+                nextSibling = child;
+            }
+            
+//                            NSLog(@"Node: %ld", (long)child.answer);
+        }
+
+        HMDCellCoordinates *parentCoordinates = self.listOfCellsToGuess[parent.treeLevel];
+        HMDSudokuCell *parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column];
+        
+        [self updatePossibleAnswersInRow:parentCoordinates.row andColumn:parentCoordinates.column forAnswer:parentCell.answer];
+        
+        
+//                        NSLog(@"\n");
+//                        NSLog(@"Tree Level %ld", (long)parent.treeLevel);
+//                        NSLog(@"--");
+//                        NSLog(@"\n");
+//                        NSLog(@"\n");
+//                        NSLog(@"\n");
+//                        NSLog(@"--");
+        
+    }
+    
+    if ([self isSolved]) {
+        NSLog(@"SOLVED USING BACKWARDS");
+        NSLog(@"Iteration count: %ld", (long)iterationCount);
+        self.sudokuTree.root.firstChild = nil;
+        return self.internalSudokuBoard;
+    } else {
+        return nil;
+    }
+}
 
 
+
+#pragma mark - Multithreading
+
+- (void)cancelTreeTraversalOperations
+{
+    self.anotherThreadFinished = YES;
+}
+
+
+#pragma mark - Dealloc
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 
 @end

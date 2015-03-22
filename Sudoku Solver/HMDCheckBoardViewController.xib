@@ -13,6 +13,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HMDCheckBoardViewController">
             <connections>
+                <outlet property="headerLabel" destination="5OE-zY-r6q" id="Q3T-Bl-UDG"/>
                 <outlet property="noButton" destination="HhW-1y-Xu4" id="ukD-52-Xdy"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="yesButton" destination="YFP-bp-yGz" id="HDl-TA-fcy"/>

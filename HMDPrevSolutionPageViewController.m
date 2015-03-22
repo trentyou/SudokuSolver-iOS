@@ -13,20 +13,19 @@
 @end
 
 @implementation HMDPrevSolutionPageViewController
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    NSMutableArray *viewControllers = [[NSMutableArray alloc] init];
-    [self setViewControllers:viewControllers indirection:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
-    
-    
-}
-
-
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
-{
-    
-}
+//
+//- (void)viewDidLoad {
+//    [super viewDidLoad];
+//    
+//    NSMutableArray *viewControllers = [[NSMutableArray alloc] init];
+//    [self setViewControllers:viewControllers indirection:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+//    
+//}
+//
+//
+//- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
+//{
+//    
+//}
 
 @end

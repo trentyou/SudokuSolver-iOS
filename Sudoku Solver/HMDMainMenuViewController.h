@@ -11,6 +11,11 @@
 extern const float ACTION_BUTTON_NORMAL;
 extern const float ACTION_BUTTON_HIGHLIGHTED;
 
+typedef NS_ENUM(NSInteger, TreeSolverDirection) {
+    Forward,
+    Backward
+};
+
 @interface HMDMainMenuViewController : UIViewController
 
 @end
