@@ -9,6 +9,8 @@
 #import "HMDMainMenuViewController.h"
 #import "HMDBoardPickerViewController.h"
 #import "HMDPrevSolutionPageViewController.h"
+#import "HMDSolutionArchiveStore.h"
+#import "HMDArchivedSolution.h"
 
 #import "UIColor+_SudokuSolver.h"
 
@@ -37,6 +39,13 @@ const float ACTION_BUTTON_HIGHLIGHTED = 0.2;
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
     [self setupBackgroundColors];
     [self setupTitleLabel];
+    NSMutableArray *unarchivedSolutions = [[HMDSolutionArchiveStore sharedStore] solutionList];
+    
+    for (HMDArchivedSolution *solution in unarchivedSolutions) {
+        NSLog(@"solutionString: %@", solution.solutionString);
+        NSLog(@"length: %ld", solution.solutionString.length);
+        NSLog(@"%@", [solution.solutionString class]);
+    }
 
 }
 
@@ -64,7 +73,7 @@ const float ACTION_BUTTON_HIGHLIGHTED = 0.2;
 - (void)setupBackgroundColors
 {
     self.tableView.backgroundColor = [UIColor beigeColor];
-    self.view.backgroundColor = [UIColor beigeColor];
+    self.titleLabel.backgroundColor = [UIColor lightBeigeColor];
 }
 - (void)setupTitleLabel
 {
@@ -168,6 +177,7 @@ const float ACTION_BUTTON_HIGHLIGHTED = 0.2;
             
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
         }
+        
     } else if (indexPath.section == 1) {
         HMDPrevSolutionPageViewController *prevSolutions = [[HMDPrevSolutionPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
         [self.navigationController pushViewController:prevSolutions animated:YES];

@@ -8,6 +8,7 @@
 
 #import "HMDMainMenuViewController.h"
 #import "HMDSolutionViewController.h"
+#import "HMDSolutionArchiveStore.h"
 #import "HMDSudokuCell.h"
 
 #import "UIColor+_SudokuSolver.h"
@@ -52,6 +53,7 @@
     [self setupBackgroundColors];
     [self setupTimeToSolveLabel];
     [self setupSolutionBoard];
+    [self archiveSolution];
 }
 
 #pragma mark - Setup
@@ -91,7 +93,10 @@
 - (void)setupTimeToSolveLabel
 {
     if (self.timeToSolve != 0.0) {
-        self.timeToSolveLabel.text = [self formatTimeToSolveToString:self.timeToSolve];
+        NSString *prefix = @"in ";
+        NSString *formattedTime = [self formatTimeToSolveToString:self.timeToSolve];
+        
+        self.timeToSolveLabel.text = [prefix stringByAppendingString:formattedTime];
     }
 }
 
@@ -166,6 +171,27 @@
     }
     
     
+}
+
+#pragma mark - Archiving solution
+
+- (void)archiveSolution
+{
+    NSString *solutionString = @"";
+    
+    for (NSInteger row = 0; row < 9; row++) {
+        for (NSInteger column = 0; column < 9; column++) {
+            HMDSudokuCell *cell = self.solution[row][column];
+            
+            NSString *answerString = [NSString stringWithFormat:@"%ld", (long)cell.answer];
+            solutionString = [solutionString stringByAppendingString:answerString];
+        }
+    }
+    
+    NSLog(@"solutionString: %@", solutionString);
+    NSLog(@"solutionString length: %ld", (long)solutionString.length);
+    
+    [[HMDSolutionArchiveStore sharedStore] archiveSolution:solutionString];
 }
 
 #pragma mark - Navigation

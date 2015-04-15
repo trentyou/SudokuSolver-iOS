@@ -11,5 +11,7 @@
 @interface UIColor (_SudokuSolver)
 
 + (UIColor *)beigeColor;
++ (UIColor *)lightBeigeColor;
+
 
 @end

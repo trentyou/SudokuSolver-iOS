@@ -15,4 +15,10 @@
     return [UIColor colorWithRed:253/255.0 green:245/255.0 blue:230/255.0 alpha:1.0];
 }
 
+
++ (UIColor *)lightBeigeColor
+{
+    return [UIColor colorWithRed:255/255.0 green:250/255.0 blue:240/255.0 alpha:1.0];
+}
+
 @end
