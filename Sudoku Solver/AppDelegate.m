@@ -10,6 +10,8 @@
 #import "HMDBoardPickerViewController.h"
 #import "HMDMainMenuViewController.h"
 
+#import "UIColor+_SudokuSolver.h"
+
 @interface AppDelegate ()
 
 @end
@@ -27,6 +29,12 @@
     UINavigationController *mainNav = [[UINavigationController alloc] initWithRootViewController:mainMenu];
     self.window.rootViewController = mainNav;
     [self.window makeKeyAndVisible];
+    
+    //UIPageViewController dot customization
+    UIPageControl *pageControl = [UIPageControl appearance];
+    pageControl.pageIndicatorTintColor = [UIColor lightGrayColor];
+    pageControl.currentPageIndicatorTintColor = [UIColor darkGrayColor];
+    pageControl.backgroundColor = [UIColor lightBeigeColor];
     
     return YES;
 }

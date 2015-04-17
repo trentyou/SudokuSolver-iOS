@@ -44,18 +44,21 @@
 
 #pragma mark - Archiving
 
-- (void)archiveSolution:(NSString *)solution
+- (void)archiveSolution:(NSString *)solution andInitialBoard:(NSString *)initialBoard
 {
-    HMDArchivedSolution *archivedSolution = [[HMDArchivedSolution alloc] initWithSolution:solution];
+    HMDArchivedSolution *archivedSolution = [[HMDArchivedSolution alloc] initWithSolution:solution andInitialBoardString:initialBoard];
     
     NSString *path = [self solutionArchivePath];
     
     NSMutableArray *unarchivedSolutions = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
     
     if (!unarchivedSolutions) {
+        archivedSolution.puzzleOrder = 0;
         NSMutableArray *solutions = [[NSMutableArray alloc] initWithObjects:archivedSolution, nil];
         [NSKeyedArchiver archiveRootObject:solutions toFile:path];
     } else {
+        archivedSolution.puzzleOrder = unarchivedSolutions.count;
+        NSLog(@"archivedSolution.puzzleOrder: %ld", (long)archivedSolution.puzzleOrder);
         [unarchivedSolutions addObject:archivedSolution];
         [NSKeyedArchiver archiveRootObject:unarchivedSolutions toFile:path];
     }
@@ -65,10 +68,10 @@
 
 #pragma mark - Unarchiving
 
-- (NSMutableArray *)solutionList
+- (NSArray *)solutionList
 {
     NSString *path = [self solutionArchivePath];
-    return [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+    return [[NSKeyedUnarchiver unarchiveObjectWithFile:path] copy];
 }
 
 

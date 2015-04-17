@@ -15,7 +15,9 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [aCoder encodeObject:self.solutionString forKey:@"solutionString"];
+    [aCoder encodeObject:self.initialBoardString forKey:@"initialBoardString"];
     [aCoder encodeObject:self.solveDate forKey:@"solveDate"];
+    [aCoder encodeInteger:self.puzzleOrder forKey:@"puzzleOrder"];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -24,18 +26,21 @@
     
     if (self) {
         _solutionString = [aDecoder decodeObjectForKey:@"solutionString"];
+        _initialBoardString = [aDecoder decodeObjectForKey:@"initialBoardString"];
         _solveDate = [aDecoder decodeObjectForKey:@"solveDate"];
+        _puzzleOrder = [aDecoder decodeIntegerForKey:@"puzzleOrder"];
     }
     
     return self;
 }
 
-- (instancetype)initWithSolution:(NSString *)solution
+- (instancetype)initWithSolution:(NSString *)solution andInitialBoardString:(NSString *)initialBoardString
 {
     self = [super init];
     
     if (self) {
         _solutionString = solution;
+        _initialBoardString = initialBoardString;
         _solveDate = [NSDate date];
     }
     

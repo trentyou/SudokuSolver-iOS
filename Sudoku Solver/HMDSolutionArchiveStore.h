@@ -13,9 +13,9 @@
 + (instancetype)sharedStore;
 
 
-- (void)archiveSolution:(NSString *)solution;
+- (void)archiveSolution:(NSString *)solution andInitialBoard:(NSString *)initialBoard;
 
-- (NSMutableArray *)solutionList;
+- (NSArray *)solutionList;
 
 
 @end

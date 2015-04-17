@@ -11,9 +11,12 @@
 @interface HMDArchivedSolution : NSObject <NSCoding>
 
 @property (nonatomic, copy) NSString *solutionString;
+@property (nonatomic, copy) NSString *initialBoardString;
+
 @property (nonatomic, strong) NSDate *solveDate;
+@property (nonatomic) NSInteger puzzleOrder;
 
 
-- (instancetype)initWithSolution:(NSString *)solution;
+- (instancetype)initWithSolution:(NSString *)solution andInitialBoardString:(NSString *)initialBoardString;
 
 @end

@@ -13,5 +13,6 @@
 + (UIColor *)beigeColor;
 + (UIColor *)lightBeigeColor;
 
++ (UIColor *)solutionGreenColor;
 
 @end

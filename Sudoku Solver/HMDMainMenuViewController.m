@@ -9,7 +9,9 @@
 #import "HMDMainMenuViewController.h"
 #import "HMDBoardPickerViewController.h"
 #import "HMDPrevSolutionPageViewController.h"
+#import "HMDArchivedSolutionViewController.h"
 #import "HMDSolutionArchiveStore.h"
+#import "HMDNoArchivedSolutionsViewController.h"
 #import "HMDArchivedSolution.h"
 
 #import "UIColor+_SudokuSolver.h"
@@ -35,18 +37,20 @@ const float ACTION_BUTTON_HIGHLIGHTED = 0.2;
     
     [super viewDidLoad];
     
+    [self setupNavigationBar];
     [self setupBoardPicker];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
     [self setupBackgroundColors];
     [self setupTitleLabel];
-    NSMutableArray *unarchivedSolutions = [[HMDSolutionArchiveStore sharedStore] solutionList];
+    
+    NSArray *unarchivedSolutions = [[HMDSolutionArchiveStore sharedStore] solutionList];
     
     for (HMDArchivedSolution *solution in unarchivedSolutions) {
         NSLog(@"solutionString: %@", solution.solutionString);
-        NSLog(@"length: %ld", solution.solutionString.length);
+        NSLog(@"length: %ld", (long)solution.solutionString.length);
         NSLog(@"%@", [solution.solutionString class]);
     }
-
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -57,6 +61,13 @@ const float ACTION_BUTTON_HIGHLIGHTED = 0.2;
 }
 
 #pragma mark - Setup
+
+
+- (void)setupNavigationBar
+{
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Main Menu" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
+}
 
 - (void)setupNavigationController
 {
@@ -179,8 +190,20 @@ const float ACTION_BUTTON_HIGHLIGHTED = 0.2;
         }
         
     } else if (indexPath.section == 1) {
-        HMDPrevSolutionPageViewController *prevSolutions = [[HMDPrevSolutionPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
-        [self.navigationController pushViewController:prevSolutions animated:YES];
+        
+        NSArray *solutionList = [[HMDSolutionArchiveStore sharedStore] solutionList];
+
+        if (solutionList) {
+            
+            HMDPrevSolutionPageViewController *prevSolutions = [[HMDPrevSolutionPageViewController alloc] initWithSolutionList:solutionList];
+            
+            [self.navigationController pushViewController:prevSolutions animated:YES];
+            
+        } else {
+            HMDNoArchivedSolutionsViewController *noSolutionsView = [[HMDNoArchivedSolutionsViewController alloc] init];
+            
+            [self.navigationController pushViewController:noSolutionsView animated:YES];
+        }
     }
 }
 

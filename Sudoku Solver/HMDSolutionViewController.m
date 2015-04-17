@@ -147,8 +147,7 @@
             HMDSudokuCell *sudokuCell = self.solution[row][column];
       
             if (!sudokuCell.isPartOfInitialBoard) {
-                cell.textColor = [UIColor colorWithRed:0/255.0 green:150/255.0 blue:50/255.0 alpha:1.0];
-            }
+                cell.textColor = [UIColor solutionGreenColor];            }
             
             cell.font = [UIFont fontWithName:@"quicksand-regular" size:20];
             
@@ -178,20 +177,27 @@
 - (void)archiveSolution
 {
     NSString *solutionString = @"";
+    NSString *initialBoardString = @"";
+    NSString *zeroString = @"0";
     
     for (NSInteger row = 0; row < 9; row++) {
         for (NSInteger column = 0; column < 9; column++) {
             HMDSudokuCell *cell = self.solution[row][column];
-            
             NSString *answerString = [NSString stringWithFormat:@"%ld", (long)cell.answer];
-            solutionString = [solutionString stringByAppendingString:answerString];
+
+            if (cell.isPartOfInitialBoard) {
+                initialBoardString = [initialBoardString stringByAppendingString:answerString];
+                solutionString = [solutionString stringByAppendingString:zeroString];
+            } else {
+                initialBoardString = [initialBoardString stringByAppendingString:zeroString];
+                solutionString = [solutionString stringByAppendingString:answerString];
+            }
+            
         }
     }
+
+    [[HMDSolutionArchiveStore sharedStore] archiveSolution:solutionString andInitialBoard:initialBoardString];
     
-    NSLog(@"solutionString: %@", solutionString);
-    NSLog(@"solutionString length: %ld", (long)solutionString.length);
-    
-    [[HMDSolutionArchiveStore sharedStore] archiveSolution:solutionString];
 }
 
 #pragma mark - Navigation

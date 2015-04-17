@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HMDPrevSolutionPageViewController : UIPageViewController
+@interface HMDPrevSolutionPageViewController : UIViewController
+
+
+- (instancetype)initWithSolutionList:(NSArray *)solutionList;
 
 @end

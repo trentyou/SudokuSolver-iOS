@@ -21,4 +21,12 @@
     return [UIColor colorWithRed:255/255.0 green:250/255.0 blue:240/255.0 alpha:1.0];
 }
 
+
++ (UIColor *)solutionGreenColor
+{
+    return [UIColor colorWithRed:0/255.0 green:150/255.0 blue:50/255.0 alpha:1.0];
+
+}
+
+
 @end
