@@ -43,21 +43,15 @@ const float ACTION_BUTTON_HIGHLIGHTED = 0.2;
     [self setupBackgroundColors];
     [self setupTitleLabel];
     
-    NSArray *unarchivedSolutions = [[HMDSolutionArchiveStore sharedStore] solutionList];
-    
-    for (HMDArchivedSolution *solution in unarchivedSolutions) {
-        NSLog(@"solutionString: %@", solution.solutionString);
-        NSLog(@"length: %ld", (long)solution.solutionString.length);
-        NSLog(@"%@", [solution.solutionString class]);
-    }
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    [self setupNavigationController];
+    [self setupNavigationBar];
+
+    
 }
 
 #pragma mark - Setup
@@ -67,12 +61,13 @@ const float ACTION_BUTTON_HIGHLIGHTED = 0.2;
 {
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Main Menu" style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
-}
-
-- (void)setupNavigationController
-{
+    
+    self.navigationController.navigationBar.barTintColor = [UIColor beigeColor];
+    self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+    
     self.navigationController.navigationBar.hidden = YES;
 }
+
 
 - (void)setupBoardPicker
 {

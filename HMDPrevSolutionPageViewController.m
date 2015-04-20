@@ -38,7 +38,6 @@
         _solutionList = solutionList;
         _numberOfPages = _solutionList.count;
         
-        NSLog(@"numberOfPages: %ld", (long)_numberOfPages);
     }
     
     return self;
@@ -52,13 +51,20 @@
     
     self.view.backgroundColor = [UIColor beigeColor];
     [self setupPageViewControllerContent];
-    
-    for (HMDArchivedSolution *solution in self.solutionList) {
-        NSLog(@"puzzleOrder: %ld", solution.puzzleOrder);
-    }
-    
+    [self setupNavigationBar];
 }
 
+
+
+#pragma mark - Setup
+
+- (void)setupNavigationBar
+{
+    self.navigationController.navigationBar.hidden = NO;
+    self.navigationController.navigationBar.barTintColor = [UIColor beigeColor];
+    self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+}
 
 - (void)setupPageViewControllerContent
 {
@@ -84,20 +90,20 @@
     
 }
 
+#pragma mark - Delegate methods for lazy loading
+
 - (void)viewControllerWithOrderWasSelected:(NSInteger)order
 {
-    NSLog(@"Order: %ld", (long)order);
     self.currentPage = order - 1;
 }
 
+#pragma mark - Page view controller data source
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
 {
     if (self.currentPage == self.numberOfPages - 1) {
-        NSLog(@"Stopped at end");
         return nil;
     } else {
-        NSLog(@"currentPage: %ld", (long)self.currentPage);
         HMDArchivedSolution *nextSolution = self.solutionList[self.currentPage + 1];
         HMDArchivedSolutionViewController *nextViewController = [[HMDArchivedSolutionViewController alloc] initWithArchivedSolution:nextSolution];
         nextViewController.delegate = self;
@@ -110,10 +116,8 @@
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
     if (self.currentPage == 0) {
-        NSLog(@"Stopped at beginning");
         return nil;
     } else {
-        NSLog(@"currentPage: %ld", (long)self.currentPage);
         HMDArchivedSolution *prevSolution = self.solutionList[self.currentPage - 1];
         HMDArchivedSolutionViewController *prevViewController = [[HMDArchivedSolutionViewController alloc] initWithArchivedSolution:prevSolution];
         prevViewController.delegate = self;

@@ -125,7 +125,8 @@ const CGFloat PICKER_VIEW_ANIMATION_DURATION = 0.4;
 
 - (void)setupNavigationController
 {
-    self.navigationController.navigationBar.hidden = YES;
+    self.navigationController.navigationBar.hidden = NO;
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
 }
 
 - (void)setupBackgroundColors

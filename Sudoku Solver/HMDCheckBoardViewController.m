@@ -382,9 +382,6 @@
     
     self.forwardSolver = [[HMDSolver alloc] init];
     self.backwardSolver = [[HMDSolver alloc] init];
-    
-//    NSLog(@"forwardSolver: %p", self.forwardSolver);
-//    NSLog(@"backwardSolver: %p", self.backwardSolver);
 
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"Solving..";

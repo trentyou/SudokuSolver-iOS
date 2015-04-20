@@ -112,6 +112,26 @@
             cell.textColor = [UIColor solutionGreenColor];
         }
         
+        if (i % 3 == 0 && i % 9 != 0) {
+            CAShapeLayer *rightBorder = [CAShapeLayer layer];
+            
+            rightBorder.borderColor = [UIColor darkGrayColor].CGColor;
+            rightBorder.borderWidth = 2.0f;
+            rightBorder.frame = CGRectMake(labelSize - 1.5f, 0.0f, 2.0f, labelSize);
+            
+            [cell.layer addSublayer:rightBorder];
+            
+        }
+        
+        if ((i >= 19 && i <= 27) || (i >= 46 && i <= 54)) {
+            CAShapeLayer *bottomBorder = [CAShapeLayer layer];
+            
+            bottomBorder.borderColor = [UIColor darkGrayColor].CGColor;
+            bottomBorder.borderWidth = 2.0f;
+            bottomBorder.frame = CGRectMake(0.0f, labelSize - 1.5f, labelSize, 1.0f);
+            
+            [cell.layer addSublayer:bottomBorder];
+        }
         
         [self.view addSubview:cell];
         
