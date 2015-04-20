@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="Quicksand-Light.ttf">
             <string>Quicksand-Light</string>
         </mutableArray>
         <mutableArray key="Quicksand-Regular.otf">
+            <string>Quicksand-Regular</string>
+            <string>Quicksand-Regular</string>
             <string>Quicksand-Regular</string>
         </mutableArray>
     </customFonts>
@@ -18,6 +21,7 @@
                 <outlet property="finishedButton" destination="WO4-pE-cwa" id="MzX-z6-o3i"/>
                 <outlet property="pickerContainerView" destination="aOF-Dq-vca" id="Dgd-Xd-CqL"/>
                 <outlet property="pickerView" destination="XuM-en-PRL" id="jgU-GP-Kwu"/>
+                <outlet property="tutorialView" destination="8pR-PS-bJA" id="Ht7-pq-NPF"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -87,7 +91,58 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="736" y="199"/>
         </view>
+        <view alpha="0.75000000000000011" contentMode="scaleToFill" id="8pR-PS-bJA" userLabel="Tutorial View">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TutorialGridBoard" translatesAutoresizingMaskIntoConstraints="NO" id="6zq-m9-c8B">
+                    <rect key="frame" x="10" y="59" width="300" height="300"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="6zq-m9-c8B" secondAttribute="height" multiplier="1:1" id="1P9-1M-5R0"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You're in the top-left corner of the board. Swipe around to see the rest!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vbM-r9-yNQ">
+                    <rect key="frame" x="0.0" y="379" width="320" height="45"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="MqQ-UH-JOP"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Quicksand-Regular" family="Quicksand" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KPK-iw-DKF">
+                    <rect key="frame" x="8" y="530" width="304" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="XM4-0L-Sfj"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Quicksand-Regular" family="Quicksand" pointSize="15"/>
+                    <state key="normal" title="Got it">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="dismissTutorialView:" destination="-1" eventType="touchUpInside" id="Zlo-fg-mo0"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="6zq-m9-c8B" secondAttribute="trailing" constant="10" id="FJN-Sz-rHn"/>
+                <constraint firstItem="6zq-m9-c8B" firstAttribute="top" secondItem="8pR-PS-bJA" secondAttribute="top" constant="59" id="HcB-bx-1Ch"/>
+                <constraint firstAttribute="bottom" secondItem="KPK-iw-DKF" secondAttribute="bottom" constant="8" id="MBJ-wR-d9O"/>
+                <constraint firstItem="KPK-iw-DKF" firstAttribute="leading" secondItem="8pR-PS-bJA" secondAttribute="leading" constant="8" id="YQV-7d-d2e"/>
+                <constraint firstAttribute="trailing" secondItem="vbM-r9-yNQ" secondAttribute="trailing" id="eQO-JE-bjm"/>
+                <constraint firstItem="vbM-r9-yNQ" firstAttribute="leading" secondItem="8pR-PS-bJA" secondAttribute="leading" id="eVS-EZ-4MF"/>
+                <constraint firstItem="6zq-m9-c8B" firstAttribute="leading" secondItem="8pR-PS-bJA" secondAttribute="leading" constant="10" id="of4-Ql-JxJ"/>
+                <constraint firstItem="vbM-r9-yNQ" firstAttribute="top" secondItem="6zq-m9-c8B" secondAttribute="bottom" constant="20" id="wBc-nM-lZA"/>
+                <constraint firstAttribute="trailing" secondItem="KPK-iw-DKF" secondAttribute="trailing" constant="8" id="znv-Bw-neT"/>
+            </constraints>
+            <point key="canvasLocation" x="1111" y="370"/>
+        </view>
     </objects>
+    <resources>
+        <image name="TutorialGridBoard" width="1696" height="1696"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

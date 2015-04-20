@@ -24,6 +24,9 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
+    NSDictionary *userDefaultsDefaults = @{ @"isFirstLaunch" : [NSNumber numberWithBool:YES] };
+    [[NSUserDefaults standardUserDefaults] registerDefaults:userDefaultsDefaults];
+    
     HMDMainMenuViewController *mainMenu = [[HMDMainMenuViewController alloc] init];
     
     UINavigationController *mainNav = [[UINavigationController alloc] initWithRootViewController:mainMenu];

@@ -10,6 +10,7 @@
 #import "HMDMainMenuViewController.h"
 #import "HMDBoardPickerViewController.h"
 #import "HMDSolutionViewController.h"
+#import "HMDBoardTutorialView.h"
 #import "HMDQuadrantView.h"
 #import "HMDSudokuCell.h"
 #import "HMDSudokuCellLabel.h"
@@ -28,6 +29,11 @@
 const CGFloat PICKER_VIEW_ANIMATION_DURATION = 0.4;
 
 @interface HMDBoardPickerViewController () <UIPickerViewDataSource, UIPickerViewDelegate>
+// Tutorial view
+
+@property (strong, nonatomic) IBOutlet UIView *tutorialView;
+
+
 
 @property (weak, nonatomic) IBOutlet HMDActionButton *finishedButton;
 
@@ -119,7 +125,39 @@ const CGFloat PICKER_VIEW_ANIMATION_DURATION = 0.4;
     [super viewWillAppear:animated];
     
     [self setupNavigationController];
+    [self setupTutorialViewIfFirstTime];
 }
+
+#pragma mark - Tutorial view setup
+
+- (void)setupTutorialViewIfFirstTime
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    NSNumber *isFirstLaunch = [userDefaults objectForKey:@"isFirstLaunch"];
+    
+    NSLog(@"isFirstLaunch: %@", isFirstLaunch);
+    
+    if ([isFirstLaunch boolValue]) {
+        isFirstLaunch = [NSNumber numberWithBool:NO];
+        [userDefaults setObject:isFirstLaunch forKey:@"isFirstLaunch"];
+        
+        self.navigationController.navigationBar.hidden = YES;
+        self.tutorialView.frame = CGRectMake(0.0f, 0.0f, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height);
+        [self cancelAllSwipeGestures];
+        
+        [self.view addSubview:self.tutorialView];
+    }
+}
+
+
+- (IBAction)dismissTutorialView:(id)sender
+{
+    [self.tutorialView removeFromSuperview];
+    self.navigationController.navigationBar.hidden = NO;
+    [self reenableAllSwipeGestures];
+}
+
 
 #pragma mark - General setup
 
