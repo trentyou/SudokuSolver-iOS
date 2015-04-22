@@ -972,15 +972,15 @@ static NSNumberFormatter *numberFormatter;
                 parentCell.answer = parent.answer;
 //                                NSLog(@"New answer: %ld for treeLevel: %ld", (long)parentCell.answer, (long)newTreeLevel);
                 
-//                [self restorePossibleAnswer:prevAnswer forRow:parentCoordinates.row andColumn:parentCoordinates.column andRemovePossibleAnswer:parentCell.answer];
-//                
-//                for (NSInteger level = previousTreeLevel; level > newTreeLevel; level--) {
-//                    HMDCellCoordinates *coordinatesForCellsToRestore = self.listOfCellsToGuess[level];
-//                    [self restorePossibleAnswerForCellInRow:coordinatesForCellsToRestore.row andColumn:coordinatesForCellsToRestore.column];
-//                }
-//                
-                [self restorePossibleAnswersForCellsToGuess];
-                [self updatePossibleAnswersForCellsToGuess];
+                [self restorePossibleAnswer:prevAnswer forRow:parentCoordinates.row andColumn:parentCoordinates.column andRemovePossibleAnswer:parentCell.answer];
+                
+                for (NSInteger level = previousTreeLevel; level > newTreeLevel; level--) {
+                    HMDCellCoordinates *coordinatesForCellsToRestore = self.listOfCellsToGuess[level];
+                    [self restorePossibleAnswerForCellInRow:coordinatesForCellsToRestore.row andColumn:coordinatesForCellsToRestore.column];
+                }
+                
+//                [self restorePossibleAnswersForCellsToGuess];
+//                [self updatePossibleAnswersForCellsToGuess];
                 
 //                                NSLog(@"--------------------------");
 //                

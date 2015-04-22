@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="Quicksand-Regular.otf">
+            <string>Quicksand-Regular</string>
+            <string>Quicksand-Regular</string>
             <string>Quicksand-Regular</string>
             <string>Quicksand-Regular</string>
             <string>Quicksand-Regular</string>
@@ -14,7 +16,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HMDCheckBoardViewController">
             <connections>
                 <outlet property="headerLabel" destination="5OE-zY-r6q" id="Q3T-Bl-UDG"/>
+                <outlet property="languageSelectView" destination="Tdb-X9-ZPQ" id="BRj-Wj-8FS"/>
+                <outlet property="multiThreadObjcButton" destination="Fry-DX-xna" id="8zn-II-q41"/>
                 <outlet property="noButton" destination="HhW-1y-Xu4" id="ukD-52-Xdy"/>
+                <outlet property="singleThreadObjcButton" destination="dND-TJ-egc" id="bMC-zq-e6F"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="yesButton" destination="YFP-bp-yGz" id="HDl-TA-fcy"/>
             </connections>
@@ -79,6 +84,110 @@
                 <constraint firstItem="HhW-1y-Xu4" firstAttribute="top" secondItem="YFP-bp-yGz" secondAttribute="bottom" constant="8" id="ynI-LJ-Jib"/>
             </constraints>
             <point key="canvasLocation" x="140" y="155"/>
+        </view>
+        <view contentMode="scaleToFill" id="Tdb-X9-ZPQ">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dND-TJ-egc">
+                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="Szb-4A-2og"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Quicksand-Regular" family="Quicksand" pointSize="14"/>
+                    <state key="normal" title="Solve using single-threaded Objective-C">
+                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="Szb-4A-2og"/>
+                        </mask>
+                    </variation>
+                    <variation key="widthClass=compact">
+                        <mask key="constraints">
+                            <include reference="Szb-4A-2og"/>
+                        </mask>
+                    </variation>
+                    <connections>
+                        <action selector="userSelectSingleThreadObjc:" destination="-1" eventType="touchUpInside" id="OYx-Dp-vH7"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fry-DX-xna">
+                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="VOr-ak-A52"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Quicksand-Regular" family="Quicksand" pointSize="14"/>
+                    <state key="normal" title="Solve using multi-threaded Objective-C">
+                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="VOr-ak-A52"/>
+                        </mask>
+                    </variation>
+                    <variation key="widthClass=compact">
+                        <mask key="constraints">
+                            <include reference="VOr-ak-A52"/>
+                        </mask>
+                    </variation>
+                    <connections>
+                        <action selector="userSelectMultiThreadObjc:" destination="-1" eventType="touchUpInside" id="VJ9-wy-QIb"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="dND-TJ-egc" firstAttribute="top" secondItem="Tdb-X9-ZPQ" secondAttribute="top" constant="95" id="7Tk-SA-RHd">
+                    <variation key="widthClass=compact" constant="166"/>
+                </constraint>
+                <constraint firstItem="Fry-DX-xna" firstAttribute="top" secondItem="dND-TJ-egc" secondAttribute="bottom" constant="23" id="ckT-WK-khB">
+                    <variation key="widthClass=compact" constant="25"/>
+                </constraint>
+                <constraint firstItem="Fry-DX-xna" firstAttribute="leading" secondItem="Tdb-X9-ZPQ" secondAttribute="leading" id="d1c-A9-eDc">
+                    <variation key="widthClass=compact" constant="8"/>
+                </constraint>
+                <constraint firstAttribute="trailing" secondItem="Fry-DX-xna" secondAttribute="trailing" id="fRB-WF-CKh">
+                    <variation key="widthClass=compact" constant="8"/>
+                </constraint>
+                <constraint firstAttribute="trailing" secondItem="dND-TJ-egc" secondAttribute="trailing" id="iFu-W8-zKv">
+                    <variation key="widthClass=compact" constant="8"/>
+                </constraint>
+                <constraint firstItem="dND-TJ-egc" firstAttribute="leading" secondItem="Tdb-X9-ZPQ" secondAttribute="leading" id="ylp-JR-Voj">
+                    <variation key="widthClass=compact" constant="8"/>
+                </constraint>
+            </constraints>
+            <variation key="default">
+                <mask key="subviews">
+                    <exclude reference="dND-TJ-egc"/>
+                    <exclude reference="Fry-DX-xna"/>
+                </mask>
+                <mask key="constraints">
+                    <exclude reference="7Tk-SA-RHd"/>
+                    <exclude reference="iFu-W8-zKv"/>
+                    <exclude reference="ylp-JR-Voj"/>
+                    <exclude reference="ckT-WK-khB"/>
+                    <exclude reference="d1c-A9-eDc"/>
+                    <exclude reference="fRB-WF-CKh"/>
+                </mask>
+            </variation>
+            <variation key="widthClass=compact">
+                <mask key="subviews">
+                    <include reference="dND-TJ-egc"/>
+                    <include reference="Fry-DX-xna"/>
+                </mask>
+                <mask key="constraints">
+                    <include reference="7Tk-SA-RHd"/>
+                    <include reference="iFu-W8-zKv"/>
+                    <include reference="ylp-JR-Voj"/>
+                    <include reference="ckT-WK-khB"/>
+                    <include reference="d1c-A9-eDc"/>
+                    <include reference="fRB-WF-CKh"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="743" y="155"/>
         </view>
     </objects>
 </document>

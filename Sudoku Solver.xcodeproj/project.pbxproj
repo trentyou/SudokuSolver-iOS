@@ -44,6 +44,7 @@
 		85DE03171A7645B600B9A8BF /* HMDBoardPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85DE03151A7645B600B9A8BF /* HMDBoardPickerViewController.xib */; };
 		85EA66741ADE68760072BDE1 /* HMDSolutionArchiveStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EA66731ADE68760072BDE1 /* HMDSolutionArchiveStore.m */; };
 		85EA66771ADE6B290072BDE1 /* HMDArchivedSolution.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EA66761ADE6B290072BDE1 /* HMDArchivedSolution.m */; };
+		85F11D351AE7636900913019 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 85F11D341AE7636900913019 /* Settings.bundle */; };
 		85F197D01AA8087A002984CA /* HMDQuadrantView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F197CF1AA8087A002984CA /* HMDQuadrantView.m */; };
 		F38B46CF454174795C765EDF /* libPods-Sudoku Solver.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C06B72111C64DCA69E3FBBD /* libPods-Sudoku Solver.a */; };
 /* End PBXBuildFile section */
@@ -121,6 +122,7 @@
 		85EA66731ADE68760072BDE1 /* HMDSolutionArchiveStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDSolutionArchiveStore.m; sourceTree = "<group>"; };
 		85EA66751ADE6B290072BDE1 /* HMDArchivedSolution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDArchivedSolution.h; sourceTree = "<group>"; };
 		85EA66761ADE6B290072BDE1 /* HMDArchivedSolution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDArchivedSolution.m; sourceTree = "<group>"; };
+		85F11D341AE7636900913019 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		85F197CE1AA8087A002984CA /* HMDQuadrantView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDQuadrantView.h; sourceTree = "<group>"; };
 		85F197CF1AA8087A002984CA /* HMDQuadrantView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDQuadrantView.m; sourceTree = "<group>"; };
 		90467000BA838523C569709A /* Pods-Sudoku Solver.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sudoku Solver.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Sudoku Solver/Pods-Sudoku Solver.debug.xcconfig"; sourceTree = "<group>"; };
@@ -230,6 +232,7 @@
 				85101CF91AB7F6A300708586 /* UIColor+_SudokuSolver.m */,
 				85DE02FA1A7640D500B9A8BF /* Images.xcassets */,
 				85DE02FC1A7640D500B9A8BF /* LaunchScreen.xib */,
+				85F11D341AE7636900913019 /* Settings.bundle */,
 				85DE02ED1A7640D500B9A8BF /* Supporting Files */,
 			);
 			path = "Sudoku Solver";
@@ -356,6 +359,7 @@
 			files = (
 				85101CFF1AB7FA9500708586 /* HMDMainMenuViewController.xib in Resources */,
 				85DE02FE1A7640D500B9A8BF /* LaunchScreen.xib in Resources */,
+				85F11D351AE7636900913019 /* Settings.bundle in Resources */,
 				85DE02FB1A7640D500B9A8BF /* Images.xcassets in Resources */,
 				85DE03171A7645B600B9A8BF /* HMDBoardPickerViewController.xib in Resources */,
 				85D44FB21A77497300363F0E /* HMDSolutionViewController.xib in Resources */,

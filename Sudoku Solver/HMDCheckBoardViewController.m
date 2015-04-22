@@ -34,7 +34,17 @@
 @property (nonatomic) BOOL backwardFinished;
 @property (nonatomic) BOOL forwardFinished;
 
+// Debug menu for language and thread choice
 
+@property (strong, nonatomic) IBOutlet UIView *languageSelectView;
+@property (weak, nonatomic) IBOutlet UIButton *singleThreadObjcButton;
+@property (weak, nonatomic) IBOutlet UIButton *multiThreadObjcButton;
+
+@property (nonatomic) CGRect presentedFrame;
+@property (nonatomic) CGRect unpresentedFrame;
+
+@property (nonatomic) CGFloat springDampeningForAnimation;
+@property (nonatomic) CGFloat animationDuration;
 
 
 @end
@@ -65,6 +75,7 @@
     [self setupSolutionBoard];
     [self setupErrorLabel];
     [self setupButtons];
+    [self setupDebugLanguageSelectionViewIfEnabled];
 
 }
 
@@ -83,6 +94,33 @@
     if (self.hasErrors) {
         self.yesButton.enabled = NO;
         self.yesButton.alpha = 0.4;
+    }
+}
+
+- (void)setupDebugLanguageSelectionViewIfEnabled
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL debugModeEnabled = [defaults boolForKey:@"debugModeEnabled"];
+    
+    if (debugModeEnabled) {
+    
+        self.languageSelectView.backgroundColor = [UIColor beigeColor];
+        self.singleThreadObjcButton.backgroundColor = [UIColor lightBeigeColor];
+        self.multiThreadObjcButton.backgroundColor = [UIColor lightBeigeColor];
+        
+        CGFloat cornerRadius = 4.0;
+        
+        self.singleThreadObjcButton.layer.cornerRadius = cornerRadius;
+        self.multiThreadObjcButton.layer.cornerRadius = cornerRadius;
+        
+        CGFloat width = [UIScreen mainScreen].bounds.size.width;
+        CGFloat height = [UIScreen mainScreen].bounds.size.height;
+        
+        self.unpresentedFrame = CGRectMake(0.0f, [UIScreen mainScreen].bounds.size.height, width, height);
+        self.presentedFrame = CGRectMake(0.0f, 0.0f, width, height);
+        
+        self.springDampeningForAnimation = 0.65;
+        self.animationDuration = 0.75;
     }
 }
 
@@ -376,13 +414,53 @@
 
 - (IBAction)solve:(id)sender
 {
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL debugModeEnabled = [defaults boolForKey:@"debugModeEnabled"];
+    
+    if (debugModeEnabled) {
+        self.languageSelectView.frame = self.unpresentedFrame;
+        [self.view addSubview:self.languageSelectView];
+        
+        [UIView animateWithDuration:self.animationDuration delay:0.0 usingSpringWithDamping:self.springDampeningForAnimation initialSpringVelocity:0.0 options:0 animations:^{
+            self.languageSelectView.frame = self.presentedFrame;
+        } completion:nil];
+    } else {
+        [self solveWithObjcMultiThread];
+    }
+    
+}
+
+- (IBAction)userSelectSingleThreadObjc:(id)sender
+{
+    [UIView animateWithDuration:self.animationDuration delay:0.0 usingSpringWithDamping:self.springDampeningForAnimation initialSpringVelocity:0.0 options:0 animations:^{
+        self.languageSelectView.frame = self.unpresentedFrame;
+    }completion:^(BOOL completed) {
+        [self solveWithObjcSingleThread];
+    }];
+    
+}
+
+- (IBAction)userSelectMultiThreadObjc:(id)sender
+{
+    [UIView animateWithDuration:self.animationDuration delay:0.0 usingSpringWithDamping:self.springDampeningForAnimation initialSpringVelocity:0.0 options:0 animations:^{
+        self.languageSelectView.frame = self.unpresentedFrame;
+    }completion:^(BOOL completed) {
+        [self solveWithObjcMultiThread];
+    }];
+}
+
+
+#pragma mark - Solver methods for different languages/threading
+
+- (void)solveWithObjcSingleThread
+{
     self.yesButton.enabled = NO;
     self.noButton.enabled = NO;
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     
     self.forwardSolver = [[HMDSolver alloc] init];
-    self.backwardSolver = [[HMDSolver alloc] init];
-
+    
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"Solving..";
     hud.labelFont = [UIFont fontWithName:@"quicksand-regular" size:20];
@@ -390,7 +468,52 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSDate *startTime = [NSDate date];
         NSArray *solution = [self.forwardSolver solvePuzzleWithStartingNumbers:[self makeBoardCopyFrom:self.initialBoard] andDirection:Forward];
+        
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            
+            NSDate *endTime = [NSDate date];
+            NSTimeInterval timeToSolve = [endTime timeIntervalSinceDate:startTime];
+            
+            if (solution) {
+                [self printBoardWithSolution:solution andTimeToSolve:timeToSolve]; // Presents solutionviewcontroller with solution from this only thread
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+                
+                self.forwardSolver = nil; // deallocing finished solver for memory purposes
+                
+            } else {
+                //error message for incorrect starting puzzle
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+                
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:@"Did you enter the puzzle correctly?" delegate:nil cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+                [alert show];
+            }
+            
+        });
+        
+    });
+    
+}
 
+
+
+
+- (void)solveWithObjcMultiThread
+{
+    self.yesButton.enabled = NO;
+    self.noButton.enabled = NO;
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    
+    self.forwardSolver = [[HMDSolver alloc] init];
+    self.backwardSolver = [[HMDSolver alloc] init];
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Solving..";
+    hud.labelFont = [UIFont fontWithName:@"quicksand-regular" size:20];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSDate *startTime = [NSDate date];
+        NSArray *solution = [self.forwardSolver solvePuzzleWithStartingNumbers:[self makeBoardCopyFrom:self.initialBoard] andDirection:Forward];
+        
         dispatch_sync(dispatch_get_main_queue(), ^{
             
             if (!self.backwardFinished) {
@@ -416,10 +539,10 @@
             } else {
                 self.forwardSolver = nil;
             }
-
+            
         });
         
-            
+        
         
     });
     
@@ -456,15 +579,19 @@
         });
         
     });
-    
-    
 }
+
+#pragma mark - Printing board
 
 - (void)printBoardWithSolution:(NSArray *)solution andTimeToSolve:(double)timeToSolve
 {
     HMDSolutionViewController *solutionViewController = [[HMDSolutionViewController alloc] initWithSolution:solution andTimeToSolve:timeToSolve];
     [self.navigationController pushViewController:solutionViewController animated:YES];
 }
+
+
+#pragma mark - Navigation
+
 
 - (IBAction)goBack:(id)sender
 {
