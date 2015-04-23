@@ -36,7 +36,7 @@
                         <constraint firstAttribute="height" constant="53" id="qeE-xX-0Tm"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="Quicksand-Light" family="Quicksand" pointSize="15"/>
-                    <state key="normal" title="Finished">
+                    <state key="normal" title="Preview">
                         <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>

@@ -37,8 +37,11 @@
 // Debug menu for language and thread choice
 
 @property (strong, nonatomic) IBOutlet UIView *languageSelectView;
+
 @property (weak, nonatomic) IBOutlet UIButton *singleThreadObjcButton;
 @property (weak, nonatomic) IBOutlet UIButton *multiThreadObjcButton;
+@property (weak, nonatomic) IBOutlet UIButton *singleThreadSwiftButton;
+@property (weak, nonatomic) IBOutlet UIButton *multiThreadSwiftButton;
 
 @property (nonatomic) CGRect presentedFrame;
 @property (nonatomic) CGRect unpresentedFrame;
@@ -105,13 +108,20 @@
     if (debugModeEnabled) {
     
         self.languageSelectView.backgroundColor = [UIColor beigeColor];
+        
         self.singleThreadObjcButton.backgroundColor = [UIColor lightBeigeColor];
         self.multiThreadObjcButton.backgroundColor = [UIColor lightBeigeColor];
         
-        CGFloat cornerRadius = 4.0;
+        self.singleThreadSwiftButton.backgroundColor = [UIColor lightBeigeColor];
+        self.multiThreadSwiftButton.backgroundColor = [UIColor lightBeigeColor];
+        
+        CGFloat cornerRadius = 6.0;
         
         self.singleThreadObjcButton.layer.cornerRadius = cornerRadius;
         self.multiThreadObjcButton.layer.cornerRadius = cornerRadius;
+        
+        self.singleThreadSwiftButton.layer.cornerRadius = cornerRadius;
+        self.multiThreadSwiftButton.layer.cornerRadius = cornerRadius;
         
         CGFloat width = [UIScreen mainScreen].bounds.size.width;
         CGFloat height = [UIScreen mainScreen].bounds.size.height;
@@ -414,7 +424,6 @@
 
 - (IBAction)solve:(id)sender
 {
-    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL debugModeEnabled = [defaults boolForKey:@"debugModeEnabled"];
     
@@ -433,6 +442,7 @@
 
 - (IBAction)userSelectSingleThreadObjc:(id)sender
 {
+    NSLog(@"Single threaded ObjC selected");
     [UIView animateWithDuration:self.animationDuration delay:0.0 usingSpringWithDamping:self.springDampeningForAnimation initialSpringVelocity:0.0 options:0 animations:^{
         self.languageSelectView.frame = self.unpresentedFrame;
     }completion:^(BOOL completed) {
@@ -443,12 +453,24 @@
 
 - (IBAction)userSelectMultiThreadObjc:(id)sender
 {
+    NSLog(@"Multi threaded ObjC selected");
     [UIView animateWithDuration:self.animationDuration delay:0.0 usingSpringWithDamping:self.springDampeningForAnimation initialSpringVelocity:0.0 options:0 animations:^{
         self.languageSelectView.frame = self.unpresentedFrame;
     }completion:^(BOOL completed) {
         [self solveWithObjcMultiThread];
     }];
 }
+
+- (IBAction)userSelectSingleThreadSwift:(id)sender
+{
+    
+}
+
+- (IBAction)userSelectMultiThreadSwift:(id)sender
+{
+    
+}
+
 
 
 #pragma mark - Solver methods for different languages/threading

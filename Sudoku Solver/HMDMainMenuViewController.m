@@ -192,12 +192,15 @@ const float ACTION_BUTTON_HIGHLIGHTED = 0.2;
             
             HMDPrevSolutionPageViewController *prevSolutions = [[HMDPrevSolutionPageViewController alloc] initWithSolutionList:solutionList];
             
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             [self.navigationController pushViewController:prevSolutions animated:YES];
             
         } else {
             HMDNoArchivedSolutionsViewController *noSolutionsView = [[HMDNoArchivedSolutionsViewController alloc] init];
             
             [self.navigationController pushViewController:noSolutionsView animated:YES];
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+
         }
     }
 }

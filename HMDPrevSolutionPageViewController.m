@@ -70,7 +70,7 @@
 {
     self.currentPage = 0;
     
-    HMDArchivedSolution *firstSolution = [self.solutionList firstObject];
+    HMDArchivedSolution *firstSolution = self.solutionList[self.solutionList.count - 1];
     HMDArchivedSolutionViewController *firstViewController = [[HMDArchivedSolutionViewController alloc] initWithArchivedSolution:firstSolution];
     firstViewController.delegate = self;
     
@@ -94,7 +94,7 @@
 
 - (void)viewControllerWithOrderWasSelected:(NSInteger)order
 {
-    self.currentPage = order - 1;
+    self.currentPage = self.solutionList.count - order;
 }
 
 #pragma mark - Page view controller data source
@@ -104,7 +104,7 @@
     if (self.currentPage == self.numberOfPages - 1) {
         return nil;
     } else {
-        HMDArchivedSolution *nextSolution = self.solutionList[self.currentPage + 1];
+        HMDArchivedSolution *nextSolution = self.solutionList[self.solutionList.count - self.currentPage - 2];
         HMDArchivedSolutionViewController *nextViewController = [[HMDArchivedSolutionViewController alloc] initWithArchivedSolution:nextSolution];
         nextViewController.delegate = self;
         
@@ -118,7 +118,7 @@
     if (self.currentPage == 0) {
         return nil;
     } else {
-        HMDArchivedSolution *prevSolution = self.solutionList[self.currentPage - 1];
+        HMDArchivedSolution *prevSolution = self.solutionList[self.solutionList.count - self.currentPage];
         HMDArchivedSolutionViewController *prevViewController = [[HMDArchivedSolutionViewController alloc] initWithArchivedSolution:prevSolution];
         prevViewController.delegate = self;
         
