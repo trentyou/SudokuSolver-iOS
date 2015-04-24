@@ -15,7 +15,10 @@
 
 #import "UIColor+_SudokuSolver.h"
 
+#import "Sudoku_Solver-Swift.h"
+
 @interface HMDCheckBoardViewController ()
+
 @property (weak, nonatomic) IBOutlet UILabel *headerLabel;
 
 @property (nonatomic, copy) NSMutableArray *initialBoard;
@@ -30,6 +33,9 @@
 
 @property (nonatomic, strong) HMDSolver *forwardSolver;
 @property (nonatomic, strong) HMDSolver *backwardSolver;
+
+@property (nonatomic, strong) Solver *forwardSwiftSolver;
+@property (nonatomic, strong) Solver *backwardSwiftSolver;
 
 @property (nonatomic) BOOL backwardFinished;
 @property (nonatomic) BOOL forwardFinished;
@@ -463,7 +469,12 @@
 
 - (IBAction)userSelectSingleThreadSwift:(id)sender
 {
-    
+    NSLog(@"Single threaded Swift selected");
+    [UIView animateWithDuration:self.animationDuration delay:0.0 usingSpringWithDamping:self.springDampeningForAnimation initialSpringVelocity:0.0 options:0 animations:^{
+        self.languageSelectView.frame = self.unpresentedFrame;
+    }completion:^(BOOL completed) {
+        
+    }];
 }
 
 - (IBAction)userSelectMultiThreadSwift:(id)sender
@@ -601,6 +612,52 @@
         });
         
     });
+}
+
+- (void)solveWithSwiftSingleThread
+{
+    self.yesButton.enabled = NO;
+    self.noButton.enabled = NO;
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    
+    self.forwardSwiftSolver = [[Solver alloc] init];
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Solving..";
+    hud.labelFont = [UIFont fontWithName:@"quicksand-regular" size:20];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSDate *startTime = [NSDate date];
+        
+        NSArray *solution = [self.forwardSolver solvePuzzleWithStartingNumbers:[self makeBoardCopyFrom:self.initialBoard] andDirection:Forward];
+        
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            
+            NSDate *endTime = [NSDate date];
+            NSTimeInterval timeToSolve = [endTime timeIntervalSinceDate:startTime];
+            
+            if (solution) {
+                [self printBoardWithSolution:solution andTimeToSolve:timeToSolve]; // Presents solutionviewcontroller with solution from this only thread
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+                
+                self.forwardSolver = nil; // deallocing finished solver for memory purposes
+                
+            } else {
+                //error message for incorrect starting puzzle
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+                
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:@"Did you enter the puzzle correctly?" delegate:nil cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+                [alert show];
+            }
+            
+        });
+        
+    });
+}
+
+- (void)solveWithSwiftMultiThread
+{
+    
 }
 
 #pragma mark - Printing board

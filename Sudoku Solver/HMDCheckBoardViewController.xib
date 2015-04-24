@@ -235,18 +235,18 @@
                     <exclude reference="1v8-K5-YBc"/>
                 </mask>
                 <mask key="constraints">
-                    <exclude reference="7Tk-SA-RHd"/>
-                    <exclude reference="iFu-W8-zKv"/>
-                    <exclude reference="ylp-JR-Voj"/>
-                    <exclude reference="ckT-WK-khB"/>
-                    <exclude reference="d1c-A9-eDc"/>
-                    <exclude reference="fRB-WF-CKh"/>
-                    <exclude reference="DXY-qP-xPr"/>
-                    <exclude reference="LpV-mZ-asu"/>
-                    <exclude reference="h2r-7V-Van"/>
                     <exclude reference="BOW-OJ-h1L"/>
                     <exclude reference="Kyy-oo-ONL"/>
                     <exclude reference="cKT-fu-PUH"/>
+                    <exclude reference="DXY-qP-xPr"/>
+                    <exclude reference="LpV-mZ-asu"/>
+                    <exclude reference="h2r-7V-Van"/>
+                    <exclude reference="ckT-WK-khB"/>
+                    <exclude reference="d1c-A9-eDc"/>
+                    <exclude reference="fRB-WF-CKh"/>
+                    <exclude reference="7Tk-SA-RHd"/>
+                    <exclude reference="iFu-W8-zKv"/>
+                    <exclude reference="ylp-JR-Voj"/>
                 </mask>
             </variation>
             <variation key="widthClass=compact">
@@ -257,18 +257,18 @@
                     <include reference="1v8-K5-YBc"/>
                 </mask>
                 <mask key="constraints">
-                    <include reference="7Tk-SA-RHd"/>
-                    <include reference="iFu-W8-zKv"/>
-                    <include reference="ylp-JR-Voj"/>
-                    <include reference="ckT-WK-khB"/>
-                    <include reference="d1c-A9-eDc"/>
-                    <include reference="fRB-WF-CKh"/>
-                    <include reference="DXY-qP-xPr"/>
-                    <include reference="LpV-mZ-asu"/>
-                    <include reference="h2r-7V-Van"/>
                     <include reference="BOW-OJ-h1L"/>
                     <include reference="Kyy-oo-ONL"/>
                     <include reference="cKT-fu-PUH"/>
+                    <include reference="DXY-qP-xPr"/>
+                    <include reference="LpV-mZ-asu"/>
+                    <include reference="h2r-7V-Van"/>
+                    <include reference="ckT-WK-khB"/>
+                    <include reference="d1c-A9-eDc"/>
+                    <include reference="fRB-WF-CKh"/>
+                    <include reference="7Tk-SA-RHd"/>
+                    <include reference="iFu-W8-zKv"/>
+                    <include reference="ylp-JR-Voj"/>
                 </mask>
             </variation>
             <point key="canvasLocation" x="743" y="155"/>

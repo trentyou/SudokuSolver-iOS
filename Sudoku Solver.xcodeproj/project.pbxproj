@@ -26,6 +26,7 @@
 		8559A02A1AA5B1C400C6D4BF /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8559A0281AA5B17100C6D4BF /* Quicksand-Light.ttf */; };
 		8559A02C1AA5B48200C6D4BF /* Quicksand-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8559A02B1AA5B44B00C6D4BF /* Quicksand-Regular.otf */; };
 		8559A02D1AA5B48200C6D4BF /* Quicksand-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8559A02B1AA5B44B00C6D4BF /* Quicksand-Regular.otf */; };
+		857582751AE9B8DB00D0B9BB /* Solver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857582741AE9B8DB00D0B9BB /* Solver.swift */; };
 		8594DB821A93037400888099 /* HMDPossibleAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8594DB811A93037400888099 /* HMDPossibleAnswer.m */; };
 		859D885F1A7DECD7007007B0 /* HMDSudokuTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 859D885E1A7DECD7007007B0 /* HMDSudokuTreeNode.m */; };
 		859D88651A7E0E99007007B0 /* HMDCellCoordinates.m in Sources */ = {isa = PBXBuildFile; fileRef = 859D88641A7E0E99007007B0 /* HMDCellCoordinates.m */; };
@@ -89,6 +90,8 @@
 		851F9EA11AABFC1800F994CD /* HMDSolver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDSolver.m; sourceTree = "<group>"; };
 		8559A0281AA5B17100C6D4BF /* Quicksand-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Light.ttf"; sourceTree = "<group>"; };
 		8559A02B1AA5B44B00C6D4BF /* Quicksand-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Quicksand-Regular.otf"; path = "../Quicksand-Regular.otf"; sourceTree = "<group>"; };
+		857582731AE9B8DB00D0B9BB /* Sudoku Solver-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Sudoku Solver-Bridging-Header.h"; sourceTree = "<group>"; };
+		857582741AE9B8DB00D0B9BB /* Solver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Solver.swift; sourceTree = "<group>"; };
 		8594DB801A93037400888099 /* HMDPossibleAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDPossibleAnswer.h; sourceTree = "<group>"; };
 		8594DB811A93037400888099 /* HMDPossibleAnswer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDPossibleAnswer.m; sourceTree = "<group>"; };
 		859D885D1A7DECD7007007B0 /* HMDSudokuTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSudokuTreeNode.h; sourceTree = "<group>"; };
@@ -193,6 +196,7 @@
 				85101CE61AB7C64500708586 /* HMDSudokuCellLabel.m */,
 				851F9EA01AABFC1800F994CD /* HMDSolver.h */,
 				851F9EA11AABFC1800F994CD /* HMDSolver.m */,
+				857582741AE9B8DB00D0B9BB /* Solver.swift */,
 				85F197CE1AA8087A002984CA /* HMDQuadrantView.h */,
 				85F197CF1AA8087A002984CA /* HMDQuadrantView.m */,
 				85101D081AB82ADF00708586 /* HMDPrevSolutionPageViewController.h */,
@@ -234,6 +238,7 @@
 				85DE02FC1A7640D500B9A8BF /* LaunchScreen.xib */,
 				85F11D341AE7636900913019 /* Settings.bundle */,
 				85DE02ED1A7640D500B9A8BF /* Supporting Files */,
+				857582731AE9B8DB00D0B9BB /* Sudoku Solver-Bridging-Header.h */,
 			);
 			path = "Sudoku Solver";
 			sourceTree = "<group>";
@@ -424,6 +429,7 @@
 			files = (
 				85EA66771ADE6B290072BDE1 /* HMDArchivedSolution.m in Sources */,
 				8594DB821A93037400888099 /* HMDPossibleAnswer.m in Sources */,
+				857582751AE9B8DB00D0B9BB /* Solver.swift in Sources */,
 				85EA66741ADE68760072BDE1 /* HMDSolutionArchiveStore.m in Sources */,
 				859D88681A7E11B1007007B0 /* HMDSudokuTree.m in Sources */,
 				85DE02F31A7640D500B9A8BF /* AppDelegate.m in Sources */,
@@ -561,10 +567,13 @@
 			baseConfigurationReference = 90467000BA838523C569709A /* Pods-Sudoku Solver.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = "Sudoku Solver/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Sudoku Solver/Sudoku Solver-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -574,10 +583,12 @@
 			baseConfigurationReference = 36AF5BBEC7200E23654BF740 /* Pods-Sudoku Solver.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = "Sudoku Solver/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Sudoku Solver/Sudoku Solver-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

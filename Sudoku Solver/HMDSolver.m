@@ -24,8 +24,6 @@
 
 @property (nonatomic, strong) HMDSudokuTree *sudokuTree;
 
-@property (nonatomic, copy) NSString *startingNumbers;
-
 @property (nonatomic) TreeSolverDirection direction;
 @property (nonatomic) BOOL anotherThreadFinished;
 
@@ -609,14 +607,13 @@ static NSNumberFormatter *numberFormatter;
 - (BOOL)checkColumnForAnswer:(NSInteger)answer inRow:(NSInteger)inputRow andColumn:(NSInteger)inputColumn
 {
     for (NSInteger row = 0; row < 9; row++) {
-        if (row != inputRow) {
-            HMDSudokuCell *cell = self.internalSudokuBoard[row][inputColumn];
-            NSInteger cellAnswer = cell.answer;
-            
-            if (cellAnswer == answer) {
-                return YES;
-            }
+        HMDSudokuCell *cell = self.internalSudokuBoard[row][inputColumn];
+        NSInteger cellAnswer = cell.answer;
+        
+        if (cellAnswer == answer && row != inputRow) {
+            return YES;
         }
+        
     }
     
     return NO;
@@ -625,15 +622,13 @@ static NSNumberFormatter *numberFormatter;
 - (BOOL)checkRowForAnswer:(NSInteger)answer inRow:(NSInteger)inputRow andColumn:(NSInteger)inputColumn
 {
     for (NSInteger column = 0; column < 9; column++) {
-        if (column != inputColumn) {
-            
-            HMDSudokuCell *cell = self.internalSudokuBoard[inputRow][column];
-            NSInteger cellAnswer = cell.answer;
-            
-            if (cellAnswer == answer) {
-                return YES;
-            }
+        HMDSudokuCell *cell = self.internalSudokuBoard[inputRow][column];
+        NSInteger cellAnswer = cell.answer;
+        
+        if (cellAnswer == answer && column != inputColumn) {
+            return YES;
         }
+        
     }
     
     return NO;
@@ -656,15 +651,14 @@ static NSNumberFormatter *numberFormatter;
     
     for (NSInteger row = coordinates.rowMin; row <= coordinates.rowMax; row++) {
         for (NSInteger column = coordinates.columnMin; column <= coordinates.columnMax; column++) {
-            if (row != inputRow && column != inputColumn) {
-                
-                HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
-                NSInteger cellAnswer = cell.answer;
-                
-                if (cellAnswer == answer) {
-                    return YES;
-                }
+            
+            HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
+            NSInteger cellAnswer = cell.answer;
+            
+            if (cellAnswer == answer && row != inputRow && column != inputColumn) {
+                return YES;
             }
+            
             
         }
     }
@@ -976,7 +970,7 @@ static NSNumberFormatter *numberFormatter;
 //                
 //                for (NSInteger level = previousTreeLevel; level > newTreeLevel; level--) {
 //                    HMDCellCoordinates *coordinatesForCellsToRestore = self.listOfCellsToGuess[level];
-//                    [self restorePossibleAnswerForCellInRow:coordinatesForCellsToRestore.row andColumn:coordinatesForCellsToRestore.column];
+//                    [self restorePossibleAnswerForCellInR//ow:coordinatesForCellsToRestore.row andColumn:coordinatesForCellsToRestore.column];
 //                }
                 
                 [self restorePossibleAnswersForCellsToGuess];
