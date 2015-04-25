@@ -452,6 +452,10 @@
     NSLog(@"Swift string: %@", [self makeStringCopyForSwiftFrom:self.initialBoard]);
     NSLog(@"Swift string length: %ld", [self makeStringCopyForSwiftFrom:self.initialBoard].length);
     
+    Solver *s = [[Solver alloc] init];
+    
+    [s solvePuzzleWithStartingNumbersWithStartingNumbers:[self makeStringCopyForSwiftFrom:self.initialBoard] andDirection:Forward];
+    
     if (debugModeEnabled) {
         self.languageSelectView.frame = self.unpresentedFrame;
         [self.view addSubview:self.languageSelectView];
@@ -650,7 +654,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSDate *startTime = [NSDate date];
         
-        NSArray *solution = [self.forwardSolver solvePuzzleWithStartingNumbers:[self makeBoardCopyFrom:self.initialBoard] andDirection:Forward];
+        NSArray *solution = [self.forwardSolver solvePuzzleWithStartingNumbers:[self makeStringCopyForSwiftFrom:self.initialBoard] andDirection:Forward];
         
         dispatch_sync(dispatch_get_main_queue(), ^{
             

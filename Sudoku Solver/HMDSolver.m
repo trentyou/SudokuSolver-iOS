@@ -93,7 +93,7 @@ static NSNumberFormatter *numberFormatter;
 
 #pragma mark - Utility methods for checking number placement
 
-- (void)updatePossibleAnswers
+- (void)updateAllPossibleAnswers
 {
     for (NSInteger row = 0; row < 9; row++) {
         for (NSInteger column = 0; column < 9; column++) {
@@ -705,7 +705,7 @@ static NSNumberFormatter *numberFormatter;
                     [cell.possibleAnswers removeAllObjects];
                     changed = YES;
                     
-                    [self updatePossibleAnswers];
+                    [self updateAllPossibleAnswers];
                 }
             }
         }
@@ -753,14 +753,14 @@ static NSNumberFormatter *numberFormatter;
                     cell.answer = possibleAnswer.answer;
                     [cell.possibleAnswers removeAllObjects];
                     
-                    [self updatePossibleAnswers];
+                    [self updateAllPossibleAnswers];
                     
                     changed = YES;
                 }
             }
         }
         
-        if (changed == NO) changed = [self subGroupExclusionCheck];
+        if (!changed) changed = [self subGroupExclusionCheck];
         logicLoopCount++;
     } while (!self.anotherThreadFinished && changed);
     

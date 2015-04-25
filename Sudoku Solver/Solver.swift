@@ -11,9 +11,8 @@ import Foundation
 
 class Solver : NSObject {
     
-    var internalSudokuBoard: [[HMDSudokuCell]] = [[]]
-    var originalBoard: [[HMDSudokuCell]] = [[]]
-    var listOfCellsToGuess: [HMDCellCoordinates] = []
+    var internalSudokuBoard: [[SudokuCell]] = [[]]
+    var listOfCellsToGuess: [CellCoordinates] = []
     
     var direction: TreeSolverDirection?
     var anotherThreadFinished: Bool
@@ -28,20 +27,59 @@ class Solver : NSObject {
         super.init()
     }
     
-    internal func solvePuzzleWithStartingNumbers(#startingNumbers: [[HMDSudokuCell]], andDirection direction: TreeSolverDirection) -> [[HMDSudokuCell]]?{
+    internal func solvePuzzleWithStartingNumbers(#startingNumbers: String, andDirection direction: TreeSolverDirection) {
         
         self.direction = direction
-        self.internalSudokuBoard = startingNumbers
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "cancelTreeTraversalOperations", name: "anotherThreadFinished", object: nil);
         
-        self.fillPossibleAnswers()
+        self.setupInternalSudokuBoard(startingNumbers: startingNumbers)
+        //self.fillPossibleAnswers()
         
-        return nil;
     }
     
     
     // MARK: Initial board setup
+    
+    private func setupInternalSudokuBoard(var #startingNumbers: String) {
+        
+        for var row = 0; row < 9; row++ {
+            var innerArray: [SudokuCell] = []
+            
+            for var column = 0; column < 9; column++ {
+                var cell = SudokuCell()
+                innerArray.insert(cell, atIndex: column)
+            }
+            
+            self.internalSudokuBoard.insert(innerArray, atIndex: row)
+        }
+        
+        for var row = 0; row < 9; row++ {
+            for var column = 0; column < 9; column++ {
+                var cell = self.internalSudokuBoard[row][column]
+                
+                let firstDigit = startingNumbers.substringToIndex(advance(startingNumbers.startIndex, 1))
+                startingNumbers = dropFirst(startingNumbers)
+                
+                cell.answer = firstDigit.toInt()!
+                
+                if cell.answer != 0 {
+                    cell.isPartOfInitialBoard = true
+                }
+                
+                self.internalSudokuBoard[row][column] = cell
+            }
+        }
+        
+        for var row = 0; row < 9; row++ {
+            for var column = 0; column < 9; column++ {
+                var cell = self.internalSudokuBoard[row][column]
+                
+                println("Row: \(row), Column: \(column), Answer: \(cell.answer)")
+            }
+        }
+    }
+    
     
     private func fillPossibleAnswers() {
         for var row = 0; row < 9; row++ {
@@ -50,19 +88,16 @@ class Solver : NSObject {
                 let answer = cell.answer
                 
                 if answer == 0 {
-                    var possibleAnswers: [HMDPossibleAnswer] = []
+                    var possibleAnswers: [Int] = []
                     
                     for var number = 1; number <= 9; number++ {
                         
                         if self.checkValidPlacementOfAnswer(answer: number, inRow: row, andColumn: column) {
-                            var possibleAnswer = HMDPossibleAnswer()
-                            
-                            possibleAnswer.answer = number
-                            possibleAnswers.append(possibleAnswer)
+                            possibleAnswers.append(number)
                         }
                     }
                     
-
+                    cell.possibleAnswers = possibleAnswers
                 }
             }
         }
@@ -229,7 +264,7 @@ class Solver : NSObject {
         return false
     }
     
-    // MARK: Logic algorithm support methods
+    // MARK: Logic algorithm portion support methods
     
     private func subGroupExclusionCheck() -> Bool {
         var changed = false
@@ -246,9 +281,26 @@ class Solver : NSObject {
                     for var quadrantRow = 0; quadrantRow <= 2; quadrantRow++ {
                         for var quadrantColumn = 0; quadrantColumn <= 2; quadrantColumn++ {
                             
-                            let cell = self.internalSudokuBoard[row + quadrantRow]
-                            //var possibleAnswers = cell.possibleAnswers
+                            let cell = self.internalSudokuBoard[row + quadrantRow][column + quadrantColumn]
+                            
+                            for possibleAnswer in cell.possibleAnswers {
+                                if possibleAnswer == answer {
+                                    occurenceCount++
+                                    rowCoordinateOfOccurence = row + quadrantRow
+                                    columnCoordinateOfOccurence = column + quadrantColumn
+                                }
+                            }
                         }
+                    }
+                    
+                    if occurenceCount == 1 {
+                        let cell = self.internalSudokuBoard[rowCoordinateOfOccurence][columnCoordinateOfOccurence]
+                        
+                        cell.answer = answer
+                        cell.possibleAnswers = []
+                        changed = true
+                        
+                        self.updateAllPossibleAnswers()
                     }
                 }
                 
@@ -258,7 +310,7 @@ class Solver : NSObject {
         return changed
     }
     
-    private func updatePossibleAnswers() {
+    private func updateAllPossibleAnswers() {
         for var row = 0; row < 9; row++ {
             for var column = 0; column < 9; column++ {
                 
@@ -266,11 +318,97 @@ class Solver : NSObject {
                 let answer = cell.answer
                 
                 if answer == 0 {
+                    let possibleAnswers = cell.possibleAnswers
                     
+                    for possibleAnswer in possibleAnswers {
+                        if !self.checkValidPlacementOfAnswer(answer: possibleAnswer, inRow: row, andColumn: column) {
+                            
+                            for var i = 0; i < cell.possibleAnswers.count; i++ {
+                                if (possibleAnswer == cell.possibleAnswers[i]) {
+                                    cell.possibleAnswers.removeAtIndex(i)
+                                    break
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
     }
+    
+    
+    // MARK: Checks for whether board is solved
+    
+    private func isSolved() -> Bool {
+        
+        for var row = 0; row < 9; row++ {
+            for var column = 0; column < 9; column++ {
+                let cell = self.internalSudokuBoard[row][column]
+                
+                if cell.answer == 0 {
+                    return false
+                }
+                
+                if !self.checkValidPlacementOfAnswer(answer: cell.answer, inRow: row, andColumn: column) {
+                    return false
+                }
+            }
+        }
+        
+        return true
+        
+    }
+    
+    // MARK: Solve methods
+    
+    private func solveBoard() -> [[SudokuCell]]? {
+        var changed: Bool
+        var logicLoopCount = 0
+        
+        do {
+            changed = false
+            
+            for var row = 0; row < 9; row++ {
+                for var column = 0; column < 9; column++ {
+                    let cell = self.internalSudokuBoard[row][column]
+                    let answer = cell.answer
+                    
+                    if answer == 0 && cell.possibleAnswers.count == 1 {
+                        cell.answer = cell.possibleAnswers.first!
+                        cell.possibleAnswers = []
+                        
+                        self.updateAllPossibleAnswers()
+                        
+                        changed = true
+                    }
+                }
+            }
+            
+            if !changed {
+                changed = self.subGroupExclusionCheck()
+            }
+        
+            logicLoopCount++
+        
+        } while !self.anotherThreadFinished && changed
+        
+        println("Number of logic loops: \(logicLoopCount)")
+        
+        if self.anotherThreadFinished {
+            println("Quitting from another thread finishing before tree traversal")
+        }
+        
+        if self.anotherThreadFinished || self.isSolved() {
+            return self.internalSudokuBoard
+        } else {
+            return nil
+        }
+    }
+    
+    
+    
+    
+    
     
     
     

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8502CE841AEB2923006B00D2 /* SudokuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8502CE831AEB2923006B00D2 /* SudokuCell.swift */; };
+		8502CE881AEB3C12006B00D2 /* CellCoordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8502CE871AEB3C12006B00D2 /* CellCoordinates.swift */; };
 		85101CE71AB7C64500708586 /* HMDSudokuCellLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 85101CE61AB7C64500708586 /* HMDSudokuCellLabel.m */; };
 		85101CEB1AB7DDE900708586 /* HMDCheckBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85101CE91AB7DDE900708586 /* HMDCheckBoardViewController.m */; };
 		85101CEC1AB7DDE900708586 /* HMDCheckBoardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85101CEA1AB7DDE900708586 /* HMDCheckBoardViewController.xib */; };
@@ -63,6 +65,8 @@
 /* Begin PBXFileReference section */
 		36AF5BBEC7200E23654BF740 /* Pods-Sudoku Solver.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sudoku Solver.release.xcconfig"; path = "Pods/Target Support Files/Pods-Sudoku Solver/Pods-Sudoku Solver.release.xcconfig"; sourceTree = "<group>"; };
 		6C06B72111C64DCA69E3FBBD /* libPods-Sudoku Solver.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sudoku Solver.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8502CE831AEB2923006B00D2 /* SudokuCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SudokuCell.swift; sourceTree = "<group>"; };
+		8502CE871AEB3C12006B00D2 /* CellCoordinates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellCoordinates.swift; sourceTree = "<group>"; };
 		85101CE51AB7C64500708586 /* HMDSudokuCellLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSudokuCellLabel.h; sourceTree = "<group>"; };
 		85101CE61AB7C64500708586 /* HMDSudokuCellLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDSudokuCellLabel.m; sourceTree = "<group>"; };
 		85101CE81AB7DDE900708586 /* HMDCheckBoardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDCheckBoardViewController.h; sourceTree = "<group>"; };
@@ -216,8 +220,10 @@
 				85D44FB01A77497300363F0E /* HMDSolutionViewController.xib */,
 				85B5DAA91A778D69002A1979 /* HMDSudokuCell.h */,
 				85B5DAAA1A778D69002A1979 /* HMDSudokuCell.m */,
+				8502CE831AEB2923006B00D2 /* SudokuCell.swift */,
 				859D88631A7E0E99007007B0 /* HMDCellCoordinates.h */,
 				859D88641A7E0E99007007B0 /* HMDCellCoordinates.m */,
+				8502CE871AEB3C12006B00D2 /* CellCoordinates.swift */,
 				859D885D1A7DECD7007007B0 /* HMDSudokuTreeNode.h */,
 				859D885E1A7DECD7007007B0 /* HMDSudokuTreeNode.m */,
 				859D88661A7E11B1007007B0 /* HMDSudokuTree.h */,
@@ -435,11 +441,13 @@
 				85DE02F31A7640D500B9A8BF /* AppDelegate.m in Sources */,
 				85B5DAAB1A778D69002A1979 /* HMDSudokuCell.m in Sources */,
 				851174061AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.m in Sources */,
+				8502CE881AEB3C12006B00D2 /* CellCoordinates.swift in Sources */,
 				85101D021AB8029F00708586 /* HMDActionButton.m in Sources */,
 				85101CE71AB7C64500708586 /* HMDSudokuCellLabel.m in Sources */,
 				859D885F1A7DECD7007007B0 /* HMDSudokuTreeNode.m in Sources */,
 				859D88651A7E0E99007007B0 /* HMDCellCoordinates.m in Sources */,
 				85101CFD1AB7FA1E00708586 /* HMDMainMenuViewController.m in Sources */,
+				8502CE841AEB2923006B00D2 /* SudokuCell.swift in Sources */,
 				85F197D01AA8087A002984CA /* HMDQuadrantView.m in Sources */,
 				85101D0B1AB82ADF00708586 /* HMDPrevSolutionPageViewController.m in Sources */,
 				851F9EA21AABFC1800F994CD /* HMDSolver.m in Sources */,
