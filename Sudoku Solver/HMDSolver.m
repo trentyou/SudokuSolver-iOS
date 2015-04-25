@@ -607,13 +607,14 @@ static NSNumberFormatter *numberFormatter;
 - (BOOL)checkColumnForAnswer:(NSInteger)answer inRow:(NSInteger)inputRow andColumn:(NSInteger)inputColumn
 {
     for (NSInteger row = 0; row < 9; row++) {
-        HMDSudokuCell *cell = self.internalSudokuBoard[row][inputColumn];
-        NSInteger cellAnswer = cell.answer;
-        
-        if (cellAnswer == answer && row != inputRow) {
-            return YES;
+        if (row != inputRow) {
+            HMDSudokuCell *cell = self.internalSudokuBoard[row][inputColumn];
+            NSInteger cellAnswer = cell.answer;
+            
+            if (cellAnswer == answer && row != inputRow) {
+                return YES;
+            }
         }
-        
     }
     
     return NO;
@@ -622,13 +623,15 @@ static NSNumberFormatter *numberFormatter;
 - (BOOL)checkRowForAnswer:(NSInteger)answer inRow:(NSInteger)inputRow andColumn:(NSInteger)inputColumn
 {
     for (NSInteger column = 0; column < 9; column++) {
-        HMDSudokuCell *cell = self.internalSudokuBoard[inputRow][column];
-        NSInteger cellAnswer = cell.answer;
-        
-        if (cellAnswer == answer && column != inputColumn) {
-            return YES;
+        if (column != inputColumn) {
+            
+            HMDSudokuCell *cell = self.internalSudokuBoard[inputRow][column];
+            NSInteger cellAnswer = cell.answer;
+            
+            if (cellAnswer == answer) {
+                return YES;
+            }
         }
-        
     }
     
     return NO;
@@ -651,14 +654,15 @@ static NSNumberFormatter *numberFormatter;
     
     for (NSInteger row = coordinates.rowMin; row <= coordinates.rowMax; row++) {
         for (NSInteger column = coordinates.columnMin; column <= coordinates.columnMax; column++) {
-            
-            HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
-            NSInteger cellAnswer = cell.answer;
-            
-            if (cellAnswer == answer && row != inputRow && column != inputColumn) {
-                return YES;
+            if (row != inputRow && column != inputColumn) {
+                
+                HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
+                NSInteger cellAnswer = cell.answer;
+                
+                if (cellAnswer == answer) {
+                    return YES;
+                }
             }
-            
             
         }
     }
@@ -684,9 +688,8 @@ static NSNumberFormatter *numberFormatter;
                     for (NSInteger quadrantColumn = 0; quadrantColumn <= 2; quadrantColumn++) {
                         
                         HMDSudokuCell *cell = self.internalSudokuBoard[row + quadrantRow][column + quadrantColumn];
-                        NSMutableArray *possibleAnswers = cell.possibleAnswers;
                         
-                        for (HMDPossibleAnswer *possibleAnswer in possibleAnswers) {
+                        for (HMDPossibleAnswer *possibleAnswer in cell.possibleAnswers) {
                             if (possibleAnswer.answer == answer) {
                                 occurenceCount++;
                                 rowCoordinateOfOccurence = row + quadrantRow;

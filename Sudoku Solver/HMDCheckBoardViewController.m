@@ -426,12 +426,31 @@
     return copy;
 }
 
+- (NSString *)makeStringCopyForSwiftFrom:(NSMutableArray *)originalBoard
+{
+    NSString *copy = @"";
+    
+    for (NSInteger row = 0; row < 9; row++) {
+        for (NSInteger column = 0; column < 9; column++) {
+            HMDSudokuCell *cell = self.initialBoard[row][column];
+            NSInteger answer = cell.answer;
+            
+            copy = [copy stringByAppendingString:[NSString stringWithFormat:@"%ld", (long)answer]];
+        }
+    }
+    
+    return copy;
+}
+
 #pragma mark - User actions
 
 - (IBAction)solve:(id)sender
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL debugModeEnabled = [defaults boolForKey:@"debugModeEnabled"];
+    
+    NSLog(@"Swift string: %@", [self makeStringCopyForSwiftFrom:self.initialBoard]);
+    NSLog(@"Swift string length: %ld", [self makeStringCopyForSwiftFrom:self.initialBoard].length);
     
     if (debugModeEnabled) {
         self.languageSelectView.frame = self.unpresentedFrame;
@@ -625,6 +644,8 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"Solving..";
     hud.labelFont = [UIFont fontWithName:@"quicksand-regular" size:20];
+    
+    
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSDate *startTime = [NSDate date];
