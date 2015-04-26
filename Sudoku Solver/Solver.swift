@@ -14,6 +14,8 @@ class Solver : NSObject {
     var internalSudokuBoard: [[SudokuCell]] = [[]]
     var listOfCellsToGuess: [CellCoordinates] = []
     
+    var sudokuTree = SudokuTree()
+    
     var direction: TreeSolverDirection?
     var anotherThreadFinished: Bool
 
@@ -84,7 +86,7 @@ class Solver : NSObject {
     private func fillPossibleAnswers() {
         for var row = 0; row < 9; row++ {
             for var column = 0; column < 9; column++ {
-                let cell = self.internalSudokuBoard[row][column]
+                var cell = self.internalSudokuBoard[row][column]
                 let answer = cell.answer
                 
                 if answer == 0 {
@@ -264,7 +266,7 @@ class Solver : NSObject {
         return false
     }
     
-    // MARK: Logic algorithm portion support methods
+    // MARK: Logic portion of algorithm support methods
     
     private func subGroupExclusionCheck() -> Bool {
         var changed = false
@@ -294,7 +296,7 @@ class Solver : NSObject {
                     }
                     
                     if occurenceCount == 1 {
-                        let cell = self.internalSudokuBoard[rowCoordinateOfOccurence][columnCoordinateOfOccurence]
+                        var cell = self.internalSudokuBoard[rowCoordinateOfOccurence][columnCoordinateOfOccurence]
                         
                         cell.answer = answer
                         cell.possibleAnswers = []
@@ -314,7 +316,7 @@ class Solver : NSObject {
         for var row = 0; row < 9; row++ {
             for var column = 0; column < 9; column++ {
                 
-                let cell = self.internalSudokuBoard[row][column]
+                var cell = self.internalSudokuBoard[row][column]
                 let answer = cell.answer
                 
                 if answer == 0 {
@@ -336,6 +338,54 @@ class Solver : NSObject {
         }
     }
     
+    // MARK: Guessing portion of algorithm support methods
+    
+    private func updatePossibleAnswersInRow(#inputRow: Int, andColumn inputColumn: Int, forAnswer answer: Int) {
+        
+        for var column = inputColumn + 1; column < 9; column++ {
+            var cell = self.internalSudokuBoard[inputRow][column]
+            
+            if cell.answer == 0 {
+                for var i = 0; i < cell.possibleAnswers.count; i++ {
+                    if cell.possibleAnswers[i] == answer {
+                        cell.possibleAnswers.removeAtIndex(i)
+                        break
+                    }
+                }
+            }
+        }
+        
+        for var row = inputRow + 1; row < 9; row++ {
+            var cell = self.internalSudokuBoard[row][inputColumn]
+            
+            if cell.answer == 0 {
+                for var i = 0; i < cell.possibleAnswers.count; i++ {
+                    if cell.possibleAnswers[i] == answer {
+                        cell.possibleAnswers.removeAtIndex(i)
+                        break
+                    }
+                }
+            }
+        }
+        
+        var coordinates = self.quadrantBoundariesForRow(row: inputRow, andColumn: inputColumn)
+        
+        for var row = inputRow + 1; row <= coordinates.rowMax; row++ {
+            for var column = coordinates.columnMin; column <= coordinates.columnMax; column++ {
+                var cell = self.internalSudokuBoard[row][column]
+                
+                if cell.answer == 0 {
+                    for var i = 0; i < cell.possibleAnswers.count; i++ {
+                        if cell.possibleAnswers[i] == answer {
+                            cell.possibleAnswers.removeAtIndex(i)
+                            break
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
     
     // MARK: Checks for whether board is solved
     
@@ -370,7 +420,7 @@ class Solver : NSObject {
             
             for var row = 0; row < 9; row++ {
                 for var column = 0; column < 9; column++ {
-                    let cell = self.internalSudokuBoard[row][column]
+                    var cell = self.internalSudokuBoard[row][column]
                     let answer = cell.answer
                     
                     if answer == 0 && cell.possibleAnswers.count == 1 {
@@ -406,10 +456,40 @@ class Solver : NSObject {
     }
     
     
+    private func setupTree() {
+        
+        
+        for var row = 0; row < 9; row++ {
+            for var column = 0; column < 9; column++ {
+                
+                let cell = self.internalSudokuBoard[row][column]
+                
+                if cell.answer == 0 {
+                    let coordinates = CellCoordinates(row: row, column: column)
+                    
+                    self.listOfCellsToGuess.append(coordinates)
+                }
+            }
+        }
+        
+        
+        var root = SudokuTreeNode()
+        root.parent = nil
+        root.treeLevel = -1
+        
+        self.sudokuTree.root = root
+    }
     
     
-    
-    
+    private func getNextParentNodeWithSibling(var #parent: SudokuTreeNode) -> SudokuTreeNode {
+        while parent.nextSibling == nil {
+            if let nextParent = parent.parent {
+                parent = nextParent
+            }
+        }
+        
+        return parent
+    }
     
     
     

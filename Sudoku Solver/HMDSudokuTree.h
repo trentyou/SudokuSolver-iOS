@@ -12,7 +12,6 @@
 @interface HMDSudokuTree : NSObject
 
 @property HMDSudokuTreeNode *root;
-@property NSInteger size;
 
 
 

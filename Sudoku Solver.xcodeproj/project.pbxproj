@@ -33,6 +33,8 @@
 		859D885F1A7DECD7007007B0 /* HMDSudokuTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 859D885E1A7DECD7007007B0 /* HMDSudokuTreeNode.m */; };
 		859D88651A7E0E99007007B0 /* HMDCellCoordinates.m in Sources */ = {isa = PBXBuildFile; fileRef = 859D88641A7E0E99007007B0 /* HMDCellCoordinates.m */; };
 		859D88681A7E11B1007007B0 /* HMDSudokuTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 859D88671A7E11B1007007B0 /* HMDSudokuTree.m */; };
+		85A0B6261AEC8E4F001184D6 /* SudokuTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A0B6251AEC8E4F001184D6 /* SudokuTree.swift */; };
+		85A0B6281AEC8E71001184D6 /* SudokuTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A0B6271AEC8E70001184D6 /* SudokuTreeNode.swift */; };
 		85AB2E521AE5A9AF00689AC6 /* HMDBoardTutorialView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AB2E511AE5A9AF00689AC6 /* HMDBoardTutorialView.m */; };
 		85AB2E541AE5A9E000689AC6 /* HMDBoardTutorialView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85AB2E531AE5A9E000689AC6 /* HMDBoardTutorialView.xib */; };
 		85B5DAAB1A778D69002A1979 /* HMDSudokuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B5DAAA1A778D69002A1979 /* HMDSudokuCell.m */; };
@@ -104,6 +106,8 @@
 		859D88641A7E0E99007007B0 /* HMDCellCoordinates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDCellCoordinates.m; sourceTree = "<group>"; };
 		859D88661A7E11B1007007B0 /* HMDSudokuTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSudokuTree.h; sourceTree = "<group>"; };
 		859D88671A7E11B1007007B0 /* HMDSudokuTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDSudokuTree.m; sourceTree = "<group>"; };
+		85A0B6251AEC8E4F001184D6 /* SudokuTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SudokuTree.swift; sourceTree = "<group>"; };
+		85A0B6271AEC8E70001184D6 /* SudokuTreeNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SudokuTreeNode.swift; sourceTree = "<group>"; };
 		85AB2E501AE5A9AF00689AC6 /* HMDBoardTutorialView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDBoardTutorialView.h; sourceTree = "<group>"; };
 		85AB2E511AE5A9AF00689AC6 /* HMDBoardTutorialView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDBoardTutorialView.m; sourceTree = "<group>"; };
 		85AB2E531AE5A9E000689AC6 /* HMDBoardTutorialView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HMDBoardTutorialView.xib; sourceTree = "<group>"; };
@@ -226,8 +230,10 @@
 				8502CE871AEB3C12006B00D2 /* CellCoordinates.swift */,
 				859D885D1A7DECD7007007B0 /* HMDSudokuTreeNode.h */,
 				859D885E1A7DECD7007007B0 /* HMDSudokuTreeNode.m */,
+				85A0B6271AEC8E70001184D6 /* SudokuTreeNode.swift */,
 				859D88661A7E11B1007007B0 /* HMDSudokuTree.h */,
 				859D88671A7E11B1007007B0 /* HMDSudokuTree.m */,
+				85A0B6251AEC8E4F001184D6 /* SudokuTree.swift */,
 				8594DB801A93037400888099 /* HMDPossibleAnswer.h */,
 				8594DB811A93037400888099 /* HMDPossibleAnswer.m */,
 				851174041AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.h */,
@@ -433,6 +439,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85A0B6281AEC8E71001184D6 /* SudokuTreeNode.swift in Sources */,
 				85EA66771ADE6B290072BDE1 /* HMDArchivedSolution.m in Sources */,
 				8594DB821A93037400888099 /* HMDPossibleAnswer.m in Sources */,
 				857582751AE9B8DB00D0B9BB /* Solver.swift in Sources */,
@@ -443,6 +450,7 @@
 				851174061AB194DA000E7AF1 /* HMDRowAndColumnMinMaxCoordinates.m in Sources */,
 				8502CE881AEB3C12006B00D2 /* CellCoordinates.swift in Sources */,
 				85101D021AB8029F00708586 /* HMDActionButton.m in Sources */,
+				85A0B6261AEC8E4F001184D6 /* SudokuTree.swift in Sources */,
 				85101CE71AB7C64500708586 /* HMDSudokuCellLabel.m in Sources */,
 				859D885F1A7DECD7007007B0 /* HMDSudokuTreeNode.m in Sources */,
 				859D88651A7E0E99007007B0 /* HMDCellCoordinates.m in Sources */,
