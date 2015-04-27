@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HMDSwiftSolution.h"
 
 @interface HMDSolutionViewController : UIViewController
 
-- (instancetype)initWithSolution:(NSArray *)solution andTimeToSolve:(double)timeToSolve;
-
+- (instancetype)initWithArraySolution:(NSArray *)solution andTimeToSolve:(double)timeToSolve;
+- (instancetype)initWithStringSolution:(HMDSwiftSolution *)solution andTimeToSolve:(double)timeToSolve;
 
 
 @end

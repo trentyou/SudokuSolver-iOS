@@ -91,10 +91,10 @@
     CGFloat yPosition = yStartPosition;
     
     for (NSInteger i = 1; i <= 81; i++) {
-        NSString *firstSolutionDigit = [self.solutionString substringToIndex:1];
+        NSString *solutionFirstDigit = [self.solutionString substringToIndex:1];
         self.solutionString = [self.solutionString substringFromIndex:1];
         
-        NSString *firstInitialBoardDigit = [self.initialBoardString substringToIndex:1];
+        NSString *initialBoardFirstDigit = [self.initialBoardString substringToIndex:1];
         self.initialBoardString = [self.initialBoardString substringFromIndex:1];
         
         UILabel *cell = [[UILabel alloc] initWithFrame:CGRectMake(xPosition, yPosition, labelSize, labelSize)];
@@ -105,12 +105,12 @@
         cell.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.9];
         cell.font = [UIFont fontWithName:@"quicksand-regular" size:20.0f];
         
-        if ([firstSolutionDigit integerValue] == 0) {
-            cell.text = [NSString stringWithFormat:@"%@", firstInitialBoardDigit];
-        } else {
-            cell.text = [NSString stringWithFormat:@"%@", firstSolutionDigit];
+        if ([initialBoardFirstDigit integerValue] == 0) {
             cell.textColor = [UIColor solutionGreenColor];
         }
+        
+        cell.text = [NSString stringWithFormat:@"%@", solutionFirstDigit];
+
         
         if (i % 3 == 0 && i % 9 != 0) {
             CAShapeLayer *rightBorder = [CAShapeLayer layer];

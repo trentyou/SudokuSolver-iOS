@@ -12,6 +12,7 @@ import Foundation
 class Solver : NSObject {
     
     var internalSudokuBoard: [[SudokuCell]] = [[]]
+    var initialString = String()
     var listOfCellsToGuess: [CellCoordinates] = []
     
     var sudokuTree = SudokuTree()
@@ -29,14 +30,21 @@ class Solver : NSObject {
         super.init()
     }
     
-    internal func solvePuzzleWithStartingNumbers(#startingNumbers: String, andDirection direction: TreeSolverDirection) {
+    internal func solvePuzzleWithStartingNumbers(#startingNumbers: String, andDirection direction: TreeSolverDirection) -> HMDSwiftSolution? {
         
         self.direction = direction
+        self.initialString = startingNumbers
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "cancelTreeTraversalOperations", name: "anotherThreadFinished", object: nil);
         
         self.setupInternalSudokuBoard(startingNumbers: startingNumbers)
-        //self.fillPossibleAnswers()
+        self.fillPossibleAnswers()
+        
+        if let solvedBoard = self.solveBoard() {
+            return self.convertBoardToStringFormat(board: solvedBoard)
+        } else {
+            return nil
+        }
         
     }
     
@@ -70,14 +78,6 @@ class Solver : NSObject {
                 }
                 
                 self.internalSudokuBoard[row][column] = cell
-            }
-        }
-        
-        for var row = 0; row < 9; row++ {
-            for var column = 0; column < 9; column++ {
-                var cell = self.internalSudokuBoard[row][column]
-                
-                println("Row: \(row), Column: \(column), Answer: \(cell.answer)")
             }
         }
     }
@@ -451,13 +451,13 @@ class Solver : NSObject {
         if self.anotherThreadFinished || self.isSolved() {
             return self.internalSudokuBoard
         } else {
+            println("Could not solve with logic")
             return nil
         }
     }
     
     
     private func setupTree() {
-        
         
         for var row = 0; row < 9; row++ {
             for var column = 0; column < 9; column++ {
@@ -491,13 +491,30 @@ class Solver : NSObject {
         return parent
     }
     
+    // MARK: Packaging solved board to ObjC friendly format
     
-    
-    
-    
-    
-    
-    
+    private func convertBoardToStringFormat(#board: [[SudokuCell]]) -> HMDSwiftSolution {
+        
+        var solutionString = ""
+        
+        for var row = 0; row < 9; row++ {
+            for var column = 0; column < 9; column++ {
+                
+                let cell = board[row][column]
+                
+                solutionString += String(cell.answer)
+            }
+        }
+        
+        println("solutionString length: \(count(solutionString))")
+        
+        var solution = HMDSwiftSolution()
+        
+        solution.solution = solutionString
+        solution.initialBoard = self.initialString
+        
+        return solution
+    }
     
     
     

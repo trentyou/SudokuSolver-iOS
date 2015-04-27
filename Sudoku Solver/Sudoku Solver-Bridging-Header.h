@@ -7,5 +7,6 @@
 #import "HMDSudokuTree.h"
 #import "HMDCellCoordinates.h"
 #import "HMDPossibleAnswer.h"
+#import "HMDSwiftSolution.h"
 
 

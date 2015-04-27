@@ -10,6 +10,7 @@
 #import "HMDSolutionViewController.h"
 #import "HMDSudokuCell.h"
 #import "HMDSolver.h"
+#import "HMDSwiftSolution.h"
 #import "HMDRowAndColumnMinMaxCoordinates.h"
 #import "MBProgressHUD.h"
 
@@ -449,13 +450,6 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL debugModeEnabled = [defaults boolForKey:@"debugModeEnabled"];
     
-    NSLog(@"Swift string: %@", [self makeStringCopyForSwiftFrom:self.initialBoard]);
-    NSLog(@"Swift string length: %ld", [self makeStringCopyForSwiftFrom:self.initialBoard].length);
-    
-    Solver *s = [[Solver alloc] init];
-    
-    [s solvePuzzleWithStartingNumbersWithStartingNumbers:[self makeStringCopyForSwiftFrom:self.initialBoard] andDirection:Forward];
-    
     if (debugModeEnabled) {
         self.languageSelectView.frame = self.unpresentedFrame;
         [self.view addSubview:self.languageSelectView];
@@ -496,7 +490,7 @@
     [UIView animateWithDuration:self.animationDuration delay:0.0 usingSpringWithDamping:self.springDampeningForAnimation initialSpringVelocity:0.0 options:0 animations:^{
         self.languageSelectView.frame = self.unpresentedFrame;
     }completion:^(BOOL completed) {
-        
+        [self solveWithSwiftSingleThread];
     }];
 }
 
@@ -531,7 +525,7 @@
             NSTimeInterval timeToSolve = [endTime timeIntervalSinceDate:startTime];
             
             if (solution) {
-                [self printBoardWithSolution:solution andTimeToSolve:timeToSolve]; // Presents solutionviewcontroller with solution from this only thread
+                [self printBoardWithArraySolution:solution andTimeToSolve:timeToSolve]; // Presents solutionviewcontroller with solution from this only thread
                 [MBProgressHUD hideHUDForView:self.view animated:YES];
                 
                 self.forwardSolver = nil; // deallocing finished solver for memory purposes
@@ -580,7 +574,7 @@
                     self.forwardFinished = YES; // Stops two solutionviewcontrollers from being presented
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"anotherThreadFinished" object:nil]; // Stop execution of other thread
                     
-                    [self printBoardWithSolution:solution andTimeToSolve:timeToSolve]; // Presents solutionviewcontroller with solution from this thread
+                    [self printBoardWithArraySolution:solution andTimeToSolve:timeToSolve]; // Presents solutionviewcontroller with solution from this thread
                     [MBProgressHUD hideHUDForView:self.view animated:YES];
                     
                     self.forwardSolver = nil; // deallocing finished solver for memory purposes
@@ -616,7 +610,7 @@
                     self.backwardFinished = YES;
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"anotherThreadFinished" object:nil];
                     
-                    [self printBoardWithSolution:solution andTimeToSolve:timeToSolve];
+                    [self printBoardWithArraySolution:solution andTimeToSolve:timeToSolve];
                     [MBProgressHUD hideHUDForView:self.view animated:YES];
                     
                     self.backwardSolver = nil;
@@ -649,12 +643,12 @@
     hud.labelText = @"Solving..";
     hud.labelFont = [UIFont fontWithName:@"quicksand-regular" size:20];
     
-    
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSDate *startTime = [NSDate date];
         
-        NSArray *solution = [self.forwardSolver solvePuzzleWithStartingNumbers:[self makeStringCopyForSwiftFrom:self.initialBoard] andDirection:Forward];
+        HMDSwiftSolution *solution = [self.forwardSwiftSolver solvePuzzleWithStartingNumbersWithStartingNumbers:[self makeStringCopyForSwiftFrom:self.initialBoard] andDirection:Forward];
+        
+        
         
         dispatch_sync(dispatch_get_main_queue(), ^{
             
@@ -662,7 +656,7 @@
             NSTimeInterval timeToSolve = [endTime timeIntervalSinceDate:startTime];
             
             if (solution) {
-                [self printBoardWithSolution:solution andTimeToSolve:timeToSolve]; // Presents solutionviewcontroller with solution from this only thread
+                [self printBoardWithStringSolution:solution andTimeToSolve:timeToSolve]; // Presents solutionviewcontroller with solution from this only thread
                 [MBProgressHUD hideHUDForView:self.view animated:YES];
                 
                 self.forwardSolver = nil; // deallocing finished solver for memory purposes
@@ -687,12 +681,18 @@
 
 #pragma mark - Printing board
 
-- (void)printBoardWithSolution:(NSArray *)solution andTimeToSolve:(double)timeToSolve
+- (void)printBoardWithArraySolution:(NSArray *)solution andTimeToSolve:(double)timeToSolve
 {
-    HMDSolutionViewController *solutionViewController = [[HMDSolutionViewController alloc] initWithSolution:solution andTimeToSolve:timeToSolve];
+    HMDSolutionViewController *solutionViewController = [[HMDSolutionViewController alloc] initWithArraySolution:solution andTimeToSolve:timeToSolve];
     [self.navigationController pushViewController:solutionViewController animated:YES];
 }
 
+
+- (void)printBoardWithStringSolution:(HMDSwiftSolution *)solution andTimeToSolve:(double)timeToSolve
+{
+    HMDSolutionViewController *solutionViewController = [[HMDSolutionViewController alloc] initWithStringSolution:solution andTimeToSolve:timeToSolve];
+    [self.navigationController pushViewController:solutionViewController animated:YES];
+}
 
 #pragma mark - Navigation
 

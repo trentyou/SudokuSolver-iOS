@@ -20,7 +20,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *timeToSolveLabel;
 
 
-@property (nonatomic, copy) NSArray *solution;
+@property (nonatomic, copy) NSArray *arraySolution;
+@property (nonatomic, strong) HMDSwiftSolution *stringSolution;
+
+@property (nonatomic) BOOL isUsingArraySolution;
 
 @property (nonatomic) double timeToSolve;
 
@@ -32,18 +35,35 @@
 
 #pragma mark - Init
 
-- (instancetype)initWithSolution:(NSArray *)solution andTimeToSolve:(double)timeToSolve
+- (instancetype)initWithArraySolution:(NSArray *)solution andTimeToSolve:(double)timeToSolve
 {
     self = [super initWithNibName:nil bundle:nil];
     
     if (self) {
 
         _timeToSolve = timeToSolve;
-        _solution = solution;
+        _arraySolution = solution;
+        _isUsingArraySolution = YES;
     }
     
     return self;
 }
+
+- (instancetype)initWithStringSolution:(HMDSwiftSolution *)solution andTimeToSolve:(double)timeToSolve
+{
+    self = [super initWithNibName:nil bundle:nil];
+    
+    if (self) {
+        _timeToSolve = timeToSolve;
+        _stringSolution = solution;
+        _isUsingArraySolution = NO;
+        
+    }
+    
+    return self;
+}
+
+
 
 #pragma mark - View life cycle
 
@@ -52,8 +72,8 @@
     
     [self setupBackgroundColors];
     [self setupTimeToSolveLabel];
-    [self setupSolutionBoard];
-    [self archiveSolution];
+    self.isUsingArraySolution ? [self setupSolutionBoardFromArray] : [self setupSolutionBoardFromString];
+    self.isUsingArraySolution ? [self archiveArraySolution] : [self archiveStringSolution];
 }
 
 #pragma mark - Setup
@@ -89,7 +109,6 @@
 }
 
 #pragma mark - Setup sudoku board
-
 - (void)setupTimeToSolveLabel
 {
     if (self.timeToSolve != 0.0) {
@@ -100,7 +119,7 @@
     }
 }
 
-- (void)setupSolutionBoard
+- (void)setupSolutionBoardFromArray
 {
     self.view.backgroundColor = [UIColor beigeColor];
     
@@ -144,7 +163,7 @@
             
             cell.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.9];
             
-            HMDSudokuCell *sudokuCell = self.solution[row][column];
+            HMDSudokuCell *sudokuCell = self.arraySolution[row][column];
       
             if (!sudokuCell.isPartOfInitialBoard) {
                 cell.textColor = [UIColor solutionGreenColor];            }
@@ -172,9 +191,86 @@
     
 }
 
+- (void)setupSolutionBoardFromString
+{
+    self.view.backgroundColor = [UIColor beigeColor];
+    
+    NSString *solution = self.stringSolution.solution;
+    NSString *initialBoard = self.stringSolution.initialBoard;
+    
+    CGFloat labelOffset = 10.0f;
+    CGFloat labelSize = ([UIScreen mainScreen].bounds.size.width - (labelOffset * 2.0)) / 9.0;
+    
+    CGFloat xStartPosition = labelOffset;
+    CGFloat yStartPosition = ([UIScreen mainScreen].bounds.size.height / 2.0) - (labelSize * 4.5);
+    
+    CGFloat xPosition = xStartPosition;
+    CGFloat yPosition = yStartPosition;
+    
+    for (NSInteger i = 1; i <= 81; i++) {
+            
+        UILabel *cell = [[UILabel alloc] initWithFrame:CGRectMake(xPosition, yPosition, labelSize, labelSize)];
+        
+        cell.textAlignment = NSTextAlignmentCenter;
+        cell.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        cell.layer.borderWidth = 0.5f;
+        
+        if ((i >= 19 && i <= 27) || (i >= 46 && i <= 54)) {
+            CAShapeLayer *bottomBorder = [CAShapeLayer layer];
+            
+            bottomBorder.borderColor = [UIColor darkGrayColor].CGColor;
+            bottomBorder.borderWidth = 2.0f;
+            bottomBorder.frame = CGRectMake(0.0f, labelSize - 1.5f, labelSize, 1.0f);
+            
+            [cell.layer addSublayer:bottomBorder];
+        }
+        
+        if (i % 3 == 0 && i % 9 != 0) {
+            CAShapeLayer *rightBorder = [CAShapeLayer layer];
+            
+            rightBorder.borderColor = [UIColor darkGrayColor].CGColor;
+            rightBorder.borderWidth = 2.0f;
+            rightBorder.frame = CGRectMake(labelSize - 1.5f, 0.0f, 2.0f, labelSize);
+            
+            [cell.layer addSublayer:rightBorder];
+        }
+        
+        cell.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.9];
+        
+        NSString *solutionFirstDigit = [solution substringToIndex:1];
+        solution = [solution substringFromIndex:1];
+        
+        NSString *initialBoardFirstDigit = [initialBoard substringToIndex:1];
+        initialBoard = [initialBoard substringFromIndex:1];
+        
+        
+        if ([initialBoardFirstDigit integerValue] == 0) {
+            cell.textColor = [UIColor solutionGreenColor];
+        }
+        
+        cell.text = [NSString stringWithFormat:@"%@", solutionFirstDigit];
+        cell.font = [UIFont fontWithName:@"quicksand-regular" size:20];
+        
+        [self.view addSubview:cell];
+        
+        xPosition += labelSize;
+        
+        if (i % 9 == 0) {
+            xPosition = xStartPosition;
+            yPosition += labelSize;
+        }
+        
+        
+    }
+    
+}
+
+
+
+
 #pragma mark - Archiving solution
 
-- (void)archiveSolution
+- (void)archiveArraySolution
 {
     NSString *solutionString = @"";
     NSString *initialBoardString = @"";
@@ -182,7 +278,7 @@
     
     for (NSInteger row = 0; row < 9; row++) {
         for (NSInteger column = 0; column < 9; column++) {
-            HMDSudokuCell *cell = self.solution[row][column];
+            HMDSudokuCell *cell = self.arraySolution[row][column];
             NSString *answerString = [NSString stringWithFormat:@"%ld", (long)cell.answer];
 
             if (cell.isPartOfInitialBoard) {
@@ -199,6 +295,13 @@
     [[HMDSolutionArchiveStore sharedStore] archiveSolution:solutionString andInitialBoard:initialBoardString];
     
 }
+
+- (void)archiveStringSolution
+{
+    [[HMDSolutionArchiveStore sharedStore] archiveSolution:self.stringSolution.solution andInitialBoard:self.stringSolution.initialBoard];
+}
+
+
 
 #pragma mark - Navigation
 
