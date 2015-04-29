@@ -72,7 +72,7 @@
     NSString *monthString = [[df monthSymbols] objectAtIndex:(month - 1)];
     
     self.puzzleNumber.text = [NSString stringWithFormat:@"Puzzle #%ld", (long)self.orderNumber];
-    self.dateLabel.text = [NSString stringWithFormat:@"Solved on %@ %ld, %ld", monthString, day, year];
+    self.dateLabel.text = [NSString stringWithFormat:@"Solved on %@ %ld, %ld", monthString, (long)day, (long)year];
 }
 
 #pragma mark - Setup board

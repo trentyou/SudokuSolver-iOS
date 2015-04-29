@@ -111,11 +111,15 @@
 #pragma mark - Setup sudoku board
 - (void)setupTimeToSolveLabel
 {
-    if (self.timeToSolve != 0.0) {
-        NSString *prefix = @"in ";
-        NSString *formattedTime = [self formatTimeToSolveToString:self.timeToSolve];
-        
-        self.timeToSolveLabel.text = [prefix stringByAppendingString:formattedTime];
+    BOOL debugModeEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"debugModeEnabled"];
+    
+    if (debugModeEnabled) {
+        if (self.timeToSolve != 0.0) {
+            NSString *prefix = @"in ";
+            NSString *formattedTime = [self formatTimeToSolveToString:self.timeToSolve];
+            
+            self.timeToSolveLabel.text = [prefix stringByAppendingString:formattedTime];
+        }
     }
 }
 

@@ -14,7 +14,7 @@ class SudokuTreeNode {
     var answer: Int?
     
     weak var parent: SudokuTreeNode?
-    var child: SudokuTreeNode?
+    var firstChild: SudokuTreeNode?
     var nextSibling: SudokuTreeNode?
     var coordinates: CellCoordinates?
     

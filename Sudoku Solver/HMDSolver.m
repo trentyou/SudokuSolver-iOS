@@ -895,6 +895,7 @@ static NSNumberFormatter *numberFormatter;
     return parent;
 }
 
+
 - (NSArray *)treeTraverseGuessForward:(HMDSudokuTreeNode *)root
 {
     HMDSudokuTreeNode *parent = root;
@@ -940,7 +941,7 @@ static NSNumberFormatter *numberFormatter;
 //                                    NSLog(@"%ld", (long)pa.answer);
 //                                }
 //                                NSLog(@"--------------------------");
-//                
+                
                 
             } else {
 //                                NSLog(@"Encountered empty possible answers in treeLevel %ld, searching for next higher parent with sibling", (long)(parent.treeLevel + 1));

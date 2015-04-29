@@ -491,6 +491,44 @@ class Solver : NSObject {
         return parent
     }
     
+    private func treeTraverseGuessForward() {
+        var parent: SudokuTreeNode = self.sudokuTree.root!
+        var nextSibling: SudokuTreeNode
+        
+        var iterationCount: Int = 0
+        
+        while (parent.treeLevel < self.listOfCellsToGuess.count - 1 && !self.anotherThreadFinished) {
+            iterationCount++
+            
+            let childCoordinates: CellCoordinates = self.listOfCellsToGuess[parent.treeLevel! + 1]
+            let cell = self.internalSudokuBoard[childCoordinates.row][childCoordinates.column]
+            
+            let possibleAnswers = cell.possibleAnswers
+            
+            if possibleAnswers.count == 0 {
+                let parentCoordinates = self.listOfCellsToGuess[parent.treeLevel!]
+                let parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column]
+                
+                if parent.nextSibling != nil && (parentCoordinates.row == childCoordinates.row || parentCoordinates.column == childCoordinates.column) {
+                    
+                    var prevAnswer: Int = parent.parent!.firstChild!.answer!
+                    
+                    parent.parent!.firstChild! = parent.nextSibling!
+                    parent = parent.nextSibling!
+                    parentCell.answer = parent.answer!
+                    
+                    
+                    
+                }
+                
+            }
+            
+            
+            
+        }
+    }
+    
+    
     // MARK: Packaging solved board to ObjC friendly format
     
     private func convertBoardToStringFormat(#board: [[SudokuCell]]) -> HMDSwiftSolution {
