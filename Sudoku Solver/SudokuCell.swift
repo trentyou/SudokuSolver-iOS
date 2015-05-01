@@ -9,8 +9,10 @@
 import Foundation
 
 class SudokuCell: NSObject {
+    
     var answer: Int = 0
     var possibleAnswers: [Int] = []
+    var initialPossibleAnswers: [Int] = []
     var isPartOfInitialBoard: Bool = false
     
 }

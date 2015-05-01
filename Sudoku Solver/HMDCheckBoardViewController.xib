@@ -126,7 +126,7 @@
                         </constraint>
                     </constraints>
                     <fontDescription key="fontDescription" name="Quicksand-Regular" family="Quicksand" pointSize="19"/>
-                    <state key="normal" title="Solve using multi-threaded Objective-C">
+                    <state key="normal" title="Solve using multi-threaded Objective-C (default)">
                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <variation key="default">
@@ -180,7 +180,7 @@
                         </constraint>
                     </constraints>
                     <fontDescription key="fontDescription" name="Quicksand-Regular" family="Quicksand" pointSize="19"/>
-                    <state key="normal" title="Solve using multi-threaded Swift (default)">
+                    <state key="normal" title="Solve using multi-threaded Swift">
                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <variation key="default">

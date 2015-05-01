@@ -18,17 +18,12 @@ class Solver : NSObject {
     var sudokuTree = SudokuTree()
     
     var direction: TreeSolverDirection?
-    var anotherThreadFinished: Bool
+    var anotherThreadFinished: Bool = false
 
     static let numberFormatter = NSNumberFormatter()
     
     
-    // MARK: Init
-    
-    override init() {
-        self.anotherThreadFinished = false
-        super.init()
-    }
+    // MARK: Public interface
     
     internal func solvePuzzleWithStartingNumbers(#startingNumbers: String, andDirection direction: TreeSolverDirection) -> HMDSwiftSolution? {
         
@@ -266,7 +261,7 @@ class Solver : NSObject {
         return false
     }
     
-    // MARK: Logic portion of algorithm support methods
+    // MARK: Support methods for logic portion of algorithm
     
     private func subGroupExclusionCheck() -> Bool {
         var changed = false
@@ -338,7 +333,7 @@ class Solver : NSObject {
         }
     }
     
-    // MARK: Guessing portion of algorithm support methods
+    // MARK: Support methods for guessing portion of algorithm
     
     private func updatePossibleAnswersInRow(#inputRow: Int, andColumn inputColumn: Int, forAnswer answer: Int) {
         
@@ -385,6 +380,180 @@ class Solver : NSObject {
             }
         }
         
+    }
+    
+    private func restorePossibleAnswer(#possibleAnswerToRestore: Int, forRow inputRow: Int, andColumn inputColumn: Int, andRemovePossibleAnswer possibleAnswerToRemove: Int) {
+        
+        for var column = inputColumn + 1; column < 9; column++ {
+            var cell = self.internalSudokuBoard[inputRow][column]
+
+            if cell.answer == 0 {
+                
+                for var i = 0; i < cell.possibleAnswers.count; i++ {
+                    if cell.possibleAnswers[i] == possibleAnswerToRemove {
+                        cell.possibleAnswers.removeAtIndex(i)
+                        break
+                    }
+                }
+ 
+                if self.checkValidPlacementOfAnswer(answer: possibleAnswerToRestore, inRow: inputRow, andColumn: column) {
+                    
+                    if cell.possibleAnswers.count == 0 {
+                        cell.possibleAnswers.append(possibleAnswerToRestore)
+                    } else {
+                        for var i = 0; i < cell.possibleAnswers.count; i++ {
+                            let answer = cell.possibleAnswers[i]
+                            
+                            if possibleAnswerToRestore < answer {
+                                cell.possibleAnswers.insert(possibleAnswerToRestore, atIndex: i)
+                                break
+                            } else if i == cell.possibleAnswers.count - 1 {
+                                cell.possibleAnswers .insert(possibleAnswerToRestore, atIndex: i + 1)
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        for var row = inputRow + 1; row < 9; row++ {
+            var cell = self.internalSudokuBoard[row][inputColumn]
+            
+            if cell.answer == 0 {
+                
+                for var i = 0; i < cell.possibleAnswers.count; i++ {
+                    if cell.possibleAnswers[i] == possibleAnswerToRemove {
+                        cell.possibleAnswers.removeAtIndex(i)
+                        break
+                    }
+                }
+                
+                if self.checkValidPlacementOfAnswer(answer: possibleAnswerToRestore, inRow: row, andColumn: inputColumn) {
+                    
+                    if cell.possibleAnswers.count == 0 {
+                        cell.possibleAnswers.append(possibleAnswerToRestore)
+                    } else {
+                        for var i = 0; i < cell.possibleAnswers.count; i++ {
+                            let answer = cell.possibleAnswers[i]
+                            
+                            if possibleAnswerToRestore < answer {
+                                cell.possibleAnswers.insert(possibleAnswerToRestore, atIndex: i)
+                                break
+                            } else if i == cell.possibleAnswers.count - 1 {
+                                cell.possibleAnswers.insert(possibleAnswerToRestore, atIndex: i + 1)
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        let coordinates = self.quadrantBoundariesForRow(row: inputRow, andColumn: inputColumn)
+        
+        for var row = inputRow + 1; row <= coordinates.rowMax; row++ {
+            for var column = coordinates.columnMin; column <= coordinates.columnMax; column++ {
+                
+                var cell = self.internalSudokuBoard[row][column]
+                
+                if cell.answer == 0 && column != inputColumn {
+                    
+                    for var i = 0; i < cell.possibleAnswers.count; i++ {
+                        if cell.possibleAnswers[i] == possibleAnswerToRemove {
+                            cell.possibleAnswers.removeAtIndex(i)
+                            break
+                        }
+                    }
+                
+                
+                    if self.checkValidPlacementOfAnswer(answer: possibleAnswerToRestore, inRow: row, andColumn: column) {
+                        
+                        if cell.possibleAnswers.count == 0 {
+                            cell.possibleAnswers.append(possibleAnswerToRestore)
+                        } else {
+                            for var i = 0; i < cell.possibleAnswers.count; i++ {
+                                let answer = cell.possibleAnswers[i]
+                                
+                                if possibleAnswerToRestore < answer {
+                                    cell.possibleAnswers.insert(possibleAnswerToRestore, atIndex: i)
+                                    break
+                                } else if i == cell.possibleAnswers.count - 1 {
+                                    cell.possibleAnswers.insert(possibleAnswerToRestore, atIndex: i + 1)
+                                    break
+                                }
+                            }
+                        }
+                    }
+                }
+                
+            }
+        }
+        
+        
+        
+    }
+    
+    private func restorePossibleAnswersForCellsToGuess() {
+        for var treeLevel = 0; treeLevel < self.listOfCellsToGuess.count; treeLevel++ {
+            
+            let coordinates = self.listOfCellsToGuess[treeLevel]
+            var cell = self.internalSudokuBoard[coordinates.row][coordinates.column]
+            
+            if cell.answer == 0 {
+                var possibleAnswers: [Int] = []
+                
+                for var number = 1; number <= 9; number++ {
+                    if self.checkValidPlacementOfAnswer(answer: number, inRow: coordinates.row, andColumn: coordinates.column) {
+                        possibleAnswers.append(number)
+                    }
+                }
+                
+                cell.possibleAnswers = possibleAnswers
+                
+            }
+        }
+    }
+    
+    private func restorePossibleAnswersFromTreeLevel(#levelToStart: Int) {
+        for var treeLevel = levelToStart; treeLevel < self.listOfCellsToGuess.count; treeLevel++ {
+            let coordinates = self.listOfCellsToGuess[treeLevel]
+            let cell = self.internalSudokuBoard[coordinates.row][coordinates.column]
+            
+            var restoredPossibleAnswers: [Int] = []
+            
+            for possibleAnswer in cell.initialPossibleAnswers {
+                if self.checkValidPlacementOfAnswer(answer: possibleAnswer, inRow: coordinates.row, andColumn: coordinates.column) {
+                    restoredPossibleAnswers.append(possibleAnswer)
+                }
+            }
+            
+            cell.possibleAnswers = restoredPossibleAnswers
+            
+        }
+    }
+    
+    
+    private func updatePossibleAnswersForCellsToGuess() {
+        for coordinates in self.listOfCellsToGuess {
+            var cell = self.internalSudokuBoard[coordinates.row][coordinates.column]
+            
+            if cell.answer == 0 {
+                let possibleAnswers = cell.possibleAnswers
+                
+                for possibleAnswer in possibleAnswers {
+                    if self.checkValidPlacementOfAnswer(answer: possibleAnswer, inRow: coordinates.row, andColumn: coordinates.column) {
+                        
+                        for var i = 0; i < cell.possibleAnswers.count; i++ {
+                            if cell.possibleAnswers[i] == possibleAnswer {
+                                cell.possibleAnswers.removeAtIndex(i)
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     
     // MARK: Checks for whether board is solved
@@ -451,14 +620,18 @@ class Solver : NSObject {
         if self.anotherThreadFinished || self.isSolved() {
             return self.internalSudokuBoard
         } else {
-            println("Could not solve with logic")
-            return nil
+            self.setupListOfCellsToGuess()
+            self.setupTree()
+            
+            if self.direction == .Forward {
+                return self.treeTraverseGuessForward()
+            } else {
+                return self.treeTraverseGuessBackward()
+            }
         }
     }
     
-    
-    private func setupTree() {
-        
+    private func setupListOfCellsToGuess() {
         for var row = 0; row < 9; row++ {
             for var column = 0; column < 9; column++ {
                 
@@ -466,13 +639,16 @@ class Solver : NSObject {
                 
                 if cell.answer == 0 {
                     let coordinates = CellCoordinates(row: row, column: column)
-                    
                     self.listOfCellsToGuess.append(coordinates)
+                    
+                    cell.initialPossibleAnswers = cell.possibleAnswers
                 }
             }
         }
-        
-        
+    }
+    
+    private func setupTree() {
+
         var root = SudokuTreeNode()
         root.parent = nil
         root.treeLevel = -1
@@ -480,6 +656,8 @@ class Solver : NSObject {
         self.sudokuTree.root = root
     }
     
+    
+    // MARK: Guessing portion of algorithm
     
     private func getNextParentNodeWithSibling(var #parent: SudokuTreeNode) -> SudokuTreeNode {
         while parent.nextSibling == nil {
@@ -491,40 +669,223 @@ class Solver : NSObject {
         return parent
     }
     
-    private func treeTraverseGuessForward() {
+    private func treeTraverseGuessForward() -> [[SudokuCell]]? {
         var parent: SudokuTreeNode = self.sudokuTree.root!
-        var nextSibling: SudokuTreeNode
+        var nextSibling: SudokuTreeNode?
         
         var iterationCount: Int = 0
         
         while (parent.treeLevel < self.listOfCellsToGuess.count - 1 && !self.anotherThreadFinished) {
             iterationCount++
             
-            let childCoordinates: CellCoordinates = self.listOfCellsToGuess[parent.treeLevel! + 1]
+            let childCoordinates: CellCoordinates = self.listOfCellsToGuess[parent.treeLevel + 1]
             let cell = self.internalSudokuBoard[childCoordinates.row][childCoordinates.column]
             
-            let possibleAnswers = cell.possibleAnswers
+            var possibleAnswers = cell.possibleAnswers
             
             if possibleAnswers.count == 0 {
-                let parentCoordinates = self.listOfCellsToGuess[parent.treeLevel!]
-                let parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column]
+                var parentCoordinates = self.listOfCellsToGuess[parent.treeLevel]
+                var parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column]
                 
                 if parent.nextSibling != nil && (parentCoordinates.row == childCoordinates.row || parentCoordinates.column == childCoordinates.column) {
                     
-                    var prevAnswer: Int = parent.parent!.firstChild!.answer!
+                    var prevAnswer = parent.parent!.firstChild!.answer
                     
-                    parent.parent!.firstChild! = parent.nextSibling!
+                    parent.parent!.firstChild = parent.nextSibling!
                     parent = parent.nextSibling!
-                    parentCell.answer = parent.answer!
+                    parentCell.answer = parent.answer
                     
+                    self.restorePossibleAnswer(possibleAnswerToRestore: prevAnswer, forRow: parentCoordinates.row, andColumn: parentCoordinates.column, andRemovePossibleAnswer: parentCell.answer)
                     
+                    possibleAnswers = cell.possibleAnswers
                     
-                }
+                } else {
+                    
+                    let previousTreeLevel = parent.treeLevel
                 
+                    parent = self.getNextParentNodeWithSibling(parent: parent.parent!)
+                    
+                    let newTreeLevel = parent.treeLevel
+                    
+                    parent.parent!.firstChild = parent.nextSibling!
+                    parent = parent.nextSibling!
+                    
+                    for var level = previousTreeLevel; level > newTreeLevel; level-- {
+                        let coordinatesForCellsToReset = self.listOfCellsToGuess[level]
+                        var cellToReset = self.internalSudokuBoard[coordinatesForCellsToReset.row][coordinatesForCellsToReset.column]
+
+                        cellToReset.answer = 0
+                    }
+                    
+                    parentCoordinates = self.listOfCellsToGuess[newTreeLevel]
+                    parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column]
+                    
+                    parentCell.answer = parent.answer
+                    
+                    self.restorePossibleAnswersFromTreeLevel(levelToStart: newTreeLevel + 1)
+                    
+                    continue
+                }
             }
             
+            for var i = possibleAnswers.count - 1; i >= 0; i-- {
+                let possibleAnswer = possibleAnswers[i]
+                var child = SudokuTreeNode()
+                
+                child.answer = possibleAnswer
+                child.parent = parent
+                
+                child.treeLevel = parent.treeLevel + 1
+                
+                let childCoordinates = self.listOfCellsToGuess[child.treeLevel]
+                child.coordinates = childCoordinates
+                
+                if i == 0 {
+                    parent.firstChild = child
+                    child.nextSibling = nextSibling
+                    nextSibling = nil
+                    
+                    cell.answer = possibleAnswer
+                    cell.possibleAnswers = []
+                    
+                    parent = child
+                    
+                } else {
+                    if nextSibling != nil {
+                        child.nextSibling = nextSibling
+                    } else {
+                        child.nextSibling = nil
+                    }
+                    
+                    nextSibling = child
+                }
+            }
             
+            let parentCoordinates = self.listOfCellsToGuess[parent.treeLevel]
+            let parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column]
             
+            self.updatePossibleAnswersInRow(inputRow: parentCoordinates.row, andColumn: parentCoordinates.column, forAnswer: parentCell.answer)
+        }
+        
+        if self.isSolved() {
+            println("Solved using forward")
+            println("Iteration count: \(iterationCount)")
+            
+            self.sudokuTree.root = nil
+            
+            return self.internalSudokuBoard
+        } else {
+            return nil
+        }
+    }
+    
+    private func treeTraverseGuessBackward() -> [[SudokuCell]]? {
+        var parent: SudokuTreeNode = self.sudokuTree.root!
+        var nextSibling: SudokuTreeNode?
+        
+        var iterationCount: Int = 0
+        
+        while (parent.treeLevel < self.listOfCellsToGuess.count - 1 && !self.anotherThreadFinished) {
+            iterationCount++
+            
+            let childCoordinates: CellCoordinates = self.listOfCellsToGuess[parent.treeLevel + 1]
+            let cell = self.internalSudokuBoard[childCoordinates.row][childCoordinates.column]
+            
+            var possibleAnswers = cell.possibleAnswers
+            
+            if possibleAnswers.count == 0 {
+                var parentCoordinates = self.listOfCellsToGuess[parent.treeLevel]
+                var parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column]
+                
+                if parent.nextSibling != nil && (parentCoordinates.row == childCoordinates.row || parentCoordinates.column == childCoordinates.column) {
+                    
+                    var prevAnswer = parent.parent!.firstChild!.answer
+                    
+                    parent.parent!.firstChild = parent.nextSibling!
+                    parent = parent.nextSibling!
+                    parentCell.answer = parent.answer
+                    
+                    self.restorePossibleAnswer(possibleAnswerToRestore: prevAnswer, forRow: parentCoordinates.row, andColumn: parentCoordinates.column, andRemovePossibleAnswer: parentCell.answer)
+                    
+                    possibleAnswers = cell.possibleAnswers
+                    
+                } else {
+                    
+                    let previousTreeLevel = parent.treeLevel
+                    
+                    parent = self.getNextParentNodeWithSibling(parent: parent.parent!)
+                    
+                    let newTreeLevel = parent.treeLevel
+                    
+                    parent.parent!.firstChild = parent.nextSibling!
+                    parent = parent.nextSibling!
+                    
+                    for var level = previousTreeLevel; level > newTreeLevel; level-- {
+                        let coordinatesForCellsToReset = self.listOfCellsToGuess[level]
+                        var cellToReset = self.internalSudokuBoard[coordinatesForCellsToReset.row][coordinatesForCellsToReset.column]
+                        
+                        cellToReset.answer = 0
+                    }
+                    
+                    parentCoordinates = self.listOfCellsToGuess[newTreeLevel]
+                    parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column]
+                    
+                    parentCell.answer = parent.answer
+                    
+                    self.restorePossibleAnswersFromTreeLevel(levelToStart: newTreeLevel + 1)
+                    
+                    continue
+                }
+            }
+            
+            for var i = 0; i < possibleAnswers.count; i++ {
+                let possibleAnswer = possibleAnswers[i]
+                var child = SudokuTreeNode()
+                
+                child.answer = possibleAnswer
+                child.parent = parent
+                
+                child.treeLevel = parent.treeLevel + 1
+                
+                let childCoordinates = self.listOfCellsToGuess[child.treeLevel]
+                child.coordinates = childCoordinates
+                
+                if i == possibleAnswers.count - 1 {
+                    parent.firstChild = child
+                    child.nextSibling = nextSibling
+                    nextSibling = nil
+                    
+                    cell.answer = possibleAnswer
+                    cell.possibleAnswers = []
+                    
+                    parent = child
+                    
+                } else {
+                    if nextSibling != nil {
+                        child.nextSibling = nextSibling
+                    } else {
+                        child.nextSibling = nil
+                    }
+                    
+                    nextSibling = child
+                }
+            }
+            
+            let parentCoordinates = self.listOfCellsToGuess[parent.treeLevel]
+            let parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column]
+            
+            self.updatePossibleAnswersInRow(inputRow: parentCoordinates.row, andColumn: parentCoordinates.column, forAnswer: parentCell.answer)
+        }
+        
+        if self.isSolved() {
+            println("Solved using backward")
+            println("Iteration count: \(iterationCount)")
+            
+            self.sudokuTree.root = nil
+            
+            return self.internalSudokuBoard
+        } else {
+            return nil
         }
     }
     
@@ -555,17 +916,16 @@ class Solver : NSObject {
     }
     
     
+    // MARK: Multithreading
     
+    @objc private func cancelTreeTraversalOperations() {
+        self.anotherThreadFinished = true
+    }
+
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
     
     
 }

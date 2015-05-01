@@ -11,12 +11,16 @@ import Foundation
 
 class SudokuTreeNode {
     
-    var answer: Int?
+    var answer: Int = 0
     
     weak var parent: SudokuTreeNode?
     var firstChild: SudokuTreeNode?
     var nextSibling: SudokuTreeNode?
-    var coordinates: CellCoordinates?
+    var coordinates: CellCoordinates = CellCoordinates(row: 0, column: 0)
     
-    var treeLevel: Int?
+    var treeLevel: Int = 0
+    
+    init() {
+        
+    }
 }

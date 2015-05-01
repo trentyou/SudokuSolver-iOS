@@ -107,9 +107,12 @@
         
         if ([initialBoardFirstDigit integerValue] == 0) {
             cell.textColor = [UIColor solutionGreenColor];
+            cell.text = [NSString stringWithFormat:@"%@", solutionFirstDigit];
+        } else {
+            cell.text = [NSString stringWithFormat:@"%@", initialBoardFirstDigit];
         }
         
-        cell.text = [NSString stringWithFormat:@"%@", solutionFirstDigit];
+        
 
         
         if (i % 3 == 0 && i % 9 != 0) {

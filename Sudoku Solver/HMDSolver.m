@@ -162,86 +162,29 @@ static NSNumberFormatter *numberFormatter;
     }
 }
 
-- (void)updatePossibleAnswersForCellsToGuess
+
+
+
+- (void)restorePossibleAnswersFromTreeLevel:(NSInteger)levelToStart
 {
-    for (HMDCellCoordinates *coordinates in self.listOfCellsToGuess) {
+    for (NSInteger treeLevel = levelToStart; treeLevel < self.listOfCellsToGuess.count; treeLevel++) {
+        
+        HMDCellCoordinates *coordinates = self.listOfCellsToGuess[treeLevel];
         HMDSudokuCell *cell = self.internalSudokuBoard[coordinates.row][coordinates.column];
         
-        if (cell.answer == 0) {
-            NSArray *possibleAnswers = [cell.possibleAnswers copy];
-            
-            for (HMDPossibleAnswer *possibleAnswer in possibleAnswers) {
-                
-                if (![self checkValidPlacementOfAnswer:possibleAnswer.answer inRow:coordinates.row andColumn:coordinates.column]) {
-                    [cell.possibleAnswers removeObject:possibleAnswer];
-                }
-            }
-            
-        }
+        NSMutableArray *restoredPossibleAnswers = [[NSMutableArray alloc] init];
         
-    }
-}
-
-- (void)restorePossibleAnswerForCellInRow:(NSInteger)row andColumn:(NSInteger)column
-{
-    HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
-    
-    NSArray *possibleAnswersCopy = [cell.possibleAnswers copy];
-    
-    if ([possibleAnswersCopy count] == 0) {
-        for (HMDPossibleAnswer *initialPossibleAnswer in cell.initialPossibleAnswers) {
-        
-            if ([self checkValidPlacementOfAnswer:initialPossibleAnswer.answer inRow:row andColumn:column]) {
-                [cell.possibleAnswers addObject:initialPossibleAnswer];
+        for (HMDPossibleAnswer *possibleAnswer in cell.initialPossibleAnswers) {
+            if ([self checkValidPlacementOfAnswer:possibleAnswer.answer inRow:coordinates.row andColumn:coordinates.column]) {
+                HMDPossibleAnswer *restoredPossibleAnswer = [[HMDPossibleAnswer alloc] init];
+                restoredPossibleAnswer.answer = possibleAnswer.answer;
+                [restoredPossibleAnswers addObject:restoredPossibleAnswer];
             }
         }
         
-    } else {
-        for (HMDPossibleAnswer *initialPossibleAnswer in cell.initialPossibleAnswers) {
-            
-            for (HMDPossibleAnswer *possibleAnswer in possibleAnswersCopy) {
-                if (possibleAnswer.answer != initialPossibleAnswer.answer) {
-                    
-                    if ([self checkValidPlacementOfAnswer:initialPossibleAnswer.answer inRow:row andColumn:column]) {
-                        for (NSInteger i = 0; i < [cell.possibleAnswers count]; i++) {
-                            HMDPossibleAnswer *answer = cell.possibleAnswers[i];
-                            
-                            if (initialPossibleAnswer.answer < answer.answer) {
-                                [cell.possibleAnswers insertObject:initialPossibleAnswer atIndex:i];
-                                break;
-                            } else if (i == [cell.possibleAnswers count] - 1) {
-                                [cell.possibleAnswers insertObject:initialPossibleAnswer atIndex:i + 1];
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            
-        }
-
-    }
-    
-}
-
-- (void)restorePossibleAnswersForCellsToGuess
-{
-    for (HMDCellCoordinates *coordinates in self.listOfCellsToGuess) {
-        HMDSudokuCell *cell = self.internalSudokuBoard[coordinates.row][coordinates.column];
+        cell.possibleAnswers = restoredPossibleAnswers;
         
-        if (cell.answer == 0) {
-            NSMutableArray *possibleAnswers = [[NSMutableArray alloc] init];
-            
-            for (NSInteger number = 1; number <= 9; number++) {
-                if ([self checkValidPlacementOfAnswer:number inRow:coordinates.row andColumn:coordinates.column]) {
-                    HMDPossibleAnswer *possibleAnswer = [[HMDPossibleAnswer alloc] init];
-                    possibleAnswer.answer = number;
-                    [possibleAnswers addObject:possibleAnswer];
-                }
-            }
-            
-            cell.possibleAnswers = possibleAnswers;
-        }
+        
     }
 }
 
@@ -358,6 +301,7 @@ static NSNumberFormatter *numberFormatter;
             HMDSudokuCell *cell = self.internalSudokuBoard[row][column];
             
             if (cell.answer == 0 && column != inputColumn) {
+                
                 if ([self checkValidPlacementOfAnswer:possibleAnswerToRestore inRow:row andColumn:column]) {
                     HMDPossibleAnswer *possibleAnswer = [[HMDPossibleAnswer alloc] init];
                     possibleAnswer.answer = possibleAnswerToRestore;
@@ -966,7 +910,6 @@ static NSNumberFormatter *numberFormatter;
                 parentCoordinates = self.listOfCellsToGuess[newTreeLevel];
                 parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column];
                 
-                NSInteger prevAnswer = parentCell.answer;
                 parentCell.answer = parent.answer;
 //                                NSLog(@"New answer: %ld for treeLevel: %ld", (long)parentCell.answer, (long)newTreeLevel);
                 
@@ -977,8 +920,9 @@ static NSNumberFormatter *numberFormatter;
 //                    [self restorePossibleAnswerForCellInR//ow:coordinatesForCellsToRestore.row andColumn:coordinatesForCellsToRestore.column];
 //                }
                 
-                [self restorePossibleAnswersForCellsToGuess];
-                [self updatePossibleAnswersForCellsToGuess];
+//                [self restorePossibleAnswersForCellsToGuess];
+//                [self updatePossibleAnswersForCellsToGuess];
+                [self restorePossibleAnswersFromTreeLevel:newTreeLevel + 1];
                 
 //                                NSLog(@"--------------------------");
 //                
@@ -1134,19 +1078,9 @@ static NSNumberFormatter *numberFormatter;
                 parentCoordinates = self.listOfCellsToGuess[newTreeLevel];
                 parentCell = self.internalSudokuBoard[parentCoordinates.row][parentCoordinates.column];
                 
-                NSInteger prevAnswer = parentCell.answer;
                 parentCell.answer = parent.answer;
-//                                                NSLog(@"New answer: %ld for treeLevel: %ld", (long)parentCell.answer, (long)newTreeLevel);
                 
-                //                [self restorePossibleAnswer:prevAnswer forRow:parentCoordinates.row andColumn:parentCoordinates.column andRemovePossibleAnswer:parentCell.answer];
-                //
-                //                for (NSInteger level = previousTreeLevel; level > newTreeLevel; level--) {
-                //                    HMDCellCoordinates *coordinatesForCellsToRestore = self.listOfCellsToGuess[level];
-                //                    [self restorePossibleAnswerForCellInRow:coordinatesForCellsToRestore.row andColumn:coordinatesForCellsToRestore.column];
-                //                }
-                //
-                [self restorePossibleAnswersForCellsToGuess];
-                [self updatePossibleAnswersForCellsToGuess];
+                [self restorePossibleAnswersFromTreeLevel:newTreeLevel + 1];
                 
 //                                                NSLog(@"--------------------------");
 //                

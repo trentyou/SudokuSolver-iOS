@@ -496,7 +496,12 @@
 
 - (IBAction)userSelectMultiThreadSwift:(id)sender
 {
-    
+    NSLog(@"Multi threaded Swift selected");
+    [UIView animateWithDuration:self.animationDuration delay:0.0 usingSpringWithDamping:self.springDampeningForAnimation initialSpringVelocity:0.0 options:0 animations:^{
+        self.languageSelectView.frame = self.unpresentedFrame;
+    }completion:^(BOOL completed) {
+        [self solveWithSwiftMultiThread];
+    }];
 }
 
 
@@ -648,8 +653,6 @@
         
         HMDSwiftSolution *solution = [self.forwardSwiftSolver solvePuzzleWithStartingNumbersWithStartingNumbers:[self makeStringCopyForSwiftFrom:self.initialBoard] andDirection:Forward];
         
-        
-        
         dispatch_sync(dispatch_get_main_queue(), ^{
             
             NSDate *endTime = [NSDate date];
@@ -676,7 +679,87 @@
 
 - (void)solveWithSwiftMultiThread
 {
+    self.yesButton.enabled = NO;
+    self.noButton.enabled = NO;
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     
+    self.forwardSwiftSolver = [[Solver alloc] init];
+    self.backwardSwiftSolver = [[Solver alloc] init];
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Solving..";
+    hud.labelFont = [UIFont fontWithName:@"quicksand-regular" size:20];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSDate *startTime = [NSDate date];
+        HMDSwiftSolution *solution = [self.forwardSwiftSolver solvePuzzleWithStartingNumbersWithStartingNumbers:[self makeStringCopyForSwiftFrom:self.initialBoard] andDirection:Forward];
+        
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            
+            if (!self.backwardFinished) {
+                NSDate *endTime = [NSDate date];
+                NSTimeInterval timeToSolve = [endTime timeIntervalSinceDate:startTime];
+                
+                if (solution) {
+                    self.forwardFinished = YES; // Stops two solutionviewcontrollers from being presented
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"anotherThreadFinished" object:nil]; // Stop execution of other thread
+                    
+                    [self printBoardWithStringSolution:solution andTimeToSolve:timeToSolve]; // Presents solutionviewcontroller with solution from this thread
+                    [MBProgressHUD hideHUDForView:self.view animated:YES];
+                    
+                    self.forwardSwiftSolver = nil; // deallocing finished solver for memory purposes
+                    
+                } else {
+                    //error message for incorrect starting puzzle
+                    [MBProgressHUD hideHUDForView:self.view animated:YES];
+                    
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:@"Did you enter the puzzle correctly?" delegate:nil cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+                    [alert show];
+                }
+                
+            } else {
+                self.forwardSwiftSolver = nil;
+            }
+            
+        });
+        
+        
+        
+    });
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSDate *startTime = [NSDate date];
+        HMDSwiftSolution *solution = [self.backwardSwiftSolver solvePuzzleWithStartingNumbersWithStartingNumbers:[self makeStringCopyForSwiftFrom:self.initialBoard] andDirection:Backward];
+        
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            
+            if (!self.forwardFinished) {
+                NSDate *endTime = [NSDate date];
+                NSTimeInterval timeToSolve = [endTime timeIntervalSinceDate:startTime];
+                
+                if (solution) {
+                    self.backwardFinished = YES;
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"anotherThreadFinished" object:nil];
+                    
+                    [self printBoardWithStringSolution:solution andTimeToSolve:timeToSolve];
+                    [MBProgressHUD hideHUDForView:self.view animated:YES];
+                    
+                    self.backwardSwiftSolver = nil;
+                    
+                } else {
+                    //error message for incorrect starting puzzle
+                    [MBProgressHUD hideHUDForView:self.view animated:YES];
+                    
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh-oh" message:@"Did you enter the puzzle correctly?" delegate:nil cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+                    [alert show];
+                }
+            } else {
+                self.backwardSwiftSolver = nil;
+            }
+            
+        });
+        
+    });
 }
 
 #pragma mark - Printing board

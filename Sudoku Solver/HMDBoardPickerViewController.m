@@ -105,7 +105,7 @@ const CGFloat PICKER_VIEW_ANIMATION_DURATION = 0.4;
     //Evil Level Puzzles
     //self.startingNumbers = @"700060300000500000090300875100600000004050200000008007436007090000006000001080006"; // 3,291 without, 4,200 with
     //self.startingNumbers = @"592001000000500000470002050000250008200000005300076000060100072000008000000700134"; // 5,000 without, 15,000 with
-    self.startingNumbers = @"000500048020040007530000960000780000009000400000056000013000025600010070890005000"; // 34,604 without, 6,587 with
+    //self.startingNumbers = @"000500048020040007530000960000780000009000400000056000013000025600010070890005000"; // 34,604 without, 6,587 with
     //self.startingNumbers = @"603200008000090007000800002000074010004000800050380000900006000100050000300009705"; // 74179 32 bit without
     //self.startingNumbers = @"800730000000500186005090000057000000690000014000000690000020800963007000000054003"; // 6417 without, 27873 with, 22487 with sorted smallest first
     //self.startingNumbers = @"060001007400783000000000100300200070001070600070005002002000000000367004800400010"; // 8680 without, 8070 with, 8803 with sorted smallest first (23:90 32-bit) (19:90 64-bit)
@@ -115,8 +115,8 @@ const CGFloat PICKER_VIEW_ANIMATION_DURATION = 0.4;
     //self.startingNumbers = @"700096001094500000000000260200064700000000000005720006028000000000001930900250004"; // 6877 without, 20819 with
     
     [self setupBackgroundColors];
-    //[self fillPickerInternalSudokuBoardWithEmptyBoard];
-    [self fillPickerInternalSudokuBoardFromString:self.startingNumbers];
+    [self fillPickerInternalSudokuBoardWithEmptyBoard];
+    //[self fillPickerInternalSudokuBoardFromString:self.startingNumbers];
     [self presentQuadrantViewForQuadrant:1 fromDirection:NoDirection];
     [self setupSwipeGesturesForQuadrantView];
     [self setupClearLayer];
