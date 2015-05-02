@@ -58,7 +58,6 @@
         [NSKeyedArchiver archiveRootObject:solutions toFile:path];
     } else {
         archivedSolution.puzzleOrder = unarchivedSolutions.count;
-        NSLog(@"archivedSolution.puzzleOrder: %ld", (long)archivedSolution.puzzleOrder);
         [unarchivedSolutions addObject:archivedSolution];
         [NSKeyedArchiver archiveRootObject:unarchivedSolutions toFile:path];
     }

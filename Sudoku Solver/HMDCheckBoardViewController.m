@@ -16,7 +16,7 @@
 
 #import "UIColor+_SudokuSolver.h"
 
-#import "Sudoku_Solver-Swift.h"
+#import "PocketSudokuSolver-Swift.h"
 
 @interface HMDCheckBoardViewController ()
 
@@ -465,7 +465,6 @@
 
 - (IBAction)userSelectSingleThreadObjc:(id)sender
 {
-    NSLog(@"Single threaded ObjC selected");
     [UIView animateWithDuration:self.animationDuration delay:0.0 usingSpringWithDamping:self.springDampeningForAnimation initialSpringVelocity:0.0 options:0 animations:^{
         self.languageSelectView.frame = self.unpresentedFrame;
     }completion:^(BOOL completed) {
@@ -476,7 +475,6 @@
 
 - (IBAction)userSelectMultiThreadObjc:(id)sender
 {
-    NSLog(@"Multi threaded ObjC selected");
     [UIView animateWithDuration:self.animationDuration delay:0.0 usingSpringWithDamping:self.springDampeningForAnimation initialSpringVelocity:0.0 options:0 animations:^{
         self.languageSelectView.frame = self.unpresentedFrame;
     }completion:^(BOOL completed) {
@@ -486,7 +484,6 @@
 
 - (IBAction)userSelectSingleThreadSwift:(id)sender
 {
-    NSLog(@"Single threaded Swift selected");
     [UIView animateWithDuration:self.animationDuration delay:0.0 usingSpringWithDamping:self.springDampeningForAnimation initialSpringVelocity:0.0 options:0 animations:^{
         self.languageSelectView.frame = self.unpresentedFrame;
     }completion:^(BOOL completed) {
@@ -496,7 +493,6 @@
 
 - (IBAction)userSelectMultiThreadSwift:(id)sender
 {
-    NSLog(@"Multi threaded Swift selected");
     [UIView animateWithDuration:self.animationDuration delay:0.0 usingSpringWithDamping:self.springDampeningForAnimation initialSpringVelocity:0.0 options:0 animations:^{
         self.languageSelectView.frame = self.unpresentedFrame;
     }completion:^(BOOL completed) {

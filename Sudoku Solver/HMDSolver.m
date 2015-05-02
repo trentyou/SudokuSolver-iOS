@@ -709,11 +709,7 @@ static NSNumberFormatter *numberFormatter;
     } while (!self.anotherThreadFinished && changed);
     
     
-    NSLog(@"Number of logic loops: %ld", (long)logicLoopCount);
-    
-    if (self.anotherThreadFinished) {
-        NSLog(@"Quitting from another thread finishing before tree traversal");
-    }
+    //NSLog(@"Number of logic loops: %ld", (long)logicLoopCount);
     
     if (self.anotherThreadFinished || [self isSolved]) {
         return self.internalSudokuBoard;
@@ -998,8 +994,8 @@ static NSNumberFormatter *numberFormatter;
     }
     
     if ([self isSolved]) {
-        NSLog(@"SOLVED USING FORWARD");
-        NSLog(@"Iteration count: %ld", (long)iterationCount);
+        //NSLog(@"SOLVED USING FORWARD");
+        //NSLog(@"Iteration count: %ld", (long)iterationCount);
         self.sudokuTree.root.firstChild = nil;
         return [self.internalSudokuBoard copy];
     } else {
@@ -1155,8 +1151,8 @@ static NSNumberFormatter *numberFormatter;
     }
     
     if ([self isSolved]) {
-        NSLog(@"SOLVED USING BACKWARDS");
-        NSLog(@"Iteration count: %ld", (long)iterationCount);
+        //NSLog(@"SOLVED USING BACKWARDS");
+        //NSLog(@"Iteration count: %ld", (long)iterationCount);
         self.sudokuTree.root.firstChild = nil;
         return self.internalSudokuBoard;
     } else {

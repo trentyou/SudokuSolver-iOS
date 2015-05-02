@@ -119,7 +119,7 @@
 		85D44FB01A77497300363F0E /* HMDSolutionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HMDSolutionViewController.xib; sourceTree = "<group>"; };
 		85D531AE1AEDED3A00147905 /* HMDSwiftSolution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMDSwiftSolution.h; sourceTree = "<group>"; };
 		85D531AF1AEDED3A00147905 /* HMDSwiftSolution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMDSwiftSolution.m; sourceTree = "<group>"; };
-		85DE02EA1A7640D500B9A8BF /* Sudoku Solver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sudoku Solver.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		85DE02EA1A7640D500B9A8BF /* PocketSudokuSolver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketSudokuSolver.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		85DE02EE1A7640D500B9A8BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		85DE02EF1A7640D500B9A8BF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		85DE02F11A7640D500B9A8BF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -183,7 +183,7 @@
 		85DE02EB1A7640D500B9A8BF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				85DE02EA1A7640D500B9A8BF /* Sudoku Solver.app */,
+				85DE02EA1A7640D500B9A8BF /* PocketSudokuSolver.app */,
 				85DE03031A7640D500B9A8BF /* Sudoku SolverTests.xctest */,
 			);
 			name = Products;
@@ -316,7 +316,7 @@
 			);
 			name = "Sudoku Solver";
 			productName = "Sudoku Solver";
-			productReference = 85DE02EA1A7640D500B9A8BF /* Sudoku Solver.app */;
+			productReference = 85DE02EA1A7640D500B9A8BF /* PocketSudokuSolver.app */;
 			productType = "com.apple.product-type.application";
 		};
 		85DE03021A7640D500B9A8BF /* Sudoku SolverTests */ = {
@@ -593,7 +593,7 @@
 				INFOPLIST_FILE = "Sudoku Solver/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = PocketSudokuSolver;
 				SWIFT_OBJC_BRIDGING_HEADER = "Sudoku Solver/Sudoku Solver-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -606,10 +606,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Trent You";
 				INFOPLIST_FILE = "Sudoku Solver/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = PocketSudokuSolver;
 				SWIFT_OBJC_BRIDGING_HEADER = "Sudoku Solver/Sudoku Solver-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 			};

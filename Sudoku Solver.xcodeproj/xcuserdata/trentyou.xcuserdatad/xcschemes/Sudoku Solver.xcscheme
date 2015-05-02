@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "85DE02E91A7640D500B9A8BF"
-               BuildableName = "Sudoku Solver.app"
+               BuildableName = "PocketSudokuSolver.app"
                BlueprintName = "Sudoku Solver"
                ReferencedContainer = "container:Sudoku Solver.xcodeproj">
             </BuildableReference>
@@ -57,7 +57,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "85DE02E91A7640D500B9A8BF"
-            BuildableName = "Sudoku Solver.app"
+            BuildableName = "PocketSudokuSolver.app"
             BlueprintName = "Sudoku Solver"
             ReferencedContainer = "container:Sudoku Solver.xcodeproj">
          </BuildableReference>
@@ -72,11 +72,12 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "85DE02E91A7640D500B9A8BF"
-            BuildableName = "Sudoku Solver.app"
+            BuildableName = "PocketSudokuSolver.app"
             BlueprintName = "Sudoku Solver"
             ReferencedContainer = "container:Sudoku Solver.xcodeproj">
          </BuildableReference>
@@ -90,11 +91,12 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "85DE02E91A7640D500B9A8BF"
-            BuildableName = "Sudoku Solver.app"
+            BuildableName = "PocketSudokuSolver.app"
             BlueprintName = "Sudoku Solver"
             ReferencedContainer = "container:Sudoku Solver.xcodeproj">
          </BuildableReference>

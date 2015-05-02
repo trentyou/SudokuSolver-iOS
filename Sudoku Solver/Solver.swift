@@ -611,11 +611,7 @@ class Solver : NSObject {
         
         } while !self.anotherThreadFinished && changed
         
-        println("Number of logic loops: \(logicLoopCount)")
-        
-        if self.anotherThreadFinished {
-            println("Quitting from another thread finishing before tree traversal")
-        }
+       // println("Number of logic loops: \(logicLoopCount)")
         
         if self.anotherThreadFinished || self.isSolved() {
             return self.internalSudokuBoard
@@ -768,8 +764,8 @@ class Solver : NSObject {
         }
         
         if self.isSolved() {
-            println("Solved using forward")
-            println("Iteration count: \(iterationCount)")
+            //println("Solved using forward")
+            //println("Iteration count: \(iterationCount)")
             
             self.sudokuTree.root = nil
             
@@ -878,8 +874,8 @@ class Solver : NSObject {
         }
         
         if self.isSolved() {
-            println("Solved using backward")
-            println("Iteration count: \(iterationCount)")
+            //println("Solved using backward")
+            //println("Iteration count: \(iterationCount)")
             
             self.sudokuTree.root = nil
             
@@ -904,8 +900,6 @@ class Solver : NSObject {
                 solutionString += String(cell.answer)
             }
         }
-        
-        println("solutionString length: \(count(solutionString))")
         
         var solution = HMDSwiftSolution()
         
