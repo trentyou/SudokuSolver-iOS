@@ -133,8 +133,8 @@
         CGFloat width = [UIScreen mainScreen].bounds.size.width;
         CGFloat height = [UIScreen mainScreen].bounds.size.height;
         
-        self.unpresentedFrame = CGRectMake(0.0f, [UIScreen mainScreen].bounds.size.height, width, height);
-        self.presentedFrame = CGRectMake(0.0f, 0.0f, width, height);
+        self.unpresentedFrame = CGRectMake(0.0f, [UIScreen mainScreen].bounds.size.height, width, height + 300.0f);
+        self.presentedFrame = CGRectMake(0.0f, 0.0f, width, height + 300.0f);
         
         self.springDampeningForAnimation = 0.65;
         self.animationDuration = 0.75;

@@ -86,7 +86,7 @@ const float ACTION_BUTTON_HIGHLIGHTED = 0.2;
     self.titleLabel.text = @"Pocket Sudoku Solver";
     self.titleLabel.font = [UIFont fontWithName:@"quicksand-regular" size:40];
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
-    self.titleLabel.textColor = [UIColor lightGrayColor];
+    self.titleLabel.textColor = [UIColor grayColor];
     self.titleLabel.numberOfLines = 2;
     
     self.titleLabel.backgroundColor = [UIColor beigeColor];
